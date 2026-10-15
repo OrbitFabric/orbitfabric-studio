@@ -1,0 +1,12 @@
+{
+  "baseline": "852210795aa15020f5f117298c42900bd3e95501",
+  "width": 640,
+  "overlap": true,
+  "interceptor": "core-state core-state-compatible",
+  "rect": {
+    "x": 331.28125,
+    "y": 0,
+    "width": 78.46875,
+    "height": 55
+  }
+}

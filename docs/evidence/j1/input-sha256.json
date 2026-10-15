@@ -1,0 +1,9 @@
+{
+  "studio/.sp2-acceptance/reports.json": "e0d1b7fb335f3e1c0032669cab5b05dcd91d478e60f7818653dd86388a4cca6e",
+  "/workspace/scratch/65c4b4cbea24/orbitfabric-reference-mission/scenarios/payload_stop_acquisition_verification.yaml": "b19ff6e1cf3c45cdb81e239d30aad97e8b6f037703c06f27102b762e69a1146a",
+  "studio/tests/fixtures/sp3-r1/scenario-declaration.json": "24fab5d26923229636e3269af78aef0ff3c91dad6761f1d75235f94fe208e51f",
+  "studio/tests/fixtures/sp3-r1/evidence-set.json": "75d08de8486b715d381f7d8d3a2a74d2a88ef25a0317a42ead4efd1dbd9f3252",
+  "studio/tests/fixtures/sp3-r1/cosmos/integration_result.json": "21eafa806e7553eb9dccac89f9443c17079222731a2f36bc035aa1fc3db033ba",
+  "studio/tests/fixtures/sp3-r1/cosmos/verification_projection/verification_projection_plan.json": "50b05f506d8b1531a9d486d34faad15fb9a713dcf71a67180e46f84be71324d0",
+  "studio/tests/fixtures/sp3-r1/cosmos/verification_projection/scenario_projection_accounting.json": "f0e9459af501e2c6b161cd9c6349197ae20280d1e553d82867ef8b2ef3e11d39"
+}

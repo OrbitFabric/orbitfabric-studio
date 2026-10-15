@@ -1,3 +1,5 @@
+import { FamilyLabel } from "../presentation/FamilyLabel";
+import type { DisplayFamily } from "../presentation/familyMarkers";
 import { useEffect, useMemo, useState } from "react";
 import { open } from "@tauri-apps/plugin-dialog";
 
@@ -515,7 +517,7 @@ export function IntegrationsWorkspace({
           </section>
 
           <section className="integration-card result-card">
-            <CardTitle title="Last Result" status={result?.result ?? "none"} />
+            <CardTitle family="result" title="Last Result" status={result?.result ?? "none"} />
             {result ? (
               <>
                 <div className="integration-grid result-summary">
@@ -791,8 +793,8 @@ function Continuity({
   );
 }
 
-function CardTitle({ title, status }: { title: string; status: string }) {
-  return <div className="integration-card-title"><h2>{title}</h2><span className="status-pill">{status}</span></div>;
+function CardTitle({ title, status, family = null }: { title: string; status: string; family?: DisplayFamily | null }) {
+  return <div className="integration-card-title"><h2><FamilyLabel family={family}>{title}</FamilyLabel></h2><span className="status-pill">{status}</span></div>;
 }
 
 function Fact({ label, value, detail }: { label: string; value: string; detail?: string }) {

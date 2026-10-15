@@ -1,0 +1,53 @@
+{
+  "browser": "153.0.8010.0",
+  "widths": [
+    {
+      "width": 1280,
+      "headerPointerOverlap": false,
+      "navigation": "pointer",
+      "atlasMarkers": 8,
+      "scenarioAtoms": 8,
+      "scenarioMarkers": 20,
+      "overflow": [],
+      "keyboardFocus": {
+        "outline": "solid",
+        "border": "rgb(127, 180, 232)"
+      },
+      "selectedEntityLinks": 2,
+      "evidenceHeadings": "PASS"
+    },
+    {
+      "width": 960,
+      "headerPointerOverlap": false,
+      "navigation": "pointer",
+      "atlasMarkers": 8,
+      "scenarioAtoms": 8,
+      "scenarioMarkers": 20,
+      "overflow": [],
+      "keyboardFocus": {
+        "outline": "solid",
+        "border": "rgb(127, 180, 232)"
+      },
+      "selectedEntityLinks": 2,
+      "evidenceHeadings": "PASS"
+    },
+    {
+      "width": 640,
+      "headerPointerOverlap": true,
+      "navigation": "keyboard due to header overlap",
+      "atlasMarkers": 8,
+      "scenarioAtoms": 8,
+      "scenarioMarkers": 20,
+      "overflow": [],
+      "keyboardFocus": {
+        "outline": "solid",
+        "border": "rgb(127, 180, 232)"
+      },
+      "selectedEntityLinks": 2,
+      "evidenceHeadings": "PASS"
+    }
+  ],
+  "native": "NOT RUN",
+  "harness": "Actual App; retained freshly exported pinned Core reports; mocked IPC and file picker",
+  "surfaceCapture": "Chromium render and restoration PASS; native saving and clipboard NOT RUN"
+}
