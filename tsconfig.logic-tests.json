@@ -68,7 +68,8 @@
     "src/features/atlas/MissionAtlas.tsx",
     "src/features/scenarios/ScenarioWorkspace.tsx",
     "src/features/experience/graphModel.ts",
-    "src/features/experience/inspection.ts"
+    "src/features/experience/inspection.ts",
+    "src/features/investigation/investigationModel.ts"
   ],
   "include": []
 }

@@ -1,3 +1,5 @@
+import { PresentationMemory } from "./features/experience/presentationMemory";
+import { InvestigationPanel } from "./features/investigation/InvestigationPanel";
 import { MissionModel } from "./features/experience/EngineeringGraph";
 import { InspectorFrame } from "./features/experience/InspectorFrame";
 import { InspectionContent } from "./features/experience/InspectionContent";
@@ -68,15 +70,18 @@ function App() {
   const [validationOpen, setValidationOpen] = useState(false);
   const generationRef = useRef(0);
   const workspacePrimaryRef = useRef<HTMLDivElement>(null);
-  const [inspectionState, setInspectionState] = useState<{current: Inspection | null; history: Inspection[]}>({current:null,history:[]});
-  const inspection = inspectionState.current;
-  const inspectionHistory = inspectionState.history;
+  const [returnContext,setReturnContext] = useState<{view:MissionWorkspaceView;inspection:Inspection|null;top:number}|null>(null);
+  const presentationMemory = useMemo(() => new Map<string,unknown>(), [state.activeSession?.sessionId,state.activeSession?.generation]);
+  const membershipKey = `${state.activeSession?.sessionId}:${state.activeSession?.generation}`;
+  const [inspectionState, setInspectionState] = useState<{membership:string;current: Inspection | null; history: Inspection[]}>({membership:membershipKey,current:null,history:[]});
+  const inspection = inspectionState.membership === membershipKey ? inspectionState.current : null;
+  const inspectionHistory = inspectionState.membership === membershipKey ? inspectionState.history : [];
   const setInspection = (current: Inspection | null) => setInspectionState(s => ({...s,current}));
   const setInspectionHistory = (history: Inspection[] | ((h:Inspection[])=>Inspection[])) => setInspectionState(s => ({...s,history:typeof history === 'function' ? history(s.history) : history}));
   function inspect(next: Inspection) {
-    setInspectionState(s => ({current:next,history:s.current && inspectionIdentity(s.current)!==inspectionIdentity(next) ? [...s.history,s.current].slice(-20) : s.history}));
+    setInspectionState(s => ({membership:membershipKey,current:next,history:s.current && inspectionIdentity(s.current)!==inspectionIdentity(next) ? [...s.history,s.current].slice(-20) : s.history}));
   }
-  useEffect(() => { setInspection(null); setInspectionHistory([]); }, [state.activeSession?.sessionId, state.activeSession?.generation]);
+  useEffect(() => { setInspection(null); setInspectionHistory([]); setReturnContext(null); }, [state.activeSession?.sessionId, state.activeSession?.generation]);
   useEffect(() => {
     if (state.selection.subject) inspect({kind: "entity", entity: state.selection.subject});
   }, [state.selection.subject]);
@@ -487,7 +492,7 @@ function App() {
 
 
   return (
-    <main className="studio-shell">
+    <PresentationMemory.Provider value={presentationMemory}><main className="studio-shell">
       <header className="studio-topbar">
         <div className="mission-title-block">
           <span className="studio-wordmark">OrbitFabric Studio</span>
@@ -612,6 +617,12 @@ function App() {
         </button>
       ) : null}
 
+      <InvestigationPanel key={`${session.sessionId}:${session.generation}`} session={session} slot={state.scenario} evidence={evidenceModel}
+        selection={selectedEntity} onInspect={inspect}
+        onScenarios={()=>{setReturnContext({view:state.view,inspection,top:document.querySelector(".studio-main-surface")?.scrollTop??0});changeWorkspaceView("scenarios");}}
+        onEvidence={()=>{setReturnContext({view:state.view,inspection,top:document.querySelector(".studio-main-surface")?.scrollTop??0});changeWorkspaceView("evidence");}}
+        canReturn={!!returnContext} onReturnContext={()=>{if(returnContext){dispatch({type:"WORKSPACE_VIEW_CHANGED",view:returnContext.view});setInspection(returnContext.inspection);const top=returnContext.top;requestAnimationFrame(()=>document.querySelector(".studio-main-surface")?.scrollTo(0,top));setReturnContext(null);}}}
+        disabled={isOpeningReplacement}/>
       <section className="studio-main-surface">
         <div
           className={`workspace-layout${inspection ? " has-experience-inspector" : ""}`}
@@ -709,7 +720,8 @@ function App() {
                 (setInspection(null), dispatch({ type: "SELECTION_CHANGED", subject: null, origin: null }))
               }
               onFollowRelationship={(step) =>
-                dispatch({ type: "CONTEXT_EDGE_FOLLOWED", step, origin: "xray" })
+                dispatch({ type: "CONTEXT_PATH_REPLACED", subject: step.to,
+                  path: [...(selectedEntity?.id === step.from.id && selectedEntity.domain === step.from.domain ? state.selection.contextPath : []), step], origin: "xray" })
               }
               onTruncateContextPath={(subject, length) =>
                 dispatch({
@@ -736,7 +748,7 @@ function App() {
           }}
         />
       ) : null}
-    </main>
+    </main></PresentationMemory.Provider>
   );
 }
 

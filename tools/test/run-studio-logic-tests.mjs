@@ -31,6 +31,7 @@ try {
   );
 
   const tests = [
+    "tests/studio-logic/investigation.test.mjs",
     "tests/studio-logic/experience.test.mjs",
     "tests/studio-logic/family-markers.test.mjs",
     "tests/studio-logic/entity-ref.test.mjs",

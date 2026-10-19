@@ -1,0 +1,122 @@
+{
+  "baseline": "852210795aa15020f5f117298c42900bd3e95501",
+  "protected": [
+    {
+      "path": "src-tauri",
+      "byteIdentical": true
+    },
+    {
+      "path": "src/core",
+      "byteIdentical": true
+    },
+    {
+      "path": "src/mission",
+      "byteIdentical": true
+    },
+    {
+      "path": "src/convergence",
+      "byteIdentical": true
+    },
+    {
+      "path": "src/app",
+      "byteIdentical": true
+    },
+    {
+      "path": "src/graph",
+      "byteIdentical": true
+    },
+    {
+      "path": "src/features/operations",
+      "byteIdentical": true
+    },
+    {
+      "path": "src/features/relationships",
+      "byteIdentical": true
+    },
+    {
+      "path": "src/features/explorer",
+      "byteIdentical": true
+    },
+    {
+      "path": "src/features/xray",
+      "byteIdentical": true
+    },
+    {
+      "path": "src/features/capture",
+      "byteIdentical": true
+    },
+    {
+      "path": "src/integrations",
+      "byteIdentical": true
+    },
+    {
+      "path": "package.json",
+      "byteIdentical": true
+    },
+    {
+      "path": "package-lock.json",
+      "byteIdentical": true
+    }
+  ],
+  "changedFiles": [
+    "docs/EXPERIENCE_CONVERGENCE_V1_HANDOFF.md",
+    "docs/evidence/convergence/association-1280.png",
+    "docs/evidence/convergence/association-640.png",
+    "docs/evidence/convergence/association-960.png",
+    "docs/evidence/convergence/browser-label-failure.json",
+    "docs/evidence/convergence/browser.json",
+    "docs/evidence/convergence/casebook-disposition.json",
+    "docs/evidence/convergence/checkpoint-a-build.log",
+    "docs/evidence/convergence/checkpoint-a-tests.log",
+    "docs/evidence/convergence/compare-1280.png",
+    "docs/evidence/convergence/compare-640.png",
+    "docs/evidence/convergence/compare-960.png",
+    "docs/evidence/convergence/dependency-audit.json",
+    "docs/evidence/convergence/failure-1280.png",
+    "docs/evidence/convergence/final-browser.log",
+    "docs/evidence/convergence/final-build.log",
+    "docs/evidence/convergence/final-tests.log",
+    "docs/evidence/convergence/mission-1280.png",
+    "docs/evidence/convergence/mission-640.png",
+    "docs/evidence/convergence/mission-960.png",
+    "docs/evidence/convergence/participation-1280.png",
+    "docs/evidence/convergence/participation-640.png",
+    "docs/evidence/convergence/participation-960.png",
+    "docs/evidence/convergence/preservation.json",
+    "docs/evidence/convergence/projection-1280.png",
+    "docs/evidence/convergence/projection-640.png",
+    "docs/evidence/convergence/projection-960.png",
+    "docs/evidence/convergence/scenario-capture.png",
+    "docs/evidence/convergence/scenario-inspector-1280.png",
+    "docs/evidence/convergence/scenario-inspector-640.png",
+    "docs/evidence/convergence/scenario-inspector-960.png",
+    "src/App.tsx",
+    "src/features/atlas/MissionAtlas.tsx",
+    "src/features/evidence/EvidenceReplayWorkspace.tsx",
+    "src/features/experience/EngineeringGraph.tsx",
+    "src/features/experience/InspectionContent.tsx",
+    "src/features/experience/InspectorFrame.tsx",
+    "src/features/experience/graphModel.ts",
+    "src/features/experience/inspection.ts",
+    "src/features/experience/presentationMemory.tsx",
+    "src/features/integrations/IntegrationsWorkspace.tsx",
+    "src/features/investigation/InvestigationPanel.tsx",
+    "src/features/investigation/investigationModel.ts",
+    "src/features/presentation/FamilyLabel.tsx",
+    "src/features/presentation/familyMarkers.ts",
+    "src/features/scenarios/ScenarioWorkspace.tsx",
+    "src/main.tsx",
+    "src/styles/experience.css",
+    "src/styles/family-markers.css",
+    "tests/studio-logic/experience.test.mjs",
+    "tests/studio-logic/family-markers.test.mjs",
+    "tests/studio-logic/investigation.test.mjs",
+    "tools/test/convergence/browser-check.cjs",
+    "tools/test/convergence/prepare.py",
+    "tools/test/convergence/verify-local.py",
+    "tools/test/run-studio-logic-tests.mjs",
+    "tools/test/scenario-browser/retained-preview.ts",
+    "tsconfig.logic-tests.json"
+  ],
+  "implementationFileCount": 18
+}

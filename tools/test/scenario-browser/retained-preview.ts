@@ -59,6 +59,10 @@ if (sourceCommit) {
 if (evidenceCase) addAcceptanceCaseBanner(fixture);
 
 mockIPC((command, args: any) => {
+  if (command === "save_surface_capture_png") {
+    (window as any).__convergenceCapture = args;
+    return {path: `browser-capture/${args.filename}`};
+  }
   // Browser-only observation: use the executable that produced these reports.
   // This is not native executable-resolution acceptance.
   if (command === "resolve_core_executable") return {
@@ -75,13 +79,18 @@ mockIPC((command, args: any) => {
       return selected;
     }
     if (evidenceCase && args.options.title === "Load retained Evidence Set") return fixture.evidence.path;
-    return reports.scenarioPath;
+    return (window as any).__convergenceScenarioPath ?? reports.scenarioPath;
   }
   if (command === "resolve_mission_source") return { selectedPath: reports.missionPath, missionDir: reports.missionPath };
   if (command === "clear_core_request_temp") return null;
   if (command === "run_core_export_scenario_declaration" && scenarioCase === "failed") {
     if (!reports.failedScenarioInvocation) throw new Error("Regenerate reports with the failed Scenario fixture");
     return reports.failedScenarioInvocation;
+  }
+  if (command === "run_core_export_scenario_declaration" && (window as any).__convergenceScenarioPath) {
+    const retained = reports.scenarioInvocations?.[(window as any).__convergenceScenarioPath];
+    if (!retained) throw new Error("No retained Core declaration for the explicit browser selection");
+    return retained;
   }
   if (Object.hasOwn(reports.invocations, command)) return reports.invocations[command];
   if (evidenceCase && command === "read_integration_result_bundle") {
