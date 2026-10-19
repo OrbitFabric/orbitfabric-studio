@@ -1,3 +1,7 @@
+import { ScenarioGraph } from "../experience/EngineeringGraph";
+import type { ScenarioAtomUnderstanding } from "../../convergence/scenarioUnderstanding";
+import { FamilyLabel } from "../presentation/FamilyLabel";
+import { familyForDomain, familyForScenarioAtom } from "../presentation/familyMarkers";
 import type { ScenarioUnderstandingModel } from "../../convergence/scenarioUnderstanding";
 import type { EntityRef } from "../../mission/entityRef";
 import { entityKey } from "../../mission/entityRef";
@@ -7,6 +11,8 @@ import { declarationFields, presentScenarioAtom } from "./scenarioPresentation";
 
 interface Props {
   model: ScenarioUnderstandingModel;
+  selectedAtom?: string | null;
+  onInspectAtom?: (atom: ScenarioAtomUnderstanding) => void;
   session: MissionSession;
   selectedEntity: EntityRef | null;
   disabled: boolean;
@@ -16,7 +22,7 @@ interface Props {
   onInspectEntity: (entity: EntityRef) => void;
 }
 
-export function ScenarioWorkspace({ model, session, selectedEntity, disabled, pickerFailure, onChoose, onRefresh, onInspectEntity }: Props) {
+export function ScenarioWorkspace({ selectedAtom, onInspectAtom, model, session, selectedEntity, disabled, pickerFailure, onChoose, onRefresh, onInspectEntity }: Props) {
   function entityLink(entity: EntityRef, label?: string) {
     const resolved = resolveEntityContract(session.snapshot, entity) !== null;
     const selected = selectedEntity !== null && entityKey(selectedEntity) === entityKey(entity);
@@ -24,13 +30,13 @@ export function ScenarioWorkspace({ model, session, selectedEntity, disabled, pi
       aria-pressed={selected}
       title={resolved ? `Inspect ${entity.domain}:${entity.id}` : "Entity unavailable in the current Mission Snapshot"}
       onClick={() => onInspectEntity(entity)}>
-      {label ? <span>{label}</span> : null}<code>{entity.domain}:{entity.id}</code>
+      {label ? <span>{label}</span> : null}<FamilyLabel family={familyForDomain(entity.domain)}><code>{entity.domain}:{entity.id}</code></FamilyLabel>
       {!resolved ? <small>Entity unavailable</small> : null}
     </button>;
   }
   return <section className="scenario-workspace" aria-label="Scenario Understanding">
     <header className="scenario-toolbar">
-      <div><p className="eyebrow">Scenarios</p><h1>Scenario understanding</h1></div>
+      <div><p className="eyebrow">Scenarios</p><h1><FamilyLabel family="scenario">Scenario understanding</FamilyLabel></h1></div>
       <div className="scenario-actions">
         <button type="button" className="secondary-action" disabled={disabled || !model.sourcePath || Boolean(model.pending)} onClick={onRefresh}>Refresh Scenario</button>
         <button type="button" className="primary-action" disabled={disabled} onClick={onChoose}>Choose Scenario</button>
@@ -59,6 +65,7 @@ export function ScenarioWorkspace({ model, session, selectedEntity, disabled, pi
       </li>)}</ul>
     </section> : null}
     {model.scenario ? <>
+      {onInspectAtom && <ScenarioGraph key={model.sourceSha256} model={model} selectedAtom={selectedAtom ?? null} onInspect={onInspectAtom} />}
       <section className="scenario-hero">
         <div><span className="scenario-declared">DECLARED</span><h2>{model.scenario.name}</h2>
           <p className="scenario-purpose">{model.scenario.description ?? "Purpose unavailable: no description was declared."}</p>
@@ -74,7 +81,7 @@ export function ScenarioWorkspace({ model, session, selectedEntity, disabled, pi
             const row = presentScenarioAtom(atom);
             return <li key={`${atom.exactIdentity.scenarioSha256}:${atom.id}`} className="scenario-atom" data-atom-id={atom.id}>
               <div className="scenario-atom-heading"><span className="scenario-position">{atom.declarationPosition}</span>
-                <h3>{row.title}</h3><span className="scenario-role">{row.role}</span></div>
+                <h3><FamilyLabel family={familyForScenarioAtom(atom.kind)}>{row.title}</FamilyLabel></h3><span className="scenario-role">{row.role}</span></div>
               <div className="scenario-atom-body">
                 <p className="scenario-atom-location"><code>{atom.id}</code> · {row.position}{row.ordinal ? ` · ${row.ordinal}` : ""}
                   {row.declaredTime !== null ? <span>Declared Scenario time: {row.declaredTime}</span> : null}</p>

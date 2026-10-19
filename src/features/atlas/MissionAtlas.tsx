@@ -1,3 +1,5 @@
+import { FamilyLabel } from "../presentation/FamilyLabel";
+import { familyForDomain } from "../presentation/familyMarkers";
 import type { JsonObject, JsonValue, MissionContractObject } from "../../core/contracts";
 import type { EntityRef } from "../../mission/entityRef";
 import type { MissionSession } from "../../mission/MissionSession";
@@ -46,7 +48,7 @@ export function MissionAtlas({
         <header className="section-heading">
           <div>
             <p className="section-kicker">System</p>
-            <h2 id="atlas-system-title">Mission participants</h2>
+            <h2 id="atlas-system-title"><FamilyLabel family="subsystem">Mission participants</FamilyLabel></h2>
           </div>
           <p>
             Declared participant contexts. Studio does not infer physical containment from this
@@ -84,18 +86,18 @@ export function MissionAtlas({
             title="Operations"
             question="How can the mission behave?"
             facts={[
-              `${Object.keys(model.modes).length} modes`,
+              { label: `${Object.keys(model.modes).length} modes`, domain: "modes" },
               `${model.mode_transitions.length} declared transitions`,
-              `${model.commands.length} commands`,
-              `${model.faults.length} faults`,
+              { label: `${model.commands.length} commands`, domain: "commands" },
+              { label: `${model.faults.length} faults`, domain: "faults" },
             ]}
           />
           <Territory
             title="Mission Data"
             question="What information and interactions form the contract?"
             facts={[
-              `${model.telemetry.length} telemetry items`,
-              `${model.events.length} events`,
+              { label: `${model.telemetry.length} telemetry items`, domain: "telemetry" },
+              { label: `${model.events.length} events`, domain: "events" },
               `${model.packets.length} packets`,
             ]}
           />
@@ -104,7 +106,7 @@ export function MissionAtlas({
               title="Data Lifecycle"
               question="What does the mission produce, retain and make available for downlink?"
               facts={[
-                `${model.data_products.length} data products`,
+                { label: `${model.data_products.length} data products`, domain: "data_products" },
                 `${downlinkFlowCount} downlink flows`,
                 `${contactWindowCount} contact windows`,
               ]}
@@ -114,7 +116,7 @@ export function MissionAtlas({
             <Territory
               title="Payload Contracts"
               question="Which payload capabilities are explicitly declared?"
-              facts={[`${payloadCount} payload contract${payloadCount === 1 ? "" : "s"}`]}
+              facts={[{ label: `${payloadCount} payload contract${payloadCount === 1 ? "" : "s"}`, domain: "payloads" }]}
             />
           ) : null}
         </div>
@@ -163,7 +165,7 @@ function Territory({
 }: {
   title: string;
   question: string;
-  facts: string[];
+  facts: (string | { label: string; domain: string })[];
 }) {
   return (
     <article className="territory">
@@ -173,7 +175,8 @@ function Territory({
       </div>
       <ul>
         {facts.map((fact) => (
-          <li key={fact}>{fact}</li>
+          <li key={typeof fact === "string" ? fact : fact.domain}>{typeof fact === "string" ? fact
+            : <FamilyLabel family={familyForDomain(fact.domain)}>{fact.label}</FamilyLabel>}</li>
         ))}
       </ul>
     </article>

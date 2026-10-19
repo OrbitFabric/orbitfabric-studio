@@ -31,6 +31,8 @@ try {
   );
 
   const tests = [
+    "tests/studio-logic/experience.test.mjs",
+    "tests/studio-logic/family-markers.test.mjs",
     "tests/studio-logic/entity-ref.test.mjs",
     "tests/studio-logic/core-compatibility.test.mjs",
     "tests/studio-logic/context-graph.test.mjs",

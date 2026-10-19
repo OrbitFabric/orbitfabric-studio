@@ -1,3 +1,7 @@
+import { MissionModel } from "./features/experience/EngineeringGraph";
+import { InspectorFrame } from "./features/experience/InspectorFrame";
+import { InspectionContent } from "./features/experience/InspectionContent";
+import { inspectionIdentity, type Inspection } from "./features/experience/inspection";
 import { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { open } from "@tauri-apps/plugin-dialog";
 
@@ -64,6 +68,18 @@ function App() {
   const [validationOpen, setValidationOpen] = useState(false);
   const generationRef = useRef(0);
   const workspacePrimaryRef = useRef<HTMLDivElement>(null);
+  const [inspectionState, setInspectionState] = useState<{current: Inspection | null; history: Inspection[]}>({current:null,history:[]});
+  const inspection = inspectionState.current;
+  const inspectionHistory = inspectionState.history;
+  const setInspection = (current: Inspection | null) => setInspectionState(s => ({...s,current}));
+  const setInspectionHistory = (history: Inspection[] | ((h:Inspection[])=>Inspection[])) => setInspectionState(s => ({...s,history:typeof history === 'function' ? history(s.history) : history}));
+  function inspect(next: Inspection) {
+    setInspectionState(s => ({current:next,history:s.current && inspectionIdentity(s.current)!==inspectionIdentity(next) ? [...s.history,s.current].slice(-20) : s.history}));
+  }
+  useEffect(() => { setInspection(null); setInspectionHistory([]); }, [state.activeSession?.sessionId, state.activeSession?.generation]);
+  useEffect(() => {
+    if (state.selection.subject) inspect({kind: "entity", entity: state.selection.subject});
+  }, [state.selection.subject]);
   const [scenarioPickerFailure, setScenarioPickerFailure] = useState<string | null>(null);
   const scenarioHydrator = useMemo(() => new ScenarioHydrator(new TauriCoreGateway()), []);
   const scenarioModel = useMemo(() => buildScenarioUnderstanding(state.scenario), [state.scenario]);
@@ -468,7 +484,7 @@ function App() {
     workspacePrimaryRef.current?.scrollTo({ top: 0, left: 0 });
     dispatch({ type: "WORKSPACE_VIEW_CHANGED", view });
   };
-  const supportsXRay = state.view !== "operations" && state.view !== "integrations" && state.view !== "evidence";
+
 
   return (
     <main className="studio-shell">
@@ -598,14 +614,15 @@ function App() {
 
       <section className="studio-main-surface">
         <div
-          className={`workspace-layout${selectedEntity && supportsXRay ? " has-xray" : ""}`}
+          className={`workspace-layout${inspection ? " has-experience-inspector" : ""}`}
         >
           <div className="workspace-primary" ref={workspacePrimaryRef}>
             {state.view === "evidence" ? (
               <EvidenceReplayWorkspace key={`${session.sessionId}:${session.generation}:${evidenceModel.scenario?.sha256 ?? "none"}`} model={evidenceModel} busy={state.opening ? "mission" : evidenceBusy} failure={evidenceFailure}
                 onChooseResult={chooseReplayResult} onChooseEvidence={chooseEvidenceSet} />
             ) : state.view === "scenarios" ? (
-              <ScenarioWorkspace model={scenarioModel} session={session} selectedEntity={selectedEntity}
+              <ScenarioWorkspace selectedAtom={inspection?.kind === "atom" && inspection.scenario.sourceSha256 === scenarioModel.sourceSha256 ? inspection.atom.id : null}
+                onInspectAtom={atom => inspect({kind:"atom",atom,scenario:scenarioModel})} model={scenarioModel} session={session} selectedEntity={selectedEntity}
                 disabled={isOpeningReplacement} pickerFailure={scenarioPickerFailure}
                 onChoose={chooseScenario} onRefresh={refreshScenario}
                 onInspectEntity={(subject) => dispatch({ type: "SELECTION_CHANGED", subject, origin: "scenarios" })}
@@ -664,6 +681,10 @@ function App() {
                 }}
               />
             ) : (
+              <>
+              <MissionModel key={`${session.sessionId}:${session.generation}`} session={session} selected={inspection?.kind === "entity" ? inspection.entity : null}
+                onInspect={entity => { inspect({kind:"entity",entity}); dispatch({type:"SELECTION_CHANGED",subject:entity,origin:"atlas"}); }}
+                onRelation={id => inspect({kind:"relation",id})}/>
               <MissionAtlas
                 session={session}
                 selectedEntity={selectedEntity}
@@ -671,16 +692,21 @@ function App() {
                   dispatch({ type: "SELECTION_CHANGED", subject, origin: "atlas" })
                 }
               />
+              </>
             )}
           </div>
 
-          {selectedEntity && supportsXRay ? (
-            <EntityXRay
+          {inspection ? <InspectorFrame identity={inspectionIdentity(inspection)} title={inspection.kind === "entity" ? inspection.entity.id : inspection.kind === "relation" ? inspection.id : inspection.atom.id}
+            onClear={() => {setInspection(null);setInspectionHistory([]);dispatch({type:"SELECTION_CHANGED",subject:null,origin:null});}}
+            onReturn={inspectionHistory.length ? () => {setInspection(inspectionHistory[inspectionHistory.length - 1]);setInspectionHistory(h=>h.slice(0,-1));} : undefined}>
+            <p className="experience-boundary">Inspection does not change the investigation anchor or Scope. Source generation {session.generation}.</p>
+            {inspection.kind === "atom" && inspection.scenario.sourceSha256 !== scenarioModel.sourceSha256 && <p role="status">Retained exact declaration · not represented in the current Scenario view.</p>}
+            {inspection.kind === "entity" ? <EntityXRay
               session={session}
-              subject={selectedEntity}
-              contextPath={state.selection.contextPath}
+              subject={inspection.entity}
+              contextPath={selectedEntity?.id === inspection.entity.id && selectedEntity.domain === inspection.entity.domain ? state.selection.contextPath : []}
               onClose={() =>
-                dispatch({ type: "SELECTION_CHANGED", subject: null, origin: null })
+                (setInspection(null), dispatch({ type: "SELECTION_CHANGED", subject: null, origin: null }))
               }
               onFollowRelationship={(step) =>
                 dispatch({ type: "CONTEXT_EDGE_FOLLOWED", step, origin: "xray" })
@@ -693,8 +719,8 @@ function App() {
                   origin: "xray",
                 })
               }
-            />
-          ) : null}
+            /> : <InspectionContent target={inspection} session={session} onEntity={entity => inspect({kind:"entity",entity})}/>}
+          </InspectorFrame> : null}
         </div>
       </section>
 

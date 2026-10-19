@@ -59,6 +59,12 @@ if (sourceCommit) {
 if (evidenceCase) addAcceptanceCaseBanner(fixture);
 
 mockIPC((command, args: any) => {
+  // Browser-only observation: use the executable that produced these reports.
+  // This is not native executable-resolution acceptance.
+  if (command === "resolve_core_executable") return {
+    configuredExecutable: args.configuredExecutable,
+    resolvedExecutable: reports.invocations.run_core_version.executable,
+  };
   if (command === "plugin:dialog|open") {
     if (args.options.directory) return reports.missionPath;
     if (evidenceCase && args.options.title === "Load exact Integration Result") {
