@@ -22,3 +22,14 @@ export function inspectionIdentity(i: Inspection): string {
     i.atom.id,
   ]);
 }
+
+// Inspection has priority, but a relation/atom must never fall back to a stale entity.
+export function investigationSubject(inspection: Inspection | null, nativeSelection: EntityRef | null): EntityRef | null {
+  return inspection ? inspection.kind === "entity" ? inspection.entity : null : nativeSelection;
+}
+export interface InspectionState { membership: string; current: Inspection | null; history: Inspection[] }
+export function advanceInspection(state: InspectionState, membership: string, next: Inspection): InspectionState {
+  const prior = state.membership === membership ? state : { membership, current: null, history: [] };
+  return { membership, current: next, history: prior.current && inspectionIdentity(prior.current) !== inspectionIdentity(next)
+    ? [...prior.history, prior.current].slice(-20) : prior.history };
+}

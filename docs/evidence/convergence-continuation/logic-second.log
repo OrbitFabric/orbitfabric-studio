@@ -1,0 +1,289 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> orbitfabric-studio@0.15.0-preview.1 test:logic
+> node tools/test/run-studio-logic-tests.mjs
+
+✔ verify accepts Core domain failure exit 1 but rejects unexpected exit 2 (2.89169ms)
+✔ SP4 read model preserves historical and current exact authorities without aliasing (12.408684ms)
+✔ SP4 read model presents Core comparison and verification dimensions without a synthetic health state (0.59925ms)
+✔ SP4 operations exist only for the exact accepted digest-bound installed package (0.558859ms)
+✔ Catalog exact availability and provider provenance remain separate from installed state (0.552699ms)
+✔ MATCH, MISSING and MISMATCH remain exact Core-owned desired-state results (0.361372ms)
+✔ Catalog absence is a localized unavailable observation with no fabricated provider (0.365709ms)
+✔ localized lifecycle failure remains observable without changing accepted inventory (0.275213ms)
+✔ Core lifecycle JSON contracts preserve exact installed, verification, lock and catalog facts (2.285361ms)
+✔ lifecycle reducer rejects stale generations and superseded same-generation responses (0.423115ms)
+✔ valid Core FAIL and MISMATCH reports remain accepted domain observations (0.302154ms)
+✔ failed refresh retains accepted lifecycle observation while replace clears it (0.163796ms)
+✔ hydrator accepts nonzero verify and lock domain outcomes instead of inventing transport failure (0.521373ms)
+✔ hydrator binds installed manifest bytes to the exact Core manifest SHA-256 (17.452205ms)
+✔ verify report identity mismatch is a consistency failure and empty nonzero output is transport failure (0.442765ms)
+✔ Studio reducer enforces lifecycle generation membership and clears observations on new mission generation (0.569415ms)
+✔ Context Path visibility does not implicitly expand the selected node (12.912272ms)
+✔ Context Map evidence independently reconstructs the expected Core neighborhood (13.329808ms)
+✔ Context Map evidence detects a rendered edge with reversed Core direction (0.671788ms)
+✔ R1 Scenario Declaration consumes the exact eight-source-atom contract (2.664589ms)
+✔ Scenario consumer does not over-constrain Core nullable description (0.636044ms)
+✔ Scenario consumer preserves multi-atom steps without inventing micro-timing (0.481693ms)
+✔ structured Scenario failure is consumable and partial semantics fail closed (4.862794ms)
+✔ R1 Evidence Set resolves typed subjects without filename heuristics (1.090897ms)
+✔ R1 evidence Scenario subjects resolve only to declared Scenario identities (0.428944ms)
+✔ Evidence Set consumer rejects target-specific generic subject fields (1.701063ms)
+✔ Evidence Set consumer fails closed on unknown subjects and unsafe paths (0.361062ms)
+✔ Studio requirements are explicit and derived only from current consumers (1.589286ms)
+✔ strict parser accepts the candidate manifest and compatibility ignores fingerprint equality (2.470783ms)
+✔ strict parser preserves distinct protocol failure states (0.896936ms)
+✔ missing and wrong capabilities are localized by consumer domain (0.57284ms)
+✔ MissionSession binds one resolved executable and configuration changes wait for a generation (1.070076ms)
+✔ Scenario incompatibility fails before invocation and preserves primary session (0.884317ms)
+✔ same textual id in different domains remains distinct (0.993391ms)
+✔ R1 Evidence Set resolves every curator-authored subject against exact Scenario and plural Results (3.288506ms)
+✔ R1 Evidence does not collapse the independent F Prime and COSMOS Result identities (0.366801ms)
+✔ Studio reducer recomputes Evidence correlations when Scenario target is replaced (2.82494ms)
+✔ Studio reducer recomputes Evidence Result correlation after a new exact Result is accepted (0.558708ms)
+✔ Evidence slot rejects stale generations and same-generation superseded completions (1.856156ms)
+✔ same-target Evidence refresh preserves accepted manifest on hydration failure (0.83955ms)
+✔ typed Evidence subjects resolve current, stale and unresolved without inference (1.298339ms)
+✔ no current correlated Evidence is a valid empty query result (0.27319ms)
+✔ Evidence hydrator parses the accepted manifest and fingerprints the exact text (12.329416ms)
+✔ Evidence hydrator keeps protocol failure distinct from transport failure (0.776005ms)
+✔ missing, mismatched and failed retained files stay localized and preserve the manifest (9.99351ms)
+✔ unavailable retained reader never falls back to unbounded text reads (0.95953ms)
+✔ late retained-content completion cannot overwrite a newer request or Mission generation (3.981957ms)
+✔ primary generation replacement clears Evidence state through studioReducer (8.552477ms)
+✔ endpoint inspection proposes exact inspected subject, retaining distinct native selection (1.29261ms)
+✔ inspection Return stack separates exact domains and never inherits an old generation (0.70658ms)
+✖ oriented Mission retains explicit anchors and filters one family without inferred edges (1.681194ms)
+✖ Scenario context preserves exact referenced population and refuses missing endpoints or label joins (0.527742ms)
+✖ accepted geometry and quality donor blobs are exact, excluding S2-04A (1.046131ms)
+✔ dense cyclic and parallel presentation preserves identity, finite routes and deterministic layout (65.874575ms)
+✔ drag and reset change only geometry; invalid coordinates cannot enter presentation (0.527011ms)
+✔ Mission graph uses exact endpoints and no name-inferred edge (3.042747ms)
+✔ Scenario graph retains every atom including metadata and expectations in Core order (0.187431ms)
+✔ Inspection keys separate domains and exact scenario revisions (0.581462ms)
+✔ J1 exact production domains map deterministically, without name or ID inference (1.178118ms)
+✔ J1 unsupported domains, atom kinds and prototype keys preserve exact text without decoration (4.614896ms)
+✔ J1 all supported markers remain decorative, noninteractive and text-labelled (4.841247ms)
+✔ J1 identical textual IDs in different domains retain identities, labels and selection (18.419838ms)
+✔ J1 actual Scenario keeps all atoms, authored expectation role and expected PASSED without a Result marker (10.71315ms)
+✔ J1 selection and focus styling remain separate from fixed family accents (6.851464ms)
+✔ J1 accents retain non-color shapes and sufficient contrast on actual product surfaces (0.81332ms)
+✔ J1 long technical identities remain exact and recoverable (0.533511ms)
+✔ Operational State Map uses complete orthogonal ELK routes around unrelated nodes (188.570163ms)
+✔ Context Map uses complete orthogonal ELK routes around unrelated nodes (19.203639ms)
+✔ real F Prime v1 Result is accepted with producer-owned coverage intact (6.224133ms)
+✔ official Core v1 zero-input fixture is accepted without v0 decoding (0.548904ms)
+✔ v1 coverage preserves exact numeric and whitespace lexemes (0.382084ms)
+✔ v1 content that resembles v0 does not acquire generic semantics (0.341693ms)
+✔ version selection is explicit and duplicate root coverage is rejected (0.976515ms)
+✔ execution authorization is bound to exact package identity, protocol and argv prefix (1.92527ms)
+✔ preflight accepts both frozen v0 and explicit zero-input vNext lanes (0.447762ms)
+✔ G4 preflight requires an exact role-to-path binding (0.469855ms)
+✔ preflight rejects unknown operations and unsupported protocols (0.204758ms)
+✔ exit zero without Integration Result is a protocol violation (0.384337ms)
+✔ exit zero with failed Result is a protocol violation (1.299751ms)
+✔ non-zero exit with successful Result is a protocol violation (0.276765ms)
+✔ non-zero exit with failed Result is a valid failed operation (0.217286ms)
+✔ Result identity must match exact requested operation and executed adapter (0.429745ms)
+✔ vNext Result with explicit empty operation provenance is accepted by its vNext package (0.990456ms)
+✔ G4 successful Result must correlate exact consumed operation-input roles (0.760462ms)
+✔ timeout remains a transport failure and is not inferred from stdout or stderr (0.225588ms)
+✔ open_core_entity is limited to sources of the inspected mapping (2.55839ms)
+✔ reveal_result_artifact is limited to Result artifacts linked to the mapping (0.402033ms)
+✔ zero-plugin dispatch is a normal empty result (1.640422ms)
+✔ registry filters plugins by exact integration.id before contribution matching (9.197976ms)
+✔ multiple matching contributions are returned deterministically and never silently collapsed (0.370006ms)
+✔ matches and inspect exceptions are isolated as contribution failures (0.370747ms)
+✔ registry rejects duplicate plugin ids and duplicate contribution ids (1.644238ms)
+✔ parses YAML 1.2 Profile and validates it with the package JSON Schema (69.595481ms)
+✔ accepts Draft 2020-12 composed schemas without imposing AJV strictTypes authoring style (48.495259ms)
+✔ accepts the exact published F Prime 0.1.1 schema and Reference Mission Profile (74.651539ms)
+▶ the real F Prime schema still rejects independent Profile contract violations
+  ✔ missing required telemetry limit (61.163971ms)
+  ✔ forbidden additional property (37.107165ms)
+  ✔ invalid constrained telemetry limit (30.158506ms)
+  ✔ source domain does not match command binding kind (26.46132ms)
+✔ the real F Prime schema still rejects independent Profile contract violations (156.461919ms)
+✔ rejects duplicate YAML keys instead of silently accepting authored ambiguity (2.156558ms)
+✔ rejects untrusted or digest-mismatched published schemas (1.32572ms)
+✔ selects Profile schemas by exact integration schema identity (0.270306ms)
+✔ freshness compares exact Profile digests and never timestamps (1.326632ms)
+✔ frozen Result v0 retains succeeded_with_warnings as a valid success state (1.941534ms)
+✔ Result v1 rejects succeeded_with_warnings and propagates the contract failure (0.848984ms)
+✔ selected documents report their wrong kind before Integration Result shape errors (0.542805ms)
+✔ independent Integration contexts coexist in one MissionSession generation (1.586411ms)
+✔ same-context superseded request token is reject-only (0.173491ms)
+✔ Studio reducer resets Integration contexts on primary generation replacement and rejects late old response (0.737647ms)
+✔ valid adapter result=failed is retained as an Integration observation (11.051132ms)
+✔ Integration Result exact identity is SHA-256 of the exact Result text read by Studio (1.283997ms)
+✔ Integration Result context mismatch fails closed (1.656086ms)
+✔ invalid Result protocol is hydration failure rather than an accepted observation (0.967643ms)
+✔ Integration observation freshness reuses exact Core, Profile and Scenario provenance (0.392108ms)
+✔ accounting hydration reads only the explicit parent-owned reference and exact digests (6.188293ms)
+✔ unsupported or invalid accounting content is localized to its interpretation (4.43027ms)
+✔ accounting reference availability and byte integrity remain separate from content meaning (2.213252ms)
+✔ accounting digest mismatch cannot consume bytes even when a gateway reports verified (1.010958ms)
+✔ unknown artifact kind is not interpreted by matching content shape (0.494192ms)
+✔ multiple accounting identities localize ambiguity without rejecting the valid Result (1.167602ms)
+✔ Result byte changes between picker preview and hydration fail exact binding (1.309505ms)
+✔ ready observations reject mismatched membership, context and selected digest (0.284096ms)
+✔ integration freshness is fresh only when both exact fingerprints match (2.080613ms)
+✔ zero-input vNext uses the same exact Core/Profile freshness rule (0.211147ms)
+✔ G4 is fresh only when current Scenario bytes match consumed provenance (0.213009ms)
+✔ G4 is stale when Scenario bytes change while Core and Profile remain current (0.343325ms)
+✔ G4 freshness is unknown without exact current Scenario identity (0.23378ms)
+✔ vNext freshness is unknown when current bindings exist but Result omitted them (0.165208ms)
+✔ integration freshness is stale when the Core Input Set changes (0.1664ms)
+✔ integration freshness is stale when the Projection Profile changes (0.170446ms)
+✔ integration freshness stays unknown when provenance is unavailable (0.270096ms)
+✔ fingerprints are compared case-insensitively and never by timestamp (0.308413ms)
+✔ parses generic Integration Package manifest without target-specific semantics (2.986562ms)
+✔ accepts the explicit zero-input vNext lab package lane (0.408323ms)
+✔ accepts the minimal G4 role-only operation-input requirement (0.372559ms)
+✔ G4 does not silently generalize the operation-input requirement shape (1.853342ms)
+✔ keeps frozen v0 and vNext protocol identities isolated (0.281592ms)
+✔ does not silently extend frozen v0 with operation-input declarations (0.175383ms)
+✔ rejects escaping Profile schema paths before package execution (1.97238ms)
+✔ evaluates package compatibility only from declared static contracts (1.357247ms)
+✔ complete coverage accounting can contain not_projected entities (3.289097ms)
+✔ classifies generated artifact availability and digest findings independently (0.737828ms)
+✔ accepts explicit empty operation-input provenance only in vNext Result (2.801676ms)
+✔ accepts exact available G4 consumed Scenario provenance (0.690286ms)
+✔ G4 consumed provenance fails closed on invented fields and invalid availability (0.505308ms)
+✔ does not silently extend frozen Result v0 with operation-input provenance (2.176006ms)
+✔ Result integrity detects broken mapping and artifact references (0.34004ms)
+✔ Result integrity does not trust Profile binding refs without Profile provenance (0.296414ms)
+✔ registry is explicit, deterministic and keeps degraded package entries (9.225447ms)
+✔ Only explicitly admitted declarations answer participation; role preserved (2.51901ms)
+✔ Same ID in another domain is not command participation (0.392489ms)
+✔ Wrong mission provenance cannot enter Scope (1.215725ms)
+✔ Stale generation rejected at admission and answer, including A-B-A session identity (0.502875ms)
+✔ Conflicting same-digest declaration rejected, never overwritten (0.623475ms)
+✔ Coherent omission cannot certify completeness or absence (0.421513ms)
+✔ Missing scoped observation fails closed instead of reducing the denominator (0.310666ms)
+✔ Representation filtering does not modify Scope or admitted answer (2.873624ms)
+✔ Execution unsupported even with succeeded producer Result (0.485098ms)
+✔ Projection requires exact loaded declaration and Result, does not repair wrong digest (0.497877ms)
+✔ All accounting atoms survive and missing disposition remains unavailable (0.487862ms)
+✔ Question first stays pending until explicit anchor and scope, no automatic subject (0.300281ms)
+✔ Compare keeps source identities and distinguishes declared differences without verdict (0.656746ms)
+✔ Identical question edit is idempotent; Return checkpoint contains exact qualifiers (0.284137ms)
+✔ Association without Evidence Set is NOT_LOADED, no generated assessment (0.325668ms)
+✔ Operational State Map contains only declared mission modes and transitions (1.968495ms)
+✔ Mode Focus joins only explicit mode declarations and preserves Core facts (0.948084ms)
+✔ generic accounting verifies exact bytes, parent Scenario input and mapping union (15.84952ms)
+✔ generic accounting fails closed on unknown version and illegal negative mapping (0.626331ms)
+✔ replay follows exact atom to producer disposition, mapping, artifact and curator evidence (2.532071ms)
+✔ rejects exact parent input, owned artifact, mapping and version violations (3.895201ms)
+✔ negative schema cases remain distinct and unknown versions are unsupported without shape fallback (0.822154ms)
+✔ exact Scenario inventory rejects missing, extra and foreign atoms; partial omissions stay unavailable (6.72908ms)
+✔ curator co-membership creates no inferred pairwise edge and preserves each subject state (1.489576ms)
+✔ only producer mapping ids and explicit Result artifact relations are traversed (0.69291ms)
+✔ picker/preview completions reject old session, generation and request tokens (0.408213ms)
+✔ Scenario-free Result stays unavailable and expected intent never becomes observed PASS (12.500844ms)
+✔ asynchronous picker failure and finalizer cannot replace newer UI state (0.338628ms)
+✔ exact changed COSMOS R1 generation produces all eight generic atom dispositions (5.842805ms)
+✔ generic model preserves zero, one and multiple explicit downstream targets without interpretation (0.499219ms)
+✔ UI request coordinator uses real SP1 reducer and preserves domain-qualified navigation (2.322766ms)
+✔ transport, protocol and consistency failures remain separate through the UI coordinator (0.573701ms)
+✔ request completing after a new mission generation cannot populate understanding (0.315423ms)
+✔ presentation preserves false, zero, nested values and labels expected status (0.376124ms)
+✔ R1 declaration enters the Scenario slot with exact eight-atom accounting (3.730959ms)
+✔ late response from generation N cannot mutate generation N+1 (1.230306ms)
+✔ Studio reducer resets Scenario on primary generation replacement and rejects late old response (0.765389ms)
+✔ same-generation superseded request token is reject-only (0.204037ms)
+✔ Core-declared failed Scenario is an accepted domain observation (0.197447ms)
+✔ same-target failed refresh preserves the previously accepted observation (0.402013ms)
+✔ Scenario exact identity is scenario id plus exact consumed-byte SHA (0.440441ms)
+✔ ScenarioHydrator preserves Core EntityRefs and exact identity (0.429114ms)
+✔ ScenarioHydrator accepts nullable Scenario description (0.312358ms)
+✔ ScenarioHydrator fails closed on Mission binding mismatch (0.834173ms)
+✔ R1 understanding preserves exact identity, all eight atoms and declared values (2.868856ms)
+✔ unknown labels, Core array order, equal times and domain-qualified references are preserved (0.707542ms)
+✔ Core failure has diagnostics and no fabricated scenario or partial atoms (0.423706ms)
+✔ retained refresh observation stays distinct from failure and replacement (0.470486ms)
+✔ malformed JSON and unsupported contract produce typed protocol errors (0.683687ms)
+✔ SP1-G keeps Scenario, Integration, Evidence and Adapter Lifecycle as independent exact observations (3.526574ms)
+✔ SP1-G generation replacement clears all convergence slots and rejects every late old-generation completion (0.525519ms)
+✔ SP1-G failed same-target refresh is localized and preserves independently accepted state (0.34627ms)
+✔ refresh preserves a valid Context Path, then truncates it when the relationship disappears (2.020848ms)
+✔ inspecting another entity preserves the last Operations Mode Focus (0.213761ms)
+✔ Integrations is a first-class mission workspace view (0.150646ms)
+✔ finding links only to the exact Core-indexed EntityRef (1.781043ms)
+✔ finding without a complete EntityRef never creates an inspect target (0.208613ms)
+✔ severity filters expose Core findings without changing their order (0.322935ms)
+ℹ tests 208
+ℹ suites 0
+ℹ pass 205
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 854.114782
+
+✖ failing tests:
+
+test at tests/studio-logic/experience-continuation.test.mjs:31:1
+✖ oriented Mission retains explicit anchors and filters one family without inferred edges (1.681194ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  5 !== 1
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/aebee57acfd0/studio/tests/studio-logic/experience-continuation.test.mjs:35:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 5,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/studio-logic/experience-continuation.test.mjs:38:1
+✖ Scenario context preserves exact referenced population and refuses missing endpoints or label joins (0.527742ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  3 !== 1
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/aebee57acfd0/studio/tests/studio-logic/experience-continuation.test.mjs:42:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 3,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests/studio-logic/experience-continuation.test.mjs:46:1
+✖ accepted geometry and quality donor blobs are exact, excluding S2-04A (1.046131ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + '23d4cf016e8c87e469f66b639b852a74cd2b6603'
+  - 'dfdbc4fde7c0dd5e5ea6138307ce6b41bb699e8d'
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/aebee57acfd0/studio/tests/studio-logic/experience-continuation.test.mjs:49:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '23d4cf016e8c87e469f66b639b852a74cd2b6603',
+    expected: 'dfdbc4fde7c0dd5e5ea6138307ce6b41bb699e8d',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -3,6 +3,7 @@
 import argparse, json, os, pathlib, shutil, subprocess, sys, time
 p=argparse.ArgumentParser()
 p.add_argument('--expected-head',required=True)
+p.add_argument('--expected-tree',required=True)
 p.add_argument('--core-root',required=True,type=pathlib.Path)
 p.add_argument('--core',required=True)
 p.add_argument('--reference-root',required=True,type=pathlib.Path)
@@ -13,7 +14,7 @@ a=p.parse_args();root=pathlib.Path(__file__).resolve().parents[3];os.chdir(root)
 out=a.output.resolve();out.mkdir(parents=True,exist_ok=True)
 def git(repo,*args):return subprocess.check_output(['git','-C',str(repo),*args],text=True).strip()
 checks={}; identity={'head':git(root,'rev-parse','HEAD'),'tree':git(root,'rev-parse','HEAD^{tree}')}
-for name,actual,expected in [('candidate',identity['head'],a.expected_head),('core',git(a.core_root,'rev-parse','HEAD'),'5196e128974510b4cbd3bcd89ea971ff2b68301b'),('reference',git(a.reference_root,'rev-parse','HEAD'),'e8f4a392e0bc3075df1ea3b00b842ba6b9e6e5ca')]:
+for name,actual,expected in [('candidate',identity['head'],a.expected_head),('candidate-tree',identity['tree'],a.expected_tree),('core',git(a.core_root,'rev-parse','HEAD'),'5196e128974510b4cbd3bcd89ea971ff2b68301b'),('reference',git(a.reference_root,'rev-parse','HEAD'),'e8f4a392e0bc3075df1ea3b00b842ba6b9e6e5ca')]:
  if actual!=expected:sys.exit(f'PIN FAILURE: {name}: {actual} != {expected}')
 if git(root,'diff','HEAD','--','src','src-tauri','package.json','package-lock.json','tools','tests'):sys.exit('PIN FAILURE: candidate tracked implementation is modified')
 for name,repo in [('core',a.core_root),('reference',a.reference_root)]:
@@ -21,6 +22,7 @@ for name,repo in [('core',a.core_root),('reference',a.reference_root)]:
 env=os.environ.copy()
 if a.playwright_module:env['PLAYWRIGHT_MODULE']=a.playwright_module
 if a.chromium:env['CHROMIUM_EXECUTABLE_PATH']=a.chromium
+env.pop('CONVERGENCE_WIDTHS',None) # maintainer batch always exercises all three widths
 env['CONVERGENCE_EVIDENCE_DIR']=str(out/'browser')
 def run(name,argv):
  start=time.time()

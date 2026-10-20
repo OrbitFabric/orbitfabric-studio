@@ -1,13 +1,18 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { FamilyLabel } from "../presentation/FamilyLabel";
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 // S1 materialization adapted from Lab Presentation.jsx. The caller owns exact identity.
 export function InspectorFrame({
   identity,
+  family,
+  notice,
   title,
   children,
   onReturn,
   onClear,
 }: {
   identity: string;
+  family?: string | null;
+  notice?: ReactNode;
   title: string;
   children: ReactNode;
   onReturn?: () => void;
@@ -26,12 +31,25 @@ export function InspectorFrame({
     m.addEventListener("change", update);
     return () => m.removeEventListener("change", update);
   }, []);
-  useEffect(() => {
+  const readingPosition = useRef(0);
+  const restoringScroll = useRef(false);
+  useLayoutEffect(() => {
+    readingPosition.current = 0;
     opener.current = document.activeElement as HTMLElement;
     setReading(true);
     scroll.current?.scrollTo(0, 0);
   }, [identity]);
   const modal = expanded || (compact && reading);
+  // Browser scroll anchoring can move the reader when the same body changes width.
+  // Keep the current reading offset, including deliberate keyboard navigation.
+  useLayoutEffect(() => {
+    if (compact && !reading) return;
+    const top=readingPosition.current;
+    restoringScroll.current=true;
+    scroll.current?.scrollTo(0,top);
+    const frame=requestAnimationFrame(()=>{scroll.current?.scrollTo(0,top);restoringScroll.current=false;});
+    return ()=>cancelAnimationFrame(frame);
+  },[modal,compact,width,reading]);
   useEffect(() => {
     if (!modal) return;
     const previous = document.activeElement as HTMLElement;
@@ -48,6 +66,7 @@ export function InspectorFrame({
     };
   }, [modal]);
   const closeDetail = () => {
+    readingPosition.current = scroll.current?.scrollTop ?? readingPosition.current;
     setExpanded(false);
     setReading(false);
     requestAnimationFrame(
@@ -88,7 +107,8 @@ export function InspectorFrame({
     >
       <header>
         <p className="eyebrow">INSPECT · EXACT SUBJECT</p>
-        <h2>{title}</h2>
+        <h2><FamilyLabel family={family ?? null}>{title}</FamilyLabel></h2>
+        {notice && <p role="status" className="inspector-orientation">{notice}</p>}
         <div className="experience-tools">
           {modal ? (
             <button className="secondary-action" onClick={closeDetail}>
@@ -121,7 +141,7 @@ export function InspectorFrame({
               aria-label="Inspector width"
               type="range"
               min="320"
-              max="520"
+              max="560"
               value={width}
               onChange={(e) => setWidth(Number(e.target.value))}
             />
@@ -131,6 +151,7 @@ export function InspectorFrame({
       <div
         ref={scroll}
         className="experience-inspector-body"
+        onScroll={e=>{if(!restoringScroll.current && (!compact || reading))readingPosition.current=e.currentTarget.scrollTop;}}
         hidden={compact && !reading}
       >
         {children}

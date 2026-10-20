@@ -11,6 +11,9 @@ import { declarationFields, presentScenarioAtom } from "./scenarioPresentation";
 
 interface Props {
   model: ScenarioUnderstandingModel;
+  onRepresented?: (identities:string[])=>void;
+  selectedRelation?: string | null;
+  onInspectRelation?: (id: string) => void;
   selectedAtom?: string | null;
   onInspectAtom?: (atom: ScenarioAtomUnderstanding) => void;
   session: MissionSession;
@@ -22,7 +25,7 @@ interface Props {
   onInspectEntity: (entity: EntityRef) => void;
 }
 
-export function ScenarioWorkspace({ selectedAtom, onInspectAtom, model, session, selectedEntity, disabled, pickerFailure, onChoose, onRefresh, onInspectEntity }: Props) {
+export function ScenarioWorkspace({ onRepresented, selectedRelation, onInspectRelation, selectedAtom, onInspectAtom, model, session, selectedEntity, disabled, pickerFailure, onChoose, onRefresh, onInspectEntity }: Props) {
   function entityLink(entity: EntityRef, label?: string) {
     const resolved = resolveEntityContract(session.snapshot, entity) !== null;
     const selected = selectedEntity !== null && entityKey(selectedEntity) === entityKey(entity);
@@ -65,7 +68,7 @@ export function ScenarioWorkspace({ selectedAtom, onInspectAtom, model, session,
       </li>)}</ul>
     </section> : null}
     {model.scenario ? <>
-      {onInspectAtom && <ScenarioGraph key={model.sourceSha256} model={model} selectedAtom={selectedAtom ?? null} onInspect={onInspectAtom} />}
+      {onInspectAtom && <ScenarioGraph onRepresented={onRepresented} key={model.sourceSha256} model={model} session={session} selectedEntity={selectedEntity} selectedRelation={selectedRelation ?? null} onInspectEntity={onInspectEntity} onRelation={onInspectRelation ?? (()=>{})} selectedAtom={selectedAtom ?? null} onInspect={onInspectAtom} />}
       <section className="scenario-hero">
         <div><span className="scenario-declared">DECLARED</span><h2>{model.scenario.name}</h2>
           <p className="scenario-purpose">{model.scenario.description ?? "Purpose unavailable: no description was declared."}</p>

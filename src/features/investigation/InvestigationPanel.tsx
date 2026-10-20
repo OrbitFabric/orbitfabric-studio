@@ -3,7 +3,7 @@ import type { MissionSession } from "../../mission/MissionSession";
 import { entityKey, type EntityRef } from "../../mission/entityRef";
 import type { ScenarioSlotState } from "../../convergence/scenarioSlot";
 import type { EvidenceUnderstandingModel } from "../../convergence/evidenceUnderstanding";
-import type { Inspection } from "../experience/inspection";
+import { investigationSubject, type Inspection } from "../experience/inspection";
 import { presentScenarioAtom } from "../scenarios/scenarioPresentation";
 import {
   admitObservation,
@@ -28,6 +28,7 @@ export function InvestigationPanel({
   slot,
   evidence,
   selection,
+  inspection,
   onInspect,
   onScenarios,
   onEvidence,
@@ -39,6 +40,7 @@ export function InvestigationPanel({
   slot: ScenarioSlotState;
   evidence: EvidenceUnderstandingModel;
   selection: EntityRef | null;
+  inspection: Inspection | null;
   onInspect: (target: Inspection) => void;
   onScenarios: () => void;
   onEvidence: () => void;
@@ -46,6 +48,7 @@ export function InvestigationPanel({
   canReturn: boolean;
   disabled: boolean;
 }) {
+  const subject = investigationSubject(inspection, selection);
   const [open, setOpen] = useState(false);
   const [population, setPopulation] = useState<Population>(new Map());
   const [state, setState] = useState({
@@ -108,14 +111,19 @@ export function InvestigationPanel({
         </span>
         <button
           className="secondary-action"
-          disabled={!selection || disabled}
+          disabled={!subject || disabled}
           onClick={() => {
-            update({ anchor: selection });
+            update({ anchor: subject });
             setOpen(true);
           }}
         >
-          Investigate selected subject
+          {inspection ? "Investigate inspected subject" : "Investigate native selected subject"}
         </button>
+        <small className="investigation-subject" aria-label="Investigation subject proposal">
+          {subject ? `Proposed subject: ${subject.domain}:${subject.id}` : "Inspect an entity to propose an investigation subject"}
+          {inspection && selection && ` · Native selection: ${selection.domain}:${selection.id}`}
+          <span>Only this explicit action changes Anchor. Scope is retained.</span>
+        </small>
       </div>
       {canReturn && navigationCheckpoint && (
         <button

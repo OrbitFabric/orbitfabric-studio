@@ -39,9 +39,10 @@ const { chromium } = require(
       executablePath: process.env.CHROMIUM_EXECUTABLE_PATH,
       args: ["--no-sandbox", "--disable-dev-shm-usage"],
     });
-    for (const width of [1280, 960, 640]) {
+    for (const width of (process.env.CONVERGENCE_WIDTHS ? process.env.CONVERGENCE_WIDTHS.split(",").map(Number) : [1280, 960, 640])) {
       const p = await browser.newPage({ viewport: { width, height: 1000 } });
       p.on("pageerror", (e) => errors.push(e.message));
+      p.on("console", m=>{if(m.type()==="warn"||m.type()==="error")console.log(m.type(),m.text());});
       try {
         await p.goto(
           "http://127.0.0.1:1420/tools/test/scenario-browser/index.html?evidence=r1",
@@ -230,14 +231,98 @@ const { chromium } = require(
         await panel.getByRole("button",{name:"Return to investigation context",exact:true}).click();
         assert.equal(await nav.locator('.is-active').innerText(),'Overview');
         assert.equal(await panel.getByLabel("Question",{exact:true}).inputValue(),questionBefore);
+        // REGIA continuation: actual Core graph, relation endpoint identity and Return.
+        const closeCompact=async()=>{if(width===640&&await p.getByRole("dialog",{name:"Engineering Inspector"}).count())await p.getByRole("button",{name:"Return to context",exact:true}).click();};
+        if(await p.getByRole("button",{name:"Clear inspection",exact:true}).count())await p.getByRole("button",{name:"Clear inspection",exact:true}).click();
+        await panel.getByLabel("Question",{exact:true}).selectOption("participation");
+        await panel.getByLabel("Anchor",{exact:true}).selectOption({label:"subsystems:radiation_payload"});
+        const scopeBefore=await panel.locator('.scope-option input:checked').count();
+        await p.getByRole("button",{name:"Engineering questions",exact:true}).click();
+        const mission=p.getByRole("region",{name:"Mission Model",exact:true});
+        await mission.getByRole("button",{name:"Radiation Event Payload",exact:true}).click();
+        await closeCompact();
+        await mission.getByLabel("Mission representation").selectOption("commands");
+        await mission.locator('details summary').click();
+        const rel=mission.locator('.experience-relation').filter({hasText:'commands:payload.stop_acquisition'}).first();
+        await rel.click({timeout:120000});
+        assert.equal(await mission.locator('.react-flow__edge.selected').count(),1);
+        assert.equal(await mission.locator('.react-flow__node.selected').count(),0);
+        const inspectorPanel=p.locator('.experience-inspector');
+        await inspectorPanel.getByRole("button",{name:"From · commands:payload.stop_acquisition",exact:true}).click();
+        await closeCompact();
+        assert.match(await panel.getByLabel("Investigation subject proposal").innerText(),/Proposed subject: commands:payload.stop_acquisition/);
+        assert.match(await panel.getByLabel("Investigation subject proposal").innerText(),/Native selection: subsystems:radiation_payload/);
+        await panel.getByRole("button",{name:"Investigate inspected subject",exact:true}).click();
+        assert.equal(await panel.getByLabel("Anchor",{exact:true}).inputValue(),'commands\u0000payload.stop_acquisition');
+        assert.equal(await panel.locator('.scope-option input:checked').count(),scopeBefore);
+        await p.screenshot({path:path.join(dir,`endpoint-anchor-${width}.png`)});
+        await p.getByRole("button",{name:"Engineering questions",exact:true}).click();
+        await inspectorPanel.getByRole("button",{name:"Return to previous subject",exact:true}).click();
+        await closeCompact();
+        assert.equal(await mission.locator('.react-flow__edge.selected').count(),1);
+        assert.equal(await panel.getByRole("button",{name:"Investigate inspected subject",exact:true}).isDisabled(),true);
+        if(width===640)await inspectorPanel.getByRole("button",{name:"Read details",exact:true}).click();
+        await inspectorPanel.getByRole("button",{name:"From · commands:payload.stop_acquisition",exact:true}).click();
+        await closeCompact();
+        // Representation changes retain subject and expose absence without changing Anchor.
+        await mission.getByLabel("Mission representation").selectOption("events");
+        await mission.getByText(/Inspected subject is outside this representation/).waitFor();
+        await p.screenshot({path:path.join(dir,`mission-event-${width}.png`)});
+        await mission.getByRole("button",{name:"Show declared neighbors",exact:true}).click({timeout:120000});
+        await mission.locator('.react-flow__node.selected').waitFor();
+        await mission.getByRole("button",{name:"Show inspected subject",exact:true}).click();
+        await inspectorPanel.locator('.experience-inspector-body').evaluate(el=>el.scrollTop=80);
+        const readingTop=await inspectorPanel.locator('.experience-inspector-body').evaluate(el=>el.scrollTop);
+        const camera=await mission.locator('.react-flow__viewport').getAttribute('style');
+        await inspectorPanel.getByRole("button",{name:"Read details",exact:true}).click();
+        const dialog=p.getByRole("dialog",{name:"Engineering Inspector"});
+        await dialog.waitFor();
+        assert.equal(await p.locator('.workspace-primary').evaluate(el=>el.inert),true);
+        assert.equal(await inspectorPanel.locator('.experience-inspector-body').evaluate(el=>el.scrollTop),readingTop);
+        await p.keyboard.press('Shift+Tab');
+        assert.equal(await dialog.evaluate(el=>el.contains(document.activeElement)),true);
+        const keyboardReadingTop=await inspectorPanel.locator('.experience-inspector-body').evaluate(el=>el.scrollTop);
+        await p.keyboard.press('Escape');
+        assert.equal(await mission.locator('.react-flow__viewport').getAttribute('style'),camera);
+        if(width===640)await inspectorPanel.getByRole('button',{name:'Read details',exact:true}).click();
+        assert.equal(await inspectorPanel.locator('.experience-inspector-body').evaluate(el=>el.scrollTop),keyboardReadingTop);
+        await closeCompact();
+        await mission.getByRole("button",{name:"Reset layout",exact:true}).click();
+        assert.equal(await mission.locator('.react-flow__viewport').getAttribute('style'),camera);
+        await p.screenshot({path:path.join(dir,`mission-neighbors-${width}.png`)});
+        await mission.getByRole("button",{name:"Return to family",exact:true}).click();
+        // Context projection uses the loaded authoritative declaration, not Lab source fixtures.
+        await nav.getByRole("button",{name:"Scenarios",exact:true}).click();
+        await p.getByRole("button",{name:"Declared context",exact:true}).click();
+        await p.getByRole("button",{name:"Clear inspection",exact:true}).click();
+        const scenarioGraph=p.getByRole("region",{name:"Graphical Scenario declaration"});
+        await scenarioGraph.locator('.engineering-node').first().waitFor();
+        await p.screenshot({path:path.join(dir,`scenario-context-${width}.png`)});
+        const cardBounds=await scenarioGraph.locator('.engineering-node').evaluateAll(nodes=>nodes.map(n=>({text:n.innerText,overflow:n.scrollHeight>n.clientHeight+2,horizontal:n.scrollWidth>n.clientWidth+2})));
+        assert.ok(cardBounds.every(n=>!n.overflow&&!n.horizontal),JSON.stringify(cardBounds));
+        await scenarioGraph.getByLabel("Scenario context focus",{exact:true}).selectOption({label:"commands:payload.stop_acquisition"});
+        await scenarioGraph.getByLabel("Inspect represented entity",{exact:true}).selectOption({label:"commands:payload.stop_acquisition"});
+        await closeCompact();
+        await scenarioGraph.getByRole("button",{name:"Show inspected subject",exact:true}).click();
+        await p.screenshot({path:path.join(dir,`scenario-focused-${width}.png`)});
+        await p.getByRole("button",{name:"Refresh",exact:true}).click();
+        await p.waitForFunction(()=>document.querySelector('.investigation-bar')?.textContent.includes('0 selected declarations'));
+        assert.equal(await p.locator('.experience-inspector').count(),0);
+        await p.getByRole("button",{name:"Engineering questions",exact:true}).click();
+        assert.equal(await panel.getByLabel("Anchor",{exact:true}).inputValue(),'');
+        assert.equal(await panel.locator('.scope-option').count(),0);
+        assert.equal(await panel.getByRole("button",{name:"Return to investigation context",exact:true}).count(),0);
         results.push({
           width,
+          continuation: "PASS: endpoint proposal, exact Anchor, retained Scope, edge-only inspection, subject Return, outside representation, camera/Reset, modal focus, Core Scenario context, generation invalidation",
+          cardBounds,
           status: "PASS",
           scope:
             "Actual App; retained Core reports via mocked IPC; mission/scenario/participation/projection/association/compare/Return and native route navigation",
         });
       } catch (e) {
         results.push({ width, status: "FAIL", error: e.message });
+        fs.writeFileSync(path.join(dir,`failure-dom-${width}.json`),JSON.stringify(await p.evaluate(()=>({edges:[...document.querySelectorAll('.react-flow__edge')].map(n=>n.outerHTML),nodes:[...document.querySelectorAll('.react-flow__node')].map(n=>({html:n.outerHTML,width:n.getBoundingClientRect().width,height:n.getBoundingClientRect().height})),inspector:document.querySelector('.experience-inspector')?.innerText})),null,2));
         await p.screenshot({ path: path.join(dir, `failure-${width}.png`) });
         throw e;
       } finally {

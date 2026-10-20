@@ -13,17 +13,12 @@ export function usePresentationMemory<T>(
   initial: T,
 ): [T, (next: SetStateAction<T>) => void] {
   const memory = useContext(PresentationMemory);
-  const [value, setValue] = useState<T>(() =>
-    memory.has(key) ? (memory.get(key) as T) : initial,
-  );
-  return [
-    value,
-    (next) =>
-      setValue((previous) => {
-        const result =
-          typeof next === "function" ? (next as (v: T) => T)(previous) : next;
-        memory.set(key, result);
-        return result;
-      }),
-  ];
+  const [state, setState] = useState<{key:string;value:T}>(() => ({key,value:memory.has(key)?memory.get(key) as T:initial}));
+  const value = state.key === key ? state.value : memory.has(key) ? memory.get(key) as T : initial;
+  return [value, next => setState(previous => {
+    const base = previous.key === key ? previous.value : memory.has(key) ? memory.get(key) as T : initial;
+    const result = typeof next === 'function' ? (next as (v:T)=>T)(base) : next;
+    memory.set(key,result);
+    return {key,value:result};
+  })];
 }

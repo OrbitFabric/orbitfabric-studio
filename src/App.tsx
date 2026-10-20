@@ -1,10 +1,13 @@
+import type { SelectionOrigin } from "./mission/selection";
+import { entityKey, type EntityRef } from "./mission/entityRef";
 import { PresentationMemory } from "./features/experience/presentationMemory";
 import { InvestigationPanel } from "./features/investigation/InvestigationPanel";
 import { MissionModel } from "./features/experience/EngineeringGraph";
 import { InspectorFrame } from "./features/experience/InspectorFrame";
 import { InspectionContent } from "./features/experience/InspectionContent";
-import { inspectionIdentity, type Inspection } from "./features/experience/inspection";
-import { useEffect, useMemo, useReducer, useRef, useState } from "react";
+import { advanceInspection, inspectionIdentity, type Inspection } from "./features/experience/inspection";
+import { familyForDomain, familyForScenarioAtom } from "./features/presentation/familyMarkers";
+import { useCallback, useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { open } from "@tauri-apps/plugin-dialog";
 
 import {
@@ -70,16 +73,23 @@ function App() {
   const [validationOpen, setValidationOpen] = useState(false);
   const generationRef = useRef(0);
   const workspacePrimaryRef = useRef<HTMLDivElement>(null);
-  const [returnContext,setReturnContext] = useState<{view:MissionWorkspaceView;inspection:Inspection|null;top:number}|null>(null);
+  const [returnContext,setReturnContext] = useState<{view:MissionWorkspaceView;inspection:Inspection|null;top:number;primaryTop:number}|null>(null);
   const presentationMemory = useMemo(() => new Map<string,unknown>(), [state.activeSession?.sessionId,state.activeSession?.generation]);
   const membershipKey = `${state.activeSession?.sessionId}:${state.activeSession?.generation}`;
   const [inspectionState, setInspectionState] = useState<{membership:string;current: Inspection | null; history: Inspection[]}>({membership:membershipKey,current:null,history:[]});
+  const [representation,setRepresentation]=useState<{context:string;identities:string[]}>({context:"",identities:[]});
+  const representationContext=`${membershipKey}:${state.view}`;
+  const reportRepresentation=useCallback((identities:string[])=>setRepresentation({context:representationContext,identities}),[representationContext]);
   const inspection = inspectionState.membership === membershipKey ? inspectionState.current : null;
   const inspectionHistory = inspectionState.membership === membershipKey ? inspectionState.history : [];
   const setInspection = (current: Inspection | null) => setInspectionState(s => ({...s,current}));
   const setInspectionHistory = (history: Inspection[] | ((h:Inspection[])=>Inspection[])) => setInspectionState(s => ({...s,history:typeof history === 'function' ? history(s.history) : history}));
   function inspect(next: Inspection) {
-    setInspectionState(s => ({membership:membershipKey,current:next,history:s.current && inspectionIdentity(s.current)!==inspectionIdentity(next) ? [...s.history,s.current].slice(-20) : s.history}));
+    setInspectionState(s => advanceInspection(s,membershipKey,next));
+  }
+  function selectEntity(subject:EntityRef,origin:SelectionOrigin) {
+    inspect({kind:"entity",entity:subject});
+    dispatch({type:"SELECTION_CHANGED",subject,origin});
   }
   useEffect(() => { setInspection(null); setInspectionHistory([]); setReturnContext(null); }, [state.activeSession?.sessionId, state.activeSession?.generation]);
   useEffect(() => {
@@ -618,10 +628,10 @@ function App() {
       ) : null}
 
       <InvestigationPanel key={`${session.sessionId}:${session.generation}`} session={session} slot={state.scenario} evidence={evidenceModel}
-        selection={selectedEntity} onInspect={inspect}
-        onScenarios={()=>{setReturnContext({view:state.view,inspection,top:document.querySelector(".studio-main-surface")?.scrollTop??0});changeWorkspaceView("scenarios");}}
-        onEvidence={()=>{setReturnContext({view:state.view,inspection,top:document.querySelector(".studio-main-surface")?.scrollTop??0});changeWorkspaceView("evidence");}}
-        canReturn={!!returnContext} onReturnContext={()=>{if(returnContext){dispatch({type:"WORKSPACE_VIEW_CHANGED",view:returnContext.view});setInspection(returnContext.inspection);const top=returnContext.top;requestAnimationFrame(()=>document.querySelector(".studio-main-surface")?.scrollTo(0,top));setReturnContext(null);}}}
+        selection={selectedEntity} inspection={inspection} onInspect={inspect}
+        onScenarios={()=>{setReturnContext({view:state.view,inspection,primaryTop:workspacePrimaryRef.current?.scrollTop??0,top:document.querySelector(".studio-main-surface")?.scrollTop??0});changeWorkspaceView("scenarios");}}
+        onEvidence={()=>{setReturnContext({view:state.view,inspection,primaryTop:workspacePrimaryRef.current?.scrollTop??0,top:document.querySelector(".studio-main-surface")?.scrollTop??0});changeWorkspaceView("evidence");}}
+        canReturn={!!returnContext} onReturnContext={()=>{if(returnContext){dispatch({type:"WORKSPACE_VIEW_CHANGED",view:returnContext.view});setInspection(returnContext.inspection);const top=returnContext.top;requestAnimationFrame(()=>{document.querySelector(".studio-main-surface")?.scrollTo(0,top);workspacePrimaryRef.current?.scrollTo(0,returnContext.primaryTop);});setReturnContext(null);}}}
         disabled={isOpeningReplacement}/>
       <section className="studio-main-surface">
         <div
@@ -632,11 +642,11 @@ function App() {
               <EvidenceReplayWorkspace key={`${session.sessionId}:${session.generation}:${evidenceModel.scenario?.sha256 ?? "none"}`} model={evidenceModel} busy={state.opening ? "mission" : evidenceBusy} failure={evidenceFailure}
                 onChooseResult={chooseReplayResult} onChooseEvidence={chooseEvidenceSet} />
             ) : state.view === "scenarios" ? (
-              <ScenarioWorkspace selectedAtom={inspection?.kind === "atom" && inspection.scenario.sourceSha256 === scenarioModel.sourceSha256 ? inspection.atom.id : null}
-                onInspectAtom={atom => inspect({kind:"atom",atom,scenario:scenarioModel})} model={scenarioModel} session={session} selectedEntity={selectedEntity}
+              <ScenarioWorkspace onRepresented={reportRepresentation} selectedRelation={inspection?.kind === "relation" ? inspection.id : null} onInspectRelation={id=>inspect({kind:"relation",id})} selectedAtom={inspection?.kind === "atom" && inspection.scenario.sourceSha256 === scenarioModel.sourceSha256 ? inspection.atom.id : null}
+                onInspectAtom={atom => inspect({kind:"atom",atom,scenario:scenarioModel})} model={scenarioModel} session={session} selectedEntity={inspection?.kind === "entity" ? inspection.entity : null}
                 disabled={isOpeningReplacement} pickerFailure={scenarioPickerFailure}
                 onChoose={chooseScenario} onRefresh={refreshScenario}
-                onInspectEntity={(subject) => dispatch({ type: "SELECTION_CHANGED", subject, origin: "scenarios" })}
+                onInspectEntity={(subject) => selectEntity(subject,"scenarios")}
               />
             ) : state.view === "operations" ? (
               <OperationsWorkspace
@@ -644,11 +654,11 @@ function App() {
                 selectedEntity={selectedEntity}
                 focusedMode={state.operationsMode}
                 onSelectMode={(subject) =>
-                  dispatch({ type: "SELECTION_CHANGED", subject, origin: "operations" })
+                  selectEntity(subject,"operations")
                 }
                 onInspectEntity={(subject) => {
                   changeWorkspaceView("explore");
-                  dispatch({ type: "SELECTION_CHANGED", subject, origin: "operations" });
+                  selectEntity(subject,"operations");
                 }}
               />
             ) : state.view === "explore" ? (
@@ -656,7 +666,7 @@ function App() {
                 session={session}
                 selectedEntity={selectedEntity}
                 onSelectEntity={(subject) =>
-                  dispatch({ type: "SELECTION_CHANGED", subject, origin: "explorer" })
+                  selectEntity(subject,"explorer")
                 }
               />
             ) : state.view === "relations" ? (
@@ -668,12 +678,12 @@ function App() {
                   dispatch({ type: "CONTEXT_EDGE_FOLLOWED", step, origin: "context-map" })
                 }
                 onNavigateMap={(subject, path) =>
-                  dispatch({
+                  (inspect({kind:"entity",entity:subject}),dispatch({
                     type: "CONTEXT_PATH_REPLACED",
                     subject,
                     path,
                     origin: "context-map",
-                  })
+                  }))
                 }
                 onOpenExplore={() => changeWorkspaceView("explore")}
               />
@@ -688,26 +698,28 @@ function App() {
                 onSelectCatalogRelease={selectAdapterCatalogRelease}
                 onInspectEntity={(subject) => {
                   changeWorkspaceView("explore");
-                  dispatch({ type: "SELECTION_CHANGED", subject, origin: "integrations" });
+                  selectEntity(subject,"integrations");
                 }}
               />
             ) : (
               <>
-              <MissionModel key={`${session.sessionId}:${session.generation}`} session={session} selected={inspection?.kind === "entity" ? inspection.entity : null}
+              <MissionModel onRepresented={reportRepresentation} key={`${session.sessionId}:${session.generation}`} session={session} selected={inspection?.kind === "entity" ? inspection.entity : null} selectedRelation={inspection?.kind === "relation" ? inspection.id : null}
                 onInspect={entity => { inspect({kind:"entity",entity}); dispatch({type:"SELECTION_CHANGED",subject:entity,origin:"atlas"}); }}
                 onRelation={id => inspect({kind:"relation",id})}/>
               <MissionAtlas
                 session={session}
                 selectedEntity={selectedEntity}
                 onSelectEntity={(subject) =>
-                  dispatch({ type: "SELECTION_CHANGED", subject, origin: "atlas" })
+                  selectEntity(subject,"atlas")
                 }
               />
               </>
             )}
           </div>
 
-          {inspection ? <InspectorFrame identity={inspectionIdentity(inspection)} title={inspection.kind === "entity" ? inspection.entity.id : inspection.kind === "relation" ? inspection.id : inspection.atom.id}
+          {inspection ? <InspectorFrame family={inspection.kind==="entity"?familyForDomain(inspection.entity.domain):inspection.kind==="atom"?familyForScenarioAtom(inspection.atom.kind):"relation"}
+            notice={representation.context===representationContext && (state.view==="overview"||state.view==="scenarios") && !representation.identities.includes(inspectionIdentity(inspection)) ? "Outside the graphical representation · inspection retained. Reveal context explicitly or Return to previous subject." : undefined}
+            identity={inspectionIdentity(inspection)} title={inspection.kind === "entity" ? session.readModel.entityRecordsByKey.get(entityKey(inspection.entity))?.display_name ?? inspection.entity.id : inspection.kind === "relation" ? session.readModel.relationshipsById.get(inspection.id)?.relationship_type ?? inspection.id : inspection.atom.id}
             onClear={() => {setInspection(null);setInspectionHistory([]);dispatch({type:"SELECTION_CHANGED",subject:null,origin:null});}}
             onReturn={inspectionHistory.length ? () => {setInspection(inspectionHistory[inspectionHistory.length - 1]);setInspectionHistory(h=>h.slice(0,-1));} : undefined}>
             <p className="experience-boundary">Inspection does not change the investigation anchor or Scope. Source generation {session.generation}.</p>
@@ -720,16 +732,16 @@ function App() {
                 (setInspection(null), dispatch({ type: "SELECTION_CHANGED", subject: null, origin: null }))
               }
               onFollowRelationship={(step) =>
-                dispatch({ type: "CONTEXT_PATH_REPLACED", subject: step.to,
-                  path: [...(selectedEntity?.id === step.from.id && selectedEntity.domain === step.from.domain ? state.selection.contextPath : []), step], origin: "xray" })
+                (inspect({kind:"entity",entity:step.to}),dispatch({ type: "CONTEXT_PATH_REPLACED", subject: step.to,
+                  path: [...(selectedEntity?.id === step.from.id && selectedEntity.domain === step.from.domain ? state.selection.contextPath : []), step], origin: "xray" }))
               }
               onTruncateContextPath={(subject, length) =>
-                dispatch({
+                (inspect({kind:"entity",entity:subject}),dispatch({
                   type: "CONTEXT_PATH_TRUNCATED",
                   subject,
                   length,
                   origin: "xray",
-                })
+                }))
               }
             /> : <InspectionContent target={inspection} session={session} onEntity={entity => inspect({kind:"entity",entity})}/>}
           </InspectorFrame> : null}
@@ -744,7 +756,7 @@ function App() {
           onInspectEntity={(subject) => {
             setValidationOpen(false);
             changeWorkspaceView("explore");
-            dispatch({ type: "SELECTION_CHANGED", subject, origin: "validation" });
+            selectEntity(subject,"validation");
           }}
         />
       ) : null}

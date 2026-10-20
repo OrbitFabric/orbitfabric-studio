@@ -1,4 +1,4 @@
-import { mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { cpSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 import { join } from "node:path";
 
@@ -30,7 +30,10 @@ try {
     JSON.stringify({ type: "commonjs" }, null, 2),
   );
 
+  cpSync("src/features/experience/geometry", join(outDir,"features/experience/geometry"), {recursive:true});
+
   const tests = [
+    "tests/studio-logic/experience-continuation.test.mjs",
     "tests/studio-logic/investigation.test.mjs",
     "tests/studio-logic/experience.test.mjs",
     "tests/studio-logic/family-markers.test.mjs",

@@ -1,0 +1,12 @@
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+922 !== 80
+
+    at /workspace/scratch/aebee57acfd0/studio/tools/test/convergence/browser-check.cjs:284:16 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 922,
+  expected: 80,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
