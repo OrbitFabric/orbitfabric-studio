@@ -1,8 +1,9 @@
+import { SourceInventoryProvider, SourceBrowser } from "./features/experience/SourceInventory";
 import type { SelectionOrigin } from "./mission/selection";
 import { entityKey, type EntityRef } from "./mission/entityRef";
 import { PresentationMemory } from "./features/experience/presentationMemory";
 import { InvestigationPanel } from "./features/investigation/InvestigationPanel";
-import { MissionModel } from "./features/experience/EngineeringGraph";
+import { MissionPerspective } from "./features/experience/MissionPerspective";
 import { InspectorFrame } from "./features/experience/InspectorFrame";
 import { InspectionContent } from "./features/experience/InspectionContent";
 import { advanceInspection, inspectionIdentity, type Inspection } from "./features/experience/inspection";
@@ -22,7 +23,6 @@ import {
   CoreCompatibilityError,
   normalizeCoreExecutable,
 } from "./core/coreCompatibility";
-import { MissionAtlas } from "./features/atlas/MissionAtlas";
 import { SurfaceCaptureButton } from "./features/capture/SurfaceCaptureButton";
 import { EntityExplorer } from "./features/explorer/EntityExplorer";
 import { IntegrationsWorkspace } from "./features/integrations/IntegrationsWorkspace";
@@ -276,14 +276,14 @@ function App() {
     }
   }
 
-  async function chooseReplayResult() {
+  async function chooseReplayResult(sourcePath?:string) {
     if (!state.activeSession || state.opening) return;
     const ticket = { membership: { sessionId: state.activeSession.sessionId, generation: state.activeSession.generation }, requestToken: createRequestId(state.activeSession.generation) };
     replayGuard.current.begin(ticket);
     const current = () => replayGuard.current.accepts(ticket, replayMembership.current);
     setEvidenceBusy("result"); setEvidenceFailure(null);
     try {
-      const selected = await open({ multiple: false, directory: false, title: "Load exact Integration Result", filters: [{ name: "Integration Result", extensions: ["json"] }] });
+      const selected = sourcePath ?? await open({ multiple: false, directory: false, title: "Load exact Integration Result", filters: [{ name: "Integration Result", extensions: ["json"] }] });
       if (!current() || typeof selected !== "string") return;
       const previewBytes = (await integrationGateway.readResultBundle(selected)).resultText;
       const preview = parseSelectedIntegrationResult(previewBytes);
@@ -307,14 +307,14 @@ function App() {
     } catch (error) { if (current()) setEvidenceFailure(errorMessage(error)); } finally { if (current()) setEvidenceBusy(null); }
   }
 
-  async function chooseEvidenceSet() {
+  async function chooseEvidenceSet(sourcePath?:string) {
     if (!state.activeSession || state.opening) return;
     const ticket = { membership: { sessionId: state.activeSession.sessionId, generation: state.activeSession.generation }, requestToken: createRequestId(state.activeSession.generation) };
     replayGuard.current.begin(ticket);
     const current = () => replayGuard.current.accepts(ticket, replayMembership.current);
     setEvidenceBusy("evidence"); setEvidenceFailure(null);
     try {
-      const selected = await open({ multiple: false, directory: false, title: "Load retained Evidence Set", filters: [{ name: "Evidence Set", extensions: ["json"] }] });
+      const selected = sourcePath ?? await open({ multiple: false, directory: false, title: "Load retained Evidence Set", filters: [{ name: "Evidence Set", extensions: ["json"] }] });
       if (!current() || typeof selected !== "string") return;
       const request = { ...ticket, targetPath: selected, mode: "replace" as const };
       dispatch({ type: "EVIDENCE_SET_REQUESTED", request });
@@ -329,12 +329,12 @@ function App() {
     finally { if (current()) setEvidenceBusy(null); }
   }
 
-  async function chooseScenario() {
+  async function chooseScenario(sourcePath?:string) {
     const capturedSession = state.activeSession;
     if (!capturedSession) return;
     setScenarioPickerFailure(null);
     try {
-      const selected = await open({ multiple: false, directory: false, title: "Choose OrbitFabric Scenario",
+      const selected = sourcePath ?? await open({ multiple: false, directory: false, title: "Choose OrbitFabric Scenario",
         filters: [{ name: "Scenario", extensions: ["yaml", "yml"] }] });
       if (typeof selected !== "string") return;
       await requestScenario(scenarioHydrator, dispatch, capturedSession, selected, "replace", createRequestId(capturedSession.generation));
@@ -502,7 +502,7 @@ function App() {
 
 
   return (
-    <PresentationMemory.Provider value={presentationMemory}><main className="studio-shell">
+    <PresentationMemory.Provider value={presentationMemory}><SourceInventoryProvider key={membershipKey} session={session}><main className="studio-shell">
       <header className="studio-topbar">
         <div className="mission-title-block">
           <span className="studio-wordmark">OrbitFabric Studio</span>
@@ -639,15 +639,19 @@ function App() {
         >
           <div className="workspace-primary" ref={workspacePrimaryRef}>
             {state.view === "evidence" ? (
+              <><div className="experience-tools"><button className="secondary-action" onClick={()=>changeWorkspaceView("scenarios")}>Browse Scenario sources</button><button className="secondary-action" onClick={()=>changeWorkspaceView("integrations")}>Installed, desired and registered resources</button></div>
+              <SourceBrowser kind="result" onLoad={chooseReplayResult} disabled={isOpeningReplacement||!!evidenceBusy}/>
+              <SourceBrowser kind="evidence" onLoad={chooseEvidenceSet} disabled={isOpeningReplacement||!!evidenceBusy}/>
               <EvidenceReplayWorkspace key={`${session.sessionId}:${session.generation}:${evidenceModel.scenario?.sha256 ?? "none"}`} model={evidenceModel} busy={state.opening ? "mission" : evidenceBusy} failure={evidenceFailure}
-                onChooseResult={chooseReplayResult} onChooseEvidence={chooseEvidenceSet} />
+                onChooseResult={()=>void chooseReplayResult()} onChooseEvidence={()=>void chooseEvidenceSet()} /></>
             ) : state.view === "scenarios" ? (
+              <><SourceBrowser kind="scenario" onLoad={chooseScenario} disabled={isOpeningReplacement||!!scenarioModel.pending} selectedPath={scenarioModel.sourcePath}/>
               <ScenarioWorkspace onRepresented={reportRepresentation} selectedRelation={inspection?.kind === "relation" ? inspection.id : null} onInspectRelation={id=>inspect({kind:"relation",id})} selectedAtom={inspection?.kind === "atom" && inspection.scenario.sourceSha256 === scenarioModel.sourceSha256 ? inspection.atom.id : null}
                 onInspectAtom={atom => inspect({kind:"atom",atom,scenario:scenarioModel})} model={scenarioModel} session={session} selectedEntity={inspection?.kind === "entity" ? inspection.entity : null}
                 disabled={isOpeningReplacement} pickerFailure={scenarioPickerFailure}
-                onChoose={chooseScenario} onRefresh={refreshScenario}
+                onChoose={()=>void chooseScenario()} onRefresh={refreshScenario}
                 onInspectEntity={(subject) => selectEntity(subject,"scenarios")}
-              />
+              /></>
             ) : state.view === "operations" ? (
               <OperationsWorkspace
                 session={session}
@@ -688,7 +692,7 @@ function App() {
                 onOpenExplore={() => changeWorkspaceView("explore")}
               />
             ) : state.view === "integrations" ? (
-              <IntegrationsWorkspace
+              <><div className="experience-tools"><button className="secondary-action" onClick={()=>changeWorkspaceView("evidence")}>Browse retained Results and Evidence</button><button className="secondary-action" onClick={()=>changeWorkspaceView("scenarios")}>Browse Scenario sources</button></div><IntegrationsWorkspace key={membershipKey} onOpenResult={path=>{changeWorkspaceView("evidence");void chooseReplayResult(path);}}
                 session={session}
                 lifecycle={lifecycleModel}
                 lifecycleDisabled={isOpeningReplacement}
@@ -700,25 +704,18 @@ function App() {
                   changeWorkspaceView("explore");
                   selectEntity(subject,"integrations");
                 }}
-              />
+              /></>
             ) : (
               <>
-              <MissionModel onRepresented={reportRepresentation} key={`${session.sessionId}:${session.generation}`} session={session} selected={inspection?.kind === "entity" ? inspection.entity : null} selectedRelation={inspection?.kind === "relation" ? inspection.id : null}
+              <MissionPerspective onRepresented={reportRepresentation} key={`${session.sessionId}:${session.generation}`} session={session} selected={inspection?.kind === "entity" ? inspection.entity : null} selectedRelation={inspection?.kind === "relation" ? inspection.id : null}
                 onInspect={entity => { inspect({kind:"entity",entity}); dispatch({type:"SELECTION_CHANGED",subject:entity,origin:"atlas"}); }}
                 onRelation={id => inspect({kind:"relation",id})}/>
-              <MissionAtlas
-                session={session}
-                selectedEntity={selectedEntity}
-                onSelectEntity={(subject) =>
-                  selectEntity(subject,"atlas")
-                }
-              />
               </>
             )}
           </div>
 
           {inspection ? <InspectorFrame family={inspection.kind==="entity"?familyForDomain(inspection.entity.domain):inspection.kind==="atom"?familyForScenarioAtom(inspection.atom.kind):"relation"}
-            notice={representation.context===representationContext && (state.view==="overview"||state.view==="scenarios") && !representation.identities.includes(inspectionIdentity(inspection)) ? "Outside the graphical representation · inspection retained. Reveal context explicitly or Return to previous subject." : undefined}
+            notice={representation.context===representationContext && (state.view==="scenarios"||(state.view==="overview"&&presentationMemory.get("overview:perspective")==="model")) && !representation.identities.includes(inspectionIdentity(inspection)) ? "Outside the graphical representation · inspection retained. Reveal context explicitly or Return to previous subject." : undefined}
             identity={inspectionIdentity(inspection)} title={inspection.kind === "entity" ? session.readModel.entityRecordsByKey.get(entityKey(inspection.entity))?.display_name ?? inspection.entity.id : inspection.kind === "relation" ? session.readModel.relationshipsById.get(inspection.id)?.relationship_type ?? inspection.id : inspection.atom.id}
             onClear={() => {setInspection(null);setInspectionHistory([]);dispatch({type:"SELECTION_CHANGED",subject:null,origin:null});}}
             onReturn={inspectionHistory.length ? () => {setInspection(inspectionHistory[inspectionHistory.length - 1]);setInspectionHistory(h=>h.slice(0,-1));} : undefined}>
@@ -760,7 +757,7 @@ function App() {
           }}
         />
       ) : null}
-    </main></PresentationMemory.Provider>
+    </main></SourceInventoryProvider></PresentationMemory.Provider>
   );
 }
 

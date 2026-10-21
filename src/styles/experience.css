@@ -410,3 +410,19 @@
 .experience-model > header .experience-tools button { font-size:12px; padding:7px 10px; }
 .experience-model > header .experience-tools strong { font-size:13px; }
 .experience-model > .experience-tools { padding:8px 16px; }
+
+/* Second-pass product composition: one reading surface; wheel is never captured by graphs. */
+.perspective-switch { position:sticky; top:0; z-index:5; background:var(--bg-primary,#121c25); padding:12px; flex-wrap:wrap; }
+.perspective-switch span { overflow-wrap:anywhere; font-size:12px; }
+.source-inventory { margin:12px; padding:16px; border:1px solid #405365; border-radius:10px; background:#17232e; }
+.source-inventory header { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.source-inventory h2 { margin:0; font-size:18px; }
+.source-inventory p { color:#bac8d4; font-size:13px; line-height:1.5; }
+.source-inventory code { display:block; overflow-wrap:anywhere; font-size:12px; }
+.source-inventory ul { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr)); gap:8px; list-style:none; padding:0; }
+.source-candidate { width:100%; text-align:left; padding:12px; border:1px solid #4d6174; border-radius:6px; color:inherit; background:#21303e; }
+.source-candidate strong,.source-candidate small { display:block; margin-bottom:5px; }
+.source-candidate[aria-pressed=true] { outline:2px solid #e6edf3; }
+.source-candidate:focus-visible { outline:2px dashed #fff; outline-offset:3px; }
+.source-candidate:disabled { opacity:.7; }
+.experience-inspector-body { overscroll-behavior-y:auto; }

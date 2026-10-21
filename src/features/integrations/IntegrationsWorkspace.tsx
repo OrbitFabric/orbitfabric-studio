@@ -1,3 +1,4 @@
+import { readLocalReference } from '../experience/sourceRequests';
 import { FamilyLabel } from "../presentation/FamilyLabel";
 import type { DisplayFamily } from "../presentation/familyMarkers";
 import { useEffect, useMemo, useState } from "react";
@@ -49,6 +50,7 @@ interface PackageEntry {
   manifestPath: string;
   descriptor: IntegrationPackageDescriptor | null;
   error: string | null;
+  health: "available" | "unavailable" | "invalid content";
 }
 
 interface ProfileState {
@@ -71,7 +73,9 @@ export function IntegrationsWorkspace({
   onCheckProjectLock,
   onSelectCatalogRelease,
   onInspectEntity,
+  onOpenResult,
 }: {
+  onOpenResult: (path:string)=>void;
   session: MissionSession;
   lifecycle: AdapterLifecycleReadModel;
   lifecycleDisabled: boolean;
@@ -111,7 +115,7 @@ export function IntegrationsWorkspace({
       const loaded = await Promise.all(paths.map((path) => loadPackageEntry(integrationGateway, path)));
       if (!cancelled) {
         setEntries(loaded);
-        setSelectedPath((current) => current && paths.includes(current) ? current : paths[0] ?? null);
+        setSelectedPath((current) => current && paths.includes(current) ? current : null);
       }
     }
     void loadRegistry();
@@ -399,8 +403,7 @@ export function IntegrationsWorkspace({
           <span className="section-kicker">Mission integration</span>
           <h1>Integrations</h1>
           <p>
-            Register external Integration Packages, validate their Projection Profiles and run
-            advertised operations without moving target semantics into Studio.
+            Read installed, desired and Catalog facts below. Local registrations are separate remembered references, not Mission-owned installations.
           </p>
         </div>
         <button className="primary-action" type="button" onClick={registerPackage} disabled={busy !== null}>
@@ -419,22 +422,24 @@ export function IntegrationsWorkspace({
       />
 
       <section className="integration-card">
-        <CardTitle title="Package" status={descriptor ? "registered" : selected?.error ? "invalid" : "none"} />
+        <CardTitle title="Locally registered references" status={selected?.health ?? "not selected"} />
         {entries.length === 0 ? (
           <p className="integration-empty">No Integration Package is registered for this Studio installation.</p>
         ) : (
           <>
             <div className="integration-row">
               <label>
-                Registered package
+                Local reference (select explicitly for this Mission session)
                 <select value={selectedPath ?? ""} title={selectedPath ?? undefined} onChange={(event) => setSelectedPath(event.target.value)}>
+                  <option value="">Choose a local reference</option>
                   {entries.map((entry) => (
-                    <option key={entry.manifestPath} value={entry.manifestPath}>{entry.manifestPath}</option>
+                    <option key={entry.manifestPath} value={entry.manifestPath}>{entry.health} · {entry.manifestPath}</option>
                   ))}
                 </select>
               </label>
               <button className="secondary-action" type="button" onClick={unregisterSelected}>Unregister</button>
             </div>
+            <p className="integration-muted">Persistent-local origin. These paths are not automatically linked to this Mission. Unavailable means the file could not be read; invalid content means bytes were read and rejected by the manifest parser. No reference is deleted automatically.</p>
             {selected?.error ? <p className="integration-bad">{selected.error}</p> : null}
             {descriptor ? <PackageFacts descriptor={descriptor} /> : null}
           </>
@@ -520,6 +525,8 @@ export function IntegrationsWorkspace({
             <CardTitle family="result" title="Last Result" status={result?.result ?? "none"} />
             {result ? (
               <>
+                <button className="secondary-action" onClick={()=>onOpenResult(resultState!.bundle.resultPath)}>Open this retained Result in Evidence</button>
+                <p className="integration-muted">Producer outcome is not Scenario execution or assessment. The exact retained bytes are revalidated on opening.</p>
                 <div className="integration-grid result-summary">
                   <Fact label="Operation" value={result.operation.id} />
                   <Fact label="Result" value={result.result} />
@@ -805,16 +812,7 @@ async function loadPackageEntry(
   gateway: TauriIntegrationGateway,
   path: string,
 ): Promise<PackageEntry> {
-  try {
-    const read = await gateway.readPackageManifest(path);
-    return {
-      manifestPath: read.path,
-      descriptor: parseIntegrationPackageManifest(read.path, read.text),
-      error: null,
-    };
-  } catch (error) {
-    return { manifestPath: path, descriptor: null, error: errorMessage(error) };
-  }
+  return readLocalReference(path, path=>gateway.readPackageManifest(path), parseIntegrationPackageManifest);
 }
 
 function sameRef(left: EntityRef, right: EntityRef): boolean {

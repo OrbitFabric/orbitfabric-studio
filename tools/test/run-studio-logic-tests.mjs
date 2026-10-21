@@ -33,6 +33,7 @@ try {
   cpSync("src/features/experience/geometry", join(outDir,"features/experience/geometry"), {recursive:true});
 
   const tests = [
+    "tests/studio-logic/ux-second-pass.test.mjs",
     "tests/studio-logic/experience-continuation.test.mjs",
     "tests/studio-logic/investigation.test.mjs",
     "tests/studio-logic/experience.test.mjs",

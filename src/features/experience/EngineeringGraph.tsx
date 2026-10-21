@@ -1,3 +1,4 @@
+import { packComponents } from './graphFraming';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { ReactFlow, Background, Controls, Handle, Position, MarkerType, type NodeProps, type Node, type Edge, type Viewport, type XYPosition } from '@xyflow/react';
 import { PresentationMemory, usePresentationMemory } from './presentationMemory';
@@ -28,7 +29,7 @@ function useRepresentation(identities:string[], report?:RepresentationCallback) 
 }
 const nodeTypes={engineering:EngineeringNode};
 type Graph = ReturnType<typeof orientedMissionGraph>;
-function RelationalCanvas({graph,memoryKey,selected,selectedRelation,focus,onInspect,onRelation,draggable=true}:{graph:Graph;memoryKey:string;selected:EntityRef|null;selectedRelation:string|null;focus:EntityRef|null;onInspect:(r:EntityRef)=>void;onRelation:(id:string)=>void;draggable?:boolean}) {
+function RelationalCanvas({graph,memoryKey,selected,selectedRelation,focus,onInspect,onRelation,draggable=true,whole=false}:{graph:Graph;memoryKey:string;selected:EntityRef|null;selectedRelation:string|null;focus:EntityRef|null;onInspect:(r:EntityRef)=>void;onRelation:(id:string)=>void;draggable?:boolean;whole?:boolean}) {
   const memory=useContext(PresentationMemory);
   const [initialFit]=useState(()=>!memory.has(`${memoryKey}:viewport`));
   const [positions,setPositions]=usePresentationMemory<Record<string,XYPosition>>(`${memoryKey}:positions`,{});
@@ -36,7 +37,7 @@ function RelationalCanvas({graph,memoryKey,selected,selectedRelation,focus,onIns
   // Selection does not enter geometric computation. E2-B/P2 is the accepted donor,
   // unchanged; context-sized cards accommodate product domain-qualified identities.
   const base=useMemo(()=>({nodes:graph.records.map(r=>({id:graphEntityKey(r),type:'engineering',position:{x:0,y:0},data:{title:r.display_name,family:familyForDomain(r.domain),kind:r.domain,exact:r.id,object:{label:r.display_name,objectId:r.id}}})),edges:graph.relations.map(r=>({id:r.relationship_id,source:graphEntityKey(r.from),target:graphEntityKey(r.to),label:r.relationship_type}))}),[graph]);
-  const initial=useMemo(()=>initialGeometry(base,'context'),[base]);
+  const initial=useMemo(()=>{const nodes=initialGeometry(base,'context');return whole?packComponents(nodes,base.edges):nodes;},[base,whole]);
   const placed=useMemo(()=>movedGeometry(initial,positions),[initial,positions]);
   const routed=useMemo(()=>routeGeometry(placed,base.edges),[placed,base]);
   const nodes=placed.map(n=>({...n,measured:{width:n.width,height:n.height},selected:!!selected&&graphEntityKey(selected)===n.id,data:{...n.data,anchor:!!focus&&graphEntityKey(focus)===n.id}}));
@@ -52,12 +53,13 @@ function RelationalCanvas({graph,memoryKey,selected,selectedRelation,focus,onIns
     </div>
     {viewport.zoom<0.6&&<p className="experience-boundary">Broad overview · use a narrower context or Inspect represented entity, then Show inspected subject for readable detail.</p>}
     {outside&&<p role="status" className="experience-boundary">Inspected subject is outside this representation. Inspection, Anchor and Scope are retained. Use explicit context controls to reveal it.</p>}
+    <p className="experience-boundary">Scroll to read · drag the background to pan · use + / − to zoom. Layout is presentation only.</p>
     <div className="engineering-canvas">
       <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} edgeTypes={geometryEdgeTypes} viewport={viewport} onViewportChange={setViewport}
         nodesDraggable={draggable} onNodesChange={changes=>setPositions(p=>changePositions(p,changes))} nodesConnectable={false} edgesReconnectable={false} deleteKeyCode={null} minZoom={0.2} maxZoom={1.6}
         fitView={initialFit} fitViewOptions={{padding:0.12,minZoom:0.25,maxZoom:1}}
         onNodeClick={(_,n)=>{const r=graph.records.find(r=>graphEntityKey(r)===n.id);if(r)onInspect({domain:r.domain,id:r.id});}}
-        onEdgeClick={(_,e)=>onRelation(e.id)} panOnScroll zoomOnScroll={false}>
+        onEdgeClick={(_,e)=>onRelation(e.id)} panOnScroll={false} zoomOnScroll={false} zoomOnPinch={false} preventScrolling={false} panOnDrag={true}>
         <Background gap={24}/><Controls showInteractive={false}/>
       </ReactFlow>
     </div>
@@ -66,7 +68,7 @@ function RelationalCanvas({graph,memoryKey,selected,selectedRelation,focus,onIns
 }
 export function MissionModel({session,selected,selectedRelation,onInspect,onRelation,onRepresented}:{session:MissionSession;selected:EntityRef|null;selectedRelation:string|null;onInspect:(r:EntityRef)=>void;onRelation:(id:string)=>void;onRepresented?:RepresentationCallback}) {
   const [domain,setDomain]=usePresentationMemory('mission:domain','commands');
-  const [focus,setFocus]=usePresentationMemory<EntityRef|null>('mission:focus',null);
+  const [focus,setFocus]=usePresentationMemory<EntityRef|null>('mission:focus',selected?.domain==='subsystems'?selected:null);
   const [neighbor,setNeighbor]=usePresentationMemory<EntityRef|null>('mission:neighbor',null);
   const graph=useMemo(()=>orientedMissionGraph(session,domain,focus,neighbor),[session,domain,focus,neighbor]);
   useRepresentation([...graph.records.map(r=>JSON.stringify(['entity',r.domain,r.id])),...graph.relations.map(r=>JSON.stringify(['relation',r.relationship_id]))],onRepresented);
@@ -79,12 +81,12 @@ export function MissionModel({session,selected,selectedRelation,onInspect,onRela
       <div className="experience-tools" aria-label="Mission subsystem orientation">{systems.map(r=><button className="secondary-action" key={graphEntityKey(r)} aria-pressed={!!focus&&graphEntityKey(focus)===graphEntityKey(r)} onClick={()=>{setFocus({domain:r.domain,id:r.id});setNeighbor(null);onInspect(r);}}>{r.display_name}</button>)}</div>
     </header>
     <div className="experience-tools">
-      <label>Representation <select aria-label="Mission representation" value={domain} onChange={e=>{setDomain(e.target.value);setNeighbor(null);}}>{[...session.readModel.entityRefsByDomain.keys()].map(d=><option key={d}>{d}</option>)}</select></label>
+      <label hidden={!focus||!!neighbor}>Local family <select aria-label="Mission representation" value={domain} onChange={e=>{setDomain(e.target.value);setNeighbor(null);}}>{[...session.readModel.entityRefsByDomain.keys()].map(d=><option key={d}>{d}</option>)}</select></label>
       {!focus&&!neighbor&&<span>Select a subsystem to reveal one local family.</span>}
       <button className="secondary-action" disabled={!selected} onClick={()=>setNeighbor(selected)}>Show declared neighbors</button>
       {neighbor&&<><span>Temporary context · {neighbor.domain}:{neighbor.id}</span><button className="secondary-action" onClick={()=>setNeighbor(null)}>Return to family</button></>}
     </div>
-    <RelationalCanvas key={viewKey} graph={graph} memoryKey={viewKey} selected={selected} selectedRelation={selectedRelation} focus={focus} onInspect={onInspect} onRelation={onRelation}/>
+    <RelationalCanvas whole={!focus&&!neighbor} key={viewKey} graph={graph} memoryKey={viewKey} selected={selected} selectedRelation={selectedRelation} focus={focus} onInspect={onInspect} onRelation={onRelation}/>
     <p className="experience-boundary">Arrows are Core relationships, not causality. Focus, family, geometry and neighborhood change representation, not investigation Scope. Relations readiness: {session.readiness.relationships}.</p>
   </section>;
 }
@@ -110,7 +112,7 @@ export function ScenarioGraph({model,selectedAtom,onInspect,session,selectedEnti
     {view==='declaration'?<>
       <div className="experience-tools"><h3>Authored declaration</h3><label>Inspect atom <select aria-label="Inspect atom" value={selectedAtom??''} onChange={e=>{const a=model.atoms.find(a=>a.id===e.target.value);if(a)onInspect(a);}}><option value="">Choose an atom</option>{model.atoms.map(a=><option key={a.id} value={a.id}>{a.declarationPosition} · {presentScenarioAtom(a).title}</option>)}</select></label>
       <button className="secondary-action" disabled={!selectedAtom} onClick={()=>{const n=nodes.find(n=>n.id===selectedAtom);if(n)setViewport({x:30,y:25-n.position.y*0.85,zoom:0.85});}}>Show inspected atom</button></div>
-      <div className="engineering-canvas scenario-engineering-canvas"><ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} viewport={viewport} onViewportChange={setViewport} nodesDraggable={false} nodesConnectable={false} edgesReconnectable={false} deleteKeyCode={null} minZoom={0.25} maxZoom={1.5} onNodeClick={(_,n)=>{const a=model.atoms.find(a=>a.id===n.id);if(a)onInspect(a);}} panOnScroll zoomOnScroll={false}><Background gap={24}/><Controls showInteractive={false}/></ReactFlow></div>
+      <div className="engineering-canvas scenario-engineering-canvas"><ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} viewport={viewport} onViewportChange={setViewport} nodesDraggable={false} nodesConnectable={false} edgesReconnectable={false} deleteKeyCode={null} minZoom={0.25} maxZoom={1.5} onNodeClick={(_,n)=>{const a=model.atoms.find(a=>a.id===n.id);if(a)onInspect(a);}} panOnScroll={false} zoomOnScroll={false} zoomOnPinch={false} preventScrolling={false} panOnDrag={true}><Background gap={24}/><Controls showInteractive={false}/></ReactFlow></div>
     </>:<>
       <div className="experience-tools"><label>Context focus <select aria-label="Scenario context focus" value={focus?graphEntityKey(focus):''} onChange={e=>{const p=model.participants.find(p=>graphEntityKey(p.entity)===e.target.value);setFocus(p?.entity??null);}}><option value="">All declared participants</option>{model.participants.map(p=><option key={graphEntityKey(p.entity)} value={graphEntityKey(p.entity)}>{p.entity.domain}:{p.entity.id}</option>)}</select></label><button className="secondary-action" disabled={!selectedEntity||!model.participants.some(p=>graphEntityKey(p.entity)===graphEntityKey(selectedEntity))} onClick={()=>setFocus(selectedEntity)}>Focus inspected participant</button>{focus&&<button className="secondary-action" onClick={()=>setFocus(null)}>Return to Scenario context</button>}<span>{focus?`Context focus · ${focus.domain}:${focus.id}`:'Exact Scenario participants · Core relations between represented entities'}</span></div>
       <RelationalCanvas key={`${key}:context:${JSON.stringify(focus)}`} graph={context} memoryKey={`${key}:context:${JSON.stringify(focus)}`} selected={selectedEntity} selectedRelation={selectedRelation} focus={focus} onInspect={onInspectEntity} onRelation={onRelation} draggable={false}/>

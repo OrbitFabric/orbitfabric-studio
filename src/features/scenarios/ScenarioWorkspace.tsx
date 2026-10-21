@@ -56,7 +56,7 @@ export function ScenarioWorkspace({ onRepresented, selectedRelation, onInspectRe
     {!model.scenario && model.result !== "failed" ? <div className="scenario-empty">
       <h2>{model.pending ? "Loading the selected declaration" : "Choose a Scenario to understand its intent"}</h2>
       <p>Open a local Scenario file associated with this mission to inspect its declared initial state, actions and expectations.</p>
-      <p>No adapter is required. Automatic Scenario discovery is unavailable.</p>
+      <p>No adapter is required. Use the source list above, or choose another file explicitly. Inventory entries are not Core validation.</p>
     </div> : null}
     {model.result === "failed" ? <section className="scenario-notice scenario-failure" aria-label="Core Scenario diagnostics">
       <h2>Core could not declare this Scenario</h2>

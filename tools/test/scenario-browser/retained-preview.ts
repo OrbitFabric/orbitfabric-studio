@@ -59,6 +59,18 @@ if (sourceCommit) {
 if (evidenceCase) addAcceptanceCaseBanner(fixture);
 
 mockIPC((command, args: any) => {
+  // Test-only file inventory transport, using retained source paths. No production catalog.
+  if(command === "scenario_source_root")return reports.scenarioPath.slice(0,reports.scenarioPath.lastIndexOf("/"));
+  if(command === "list_source_files") {
+    const paths=args.kind==="scenario"?Object.keys(reports.scenarioInvocations??{[reports.scenarioPath]:null}):args.kind==="result"?fixture.resultSelections:[fixture.evidence.path];
+    return {root:args.root,entries:paths.map(path=>({name:path.split("/").pop(),path,status:"available",reason:null}))};
+  }
+  if(command === "resolve_source_file") {
+    const paths=[reports.scenarioPath,...Object.keys(reports.scenarioInvocations??{}),...fixture.resultSelections,fixture.evidence.path];
+    const path=paths.find(path=>path.split("/").pop()===args.name);if(!path)throw Error("Unknown fixture candidate");
+    return path;
+  }
+
   if (command === "save_surface_capture_png") {
     (window as any).__convergenceCapture = args;
     return {path: `browser-capture/${args.filename}`};
@@ -87,8 +99,8 @@ mockIPC((command, args: any) => {
     if (!reports.failedScenarioInvocation) throw new Error("Regenerate reports with the failed Scenario fixture");
     return reports.failedScenarioInvocation;
   }
-  if (command === "run_core_export_scenario_declaration" && (window as any).__convergenceScenarioPath) {
-    const retained = reports.scenarioInvocations?.[(window as any).__convergenceScenarioPath];
+  if (command === "run_core_export_scenario_declaration" && (reports.scenarioInvocations?.[args.scenarioPath] || (window as any).__convergenceScenarioPath)) {
+    const retained = reports.scenarioInvocations?.[args.scenarioPath ?? (window as any).__convergenceScenarioPath];
     if (!retained) throw new Error("No retained Core declaration for the explicit browser selection");
     return retained;
   }
