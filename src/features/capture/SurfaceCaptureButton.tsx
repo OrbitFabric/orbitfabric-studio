@@ -1,3 +1,4 @@
+import { CAPTURE_SURFACE_SELECTOR, preserveCaptureReadingPosition } from "./captureComposition";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import type { EntityRef } from "../../mission/entityRef";
@@ -47,10 +48,16 @@ export function SurfaceCaptureButton({
       return;
     }
 
+    const restoreReadingPosition = preserveCaptureReadingPosition(
+      document.querySelector<HTMLElement>(CAPTURE_SURFACE_SELECTOR),
+    );
+
     // Capture layout must be active before the renderer performs any measurement.
     // React state updates are asynchronous, so the body attribute is the synchronous
     // source of truth for capture-only CSS expansion.
-    document.body.setAttribute("data-studio-capture", "active");
+    if (!document.querySelector(`${CAPTURE_SURFACE_SELECTOR} .scenario-layout`)) {
+      document.body.setAttribute("data-studio-capture", "active");
+    }
 
     setCaptureState({
       phase: "capturing",
@@ -79,6 +86,7 @@ export function SurfaceCaptureButton({
       resetLater();
     } finally {
       document.body.removeAttribute("data-studio-capture");
+      restoreReadingPosition();
     }
   }, [captureState.phase, disabled, missionId, resetLater, selection, view]);
 

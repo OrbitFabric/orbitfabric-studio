@@ -1,0 +1,30 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> orbitfabric-studio@0.15.0-preview.1 build
+> tsc && vite build
+
+vite v6.4.3 building for production...
+transforming...
+✓ 560 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                        0.71 kB │ gzip:   0.34 kB
+dist/assets/inter-latin-400-normal-C38fXH4l.woff2     23.66 kB
+dist/assets/inter-latin-700-normal-Yt3aPRUw.woff2     24.36 kB
+dist/assets/inter-latin-600-normal-LgqL8muc.woff2     24.45 kB
+dist/assets/app-icon-CiQhE_sx.png                    236.75 kB
+dist/assets/orbital-horizon-DBENacCG.png           2,272.04 kB
+dist/assets/xyflow-BnuhLJ6X.css                       15.87 kB │ gzip:   2.67 kB
+dist/assets/index-BP7nVepr.css                        99.77 kB │ gzip:  17.54 kB
+dist/assets/index-Dkhiv-IB.js                         12.99 kB │ gzip:   5.15 kB
+dist/assets/xyflow-CasuOvcX.js                       183.69 kB │ gzip:  59.86 kB
+dist/assets/react-CeoDJVrP.js                        185.60 kB │ gzip:  58.49 kB
+dist/assets/html2canvas.esm-QH1iLAAe.js              202.38 kB │ gzip:  48.04 kB
+dist/assets/index-Cl05ydeO.js                        558.84 kB │ gzip: 160.87 kB
+dist/assets/elk-CGKjHSCt.js                        1,439.46 kB │ gzip: 438.44 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 9.80s

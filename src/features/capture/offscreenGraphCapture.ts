@@ -1,3 +1,5 @@
+import { captureScenarioSurface } from "./scenarioCapture";
+import { CAPTURE_SURFACE_SELECTOR } from "./captureComposition";
 import { invoke } from "@tauri-apps/api/core";
 
 import type { EntityRef } from "../../mission/entityRef";
@@ -70,8 +72,12 @@ export async function captureCurrentStudioSurface(
   request: CaptureRequest,
 ): Promise<SurfaceCaptureResult> {
   const liveTarget = document.querySelector<HTMLElement>(
-    ".studio-main-surface .workspace-layout",
+    CAPTURE_SURFACE_SELECTOR,
   );
+
+  if (liveTarget?.querySelector(".scenario-layout")) {
+    return captureScenarioSurface(liveTarget, request);
+  }
 
   if (!liveTarget || liveTarget.querySelector(".react-flow") === null) {
     return captureStandardStudioSurface(request);
@@ -87,8 +93,8 @@ async function captureGraphSurfaceOffscreen(
   await waitForStableRendering(liveTarget);
 
   const liveRect = liveTarget.getBoundingClientRect();
-  const width = Math.max(1, Math.ceil(liveRect.width));
-  const edgeSnapshots = snapshotReactFlowEdges(liveTarget, liveRect);
+  // Full representation capture uses a readable minimum width, independently of live camera.
+  const width = Math.max(liveTarget.querySelector(".experience-inspector") ? 1680 : 1280, Math.ceil(liveRect.width));
   const background = captureBackgroundColor();
   const clone = createCaptureClone(liveTarget, width, background);
 
@@ -100,6 +106,8 @@ async function captureGraphSurfaceOffscreen(
     await nextAnimationFrame();
     await nextAnimationFrame();
 
+    fitClonedGraphs(clone.target);
+    await nextAnimationFrame();
     const measuredHeight = measureExpandedHeight(clone.target);
     const height = measuredHeight + CAPTURE_BOTTOM_GUARD;
     if (!Number.isFinite(height) || height <= 0) {
@@ -108,6 +116,9 @@ async function captureGraphSurfaceOffscreen(
 
     const pixelRatio = captureScale(width, height);
 
+    // Expanded Investigation may move the graph. Measure edges in the final
+    // clone coordinates rather than overlaying the original viewport offsets.
+    const edgeSnapshots = snapshotReactFlowEdges(clone.target, clone.target.getBoundingClientRect());
     hideReactFlowEdgeLayers(clone.target);
     await nextAnimationFrame();
 
@@ -182,6 +193,29 @@ function createCaptureClone(
   host.style.background = background;
 
   const target = liveTarget.cloneNode(true) as HTMLElement;
+  // cloneNode does not retain the live selectedness of React-controlled options.
+  // Use text surrogates so the rasterizer cannot fall back to default options.
+  const liveSelects = liveTarget.querySelectorAll<HTMLSelectElement>('select');
+  target.querySelectorAll<HTMLSelectElement>('select').forEach((select, index) => {
+    const live = liveSelects[index];
+    const surrogate = document.createElement('span');
+    const style = getComputedStyle(live);
+    for (const property of Array.from(style)) surrogate.style.setProperty(property, style.getPropertyValue(property));
+    surrogate.textContent = Array.from(live.selectedOptions).map(option => option.textContent).join(', ');
+    surrogate.style.width = `${live.getBoundingClientRect().width}px`;
+    surrogate.style.display = 'inline-block';
+    select.replaceWith(surrogate);
+  });
+  target.querySelectorAll<HTMLElement>('button,input').forEach(control => {
+    control.style.setProperty('appearance','none');
+    control.style.setProperty('-webkit-appearance','none');
+    control.style.setProperty('box-shadow','none');
+  });
+  // html2canvas scales CSS gradient boxes inconsistently inside transformed nodes.
+  target.querySelectorAll<HTMLElement>('.engineering-node').forEach(node => {
+    node.style.background = '#0b2032';
+    node.style.boxShadow = 'none';
+  });
   target.dataset.studioCaptureClone = "true";
   target.style.setProperty("width", `${width}px`, "important");
   target.style.setProperty("height", "auto", "important");
@@ -189,7 +223,7 @@ function createCaptureClone(
   target.style.setProperty("max-height", "none", "important");
   target.style.setProperty("overflow", "visible", "important");
   target.style.setProperty("transform", "none", "important");
-  target.style.setProperty("align-items", "start", "important");
+  target.style.setProperty("align-items", "stretch", "important");
   target.style.setProperty("align-content", "start", "important");
   target.style.setProperty("grid-template-rows", "max-content", "important");
   target.style.setProperty("grid-auto-rows", "max-content", "important");
@@ -203,6 +237,9 @@ function expandCloneLayout(target: HTMLElement) {
   hideClosedDetailsContent(target);
 
   const structuralSelectors = [
+    ".workspace-layout",
+    ".investigation-panel",
+    ".investigation-content",
     ".workspace-primary",
     ".entity-xray",
     ".xray-scroll",
@@ -313,7 +350,7 @@ function snapshotReactFlowEdges(
     const style = window.getComputedStyle(path);
     const markerEnd = path.getAttribute("marker-end") || style.markerEnd;
     const edgeGroup = path.closest<SVGGElement>(".react-flow__edge");
-    const text = edgeGroup?.querySelector<SVGTextElement>(".react-flow__edge-text") ?? null;
+    const text = edgeGroup?.querySelector<SVGTextElement | HTMLElement>(".react-flow__edge-text, .geometry-label") ?? null;
     const textBackground =
       edgeGroup?.querySelector<SVGElement>(".react-flow__edge-textbg") ?? null;
 
@@ -335,7 +372,7 @@ function snapshotReactFlowEdges(
               }
             : null,
       },
-      label: text ? snapshotEdgeLabel(text, textBackground, targetRect) : null,
+      label: text ? snapshotEdgeLabel(text, textBackground ?? (text instanceof HTMLElement ? text : null), targetRect) : null,
     });
   }
 
@@ -395,8 +432,8 @@ function mapRenderedCoordinate(
 }
 
 function snapshotEdgeLabel(
-  text: SVGTextElement,
-  background: SVGElement | null,
+  text: SVGTextElement | HTMLElement,
+  background: SVGElement | HTMLElement | null,
   targetRect: DOMRect,
 ): EdgeLabelSnapshot | null {
   const value = text.textContent?.trim();
@@ -419,7 +456,7 @@ function snapshotEdgeLabel(
     fontSize: cssNumber(style.fontSize, 9),
     fontStyle: style.fontStyle || "normal",
     fontWeight: style.fontWeight || "400",
-    fill: visiblePaint(style.fill, "#8090a5"),
+    fill: visiblePaint(text instanceof HTMLElement ? style.color : style.fill, "#8090a5"),
     opacity: cssNumber(style.opacity, 1) * cssNumber(style.fillOpacity, 1),
     background:
       backgroundRect && backgroundStyle
@@ -428,9 +465,9 @@ function snapshotEdgeLabel(
             y: backgroundRect.top - targetRect.top,
             width: backgroundRect.width,
             height: backgroundRect.height,
-            fill: visiblePaint(backgroundStyle.fill, "rgba(11, 14, 19, 0.94)"),
-            stroke: visiblePaint(backgroundStyle.stroke, "rgba(51, 67, 88, 0.85)"),
-            strokeWidth: cssNumber(backgroundStyle.strokeWidth, 1),
+            fill: visiblePaint(background instanceof HTMLElement ? backgroundStyle.backgroundColor : backgroundStyle.fill, "rgba(11, 14, 19, 0.94)"),
+            stroke: visiblePaint(background instanceof HTMLElement ? backgroundStyle.borderColor : backgroundStyle.stroke, "rgba(51, 67, 88, 0.85)"),
+            strokeWidth: cssNumber(background instanceof HTMLElement ? backgroundStyle.borderWidth : backgroundStyle.strokeWidth, 1),
             opacity:
               cssNumber(backgroundStyle.opacity, 1) *
               cssNumber(backgroundStyle.fillOpacity, 1),
@@ -717,4 +754,25 @@ function describeCaptureError(error: unknown): string {
 
 function nextAnimationFrame(): Promise<void> {
   return new Promise((resolve) => requestAnimationFrame(() => resolve()));
+}
+
+// Reframe only the detached representation: no live viewport, selection or geometry writes.
+function fitClonedGraphs(target: HTMLElement) {
+  for (const graph of target.querySelectorAll<HTMLElement>('.react-flow')) {
+    const viewport = graph.querySelector<HTMLElement>('.react-flow__viewport');
+    if (!viewport) continue;
+    viewport.style.transform = 'translate(0px,0px) scale(1)';
+    const origin = graph.getBoundingClientRect();
+    const boxes = [...graph.querySelectorAll<HTMLElement | SVGElement>('.react-flow__node,.react-flow__edge-path,.geometry-label-box')].map(e=>e.getBoundingClientRect());
+    if (!boxes.length) continue;
+    const left=Math.min(...boxes.map(b=>b.left))-origin.left;
+    const top=Math.min(...boxes.map(b=>b.top))-origin.top;
+    const right=Math.max(...boxes.map(b=>b.right))-origin.left;
+    const bottom=Math.max(...boxes.map(b=>b.bottom))-origin.top;
+    const inset = graph.querySelector('.graph-legend') ? 175 : 30;
+    const zoom=Math.min(1,(origin.width-inset-30)/Math.max(1,right-left));
+    const canvas=graph.closest<HTMLElement>('.engineering-canvas');
+    if(canvas)canvas.style.height=`${Math.max(460,(bottom-top)*zoom+100)}px`;
+    viewport.style.transform=`translate(${inset-left*zoom}px,${35-top*zoom}px) scale(${zoom})`;
+  }
 }

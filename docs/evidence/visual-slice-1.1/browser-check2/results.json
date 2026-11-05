@@ -1,0 +1,19 @@
+{
+  "results": [
+    {
+      "width": 1672,
+      "height": 941,
+      "status": "PASS",
+      "captureFilename": "orbitfabric-studio__of-rm-1__overview__subsystems__obc__2026-10-23t09-44-47-013z.png",
+      "environment": "Chromium actual App; retained Core; mocked IPC/save; NOT native"
+    },
+    {
+      "width": 1280,
+      "height": 800,
+      "status": "PASS",
+      "captureFilename": "orbitfabric-studio__of-rm-1__overview__subsystems__obc__2026-10-23t09-44-51-504z.png",
+      "environment": "Chromium actual App; retained Core; mocked IPC/save; NOT native"
+    }
+  ],
+  "errors": []
+}

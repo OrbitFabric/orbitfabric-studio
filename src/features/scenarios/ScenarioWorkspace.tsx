@@ -1,12 +1,23 @@
+import { useState, type ReactNode } from "react";
+import { scenarioContextGraph } from "../experience/graphModel";
+import { ScenarioGraph } from "../experience/EngineeringGraph";
+import type { ScenarioAtomUnderstanding } from "../../convergence/scenarioUnderstanding";
+import { FamilyLabel } from "../presentation/FamilyLabel";
+import { familyForDomain, familyForScenarioAtom } from "../presentation/familyMarkers";
 import type { ScenarioUnderstandingModel } from "../../convergence/scenarioUnderstanding";
 import type { EntityRef } from "../../mission/entityRef";
 import { entityKey } from "../../mission/entityRef";
 import type { MissionSession } from "../../mission/MissionSession";
 import { resolveEntityContract } from "../../mission/resolveEntityContract";
-import { declarationFields, presentScenarioAtom } from "./scenarioPresentation";
+import { declarationFields, presentScenarioAtom, scenarioAtomPreview } from "./scenarioPresentation";
 
 interface Props {
   model: ScenarioUnderstandingModel;
+  onRepresented?: (identities:string[])=>void;
+  selectedRelation?: string | null;
+  onInspectRelation?: (id: string) => void;
+  selectedAtom?: string | null;
+  onInspectAtom?: (atom: ScenarioAtomUnderstanding) => void;
   session: MissionSession;
   selectedEntity: EntityRef | null;
   disabled: boolean;
@@ -16,7 +27,8 @@ interface Props {
   onInspectEntity: (entity: EntityRef) => void;
 }
 
-export function ScenarioWorkspace({ model, session, selectedEntity, disabled, pickerFailure, onChoose, onRefresh, onInspectEntity }: Props) {
+export function ScenarioWorkspace({ onRepresented, selectedRelation, onInspectRelation, selectedAtom, onInspectAtom, model, session, selectedEntity, disabled, pickerFailure, onChoose, onRefresh, onInspectEntity }: Props) {
+  const context = scenarioContextGraph(session, model, null);
   function entityLink(entity: EntityRef, label?: string) {
     const resolved = resolveEntityContract(session.snapshot, entity) !== null;
     const selected = selectedEntity !== null && entityKey(selectedEntity) === entityKey(entity);
@@ -24,13 +36,13 @@ export function ScenarioWorkspace({ model, session, selectedEntity, disabled, pi
       aria-pressed={selected}
       title={resolved ? `Inspect ${entity.domain}:${entity.id}` : "Entity unavailable in the current Mission Snapshot"}
       onClick={() => onInspectEntity(entity)}>
-      {label ? <span>{label}</span> : null}<code>{entity.domain}:{entity.id}</code>
+      {label ? <span>{label}</span> : null}<FamilyLabel family={familyForDomain(entity.domain)}><code>{entity.domain}:{entity.id}</code></FamilyLabel>
       {!resolved ? <small>Entity unavailable</small> : null}
     </button>;
   }
   return <section className="scenario-workspace" aria-label="Scenario Understanding">
     <header className="scenario-toolbar">
-      <div><p className="eyebrow">Scenarios</p><h1>Scenario understanding</h1></div>
+      <div><p className="eyebrow">UNDERSTAND · AUTHORED INTENT</p><h1><FamilyLabel family="scenario">Scenario understanding</FamilyLabel></h1></div>
       <div className="scenario-actions">
         <button type="button" className="secondary-action" disabled={disabled || !model.sourcePath || Boolean(model.pending)} onClick={onRefresh}>Refresh Scenario</button>
         <button type="button" className="primary-action" disabled={disabled} onClick={onChoose}>Choose Scenario</button>
@@ -47,7 +59,7 @@ export function ScenarioWorkspace({ model, session, selectedEntity, disabled, pi
     {!model.scenario && model.result !== "failed" ? <div className="scenario-empty">
       <h2>{model.pending ? "Loading the selected declaration" : "Choose a Scenario to understand its intent"}</h2>
       <p>Open a local Scenario file associated with this mission to inspect its declared initial state, actions and expectations.</p>
-      <p>No adapter is required. Automatic Scenario discovery is unavailable.</p>
+      <p>No adapter is required. Use the source list above, or choose another file explicitly. Inventory entries are not Core validation.</p>
     </div> : null}
     {model.result === "failed" ? <section className="scenario-notice scenario-failure" aria-label="Core Scenario diagnostics">
       <h2>Core could not declare this Scenario</h2>
@@ -59,30 +71,34 @@ export function ScenarioWorkspace({ model, session, selectedEntity, disabled, pi
       </li>)}</ul>
     </section> : null}
     {model.scenario ? <>
+
       <section className="scenario-hero">
         <div><span className="scenario-declared">DECLARED</span><h2>{model.scenario.name}</h2>
           <p className="scenario-purpose">{model.scenario.description ?? "Purpose unavailable: no description was declared."}</p>
-          <p className="scenario-binding"><code>{model.scenario.id}</code><br />Mission <code>{model.mission?.id}</code> · model <code>{model.mission?.modelVersion}</code></p>
+          <p className="scenario-binding"><code>{model.scenario.id}</code></p>
+          <details className="scenario-source-identity"><summary>Accepted declaration source</summary><p>Core-validated declaration. File inventory is separate and does not validate the current file contents.</p><p>Mission <code>{model.mission?.id}</code> · model <code>{model.mission?.modelVersion}</code></p><code>{model.sourcePath}</code><code>{model.sourceSha256}</code></details>
         </div>
-        <div className="scenario-accounting"><strong>{model.atomCount}</strong><span>declared atoms</span><small>{model.participants.length} referenced mission entities</small></div>
+        <dl className="scenario-accounting"><div><dt>authored atoms</dt><dd>{model.atomCount}</dd></div><div><dt>Core context entities</dt><dd>{context.records.length}</dd></div><div><dt>Core relations</dt><dd>{session.readiness.relationships === "ready" ? context.relations.length : "Unavailable"}</dd></div></dl>
       </section>
+      {onInspectAtom && <ScenarioGraph onRepresented={onRepresented} key={model.sourceSha256} model={model} session={session} selectedEntity={selectedEntity} selectedRelation={selectedRelation ?? null} onInspectEntity={onInspectEntity} onRelation={onInspectRelation ?? (()=>{})} selectedAtom={selectedAtom ?? null} onInspect={onInspectAtom} />}
       <div className="scenario-content">
         <section aria-labelledby="scenario-atoms-heading">
           <h2 id="scenario-atoms-heading">Declared intent</h2>
           <p className="scenario-explanation">Source steps retain authored order. Within each step, atoms follow Core normalization order. Times are declared Scenario times; runtime timing and causality are unavailable.</p>
           <ol className="scenario-atoms">{model.atoms.map(atom => {
             const row = presentScenarioAtom(atom);
-            return <li key={`${atom.exactIdentity.scenarioSha256}:${atom.id}`} className="scenario-atom" data-atom-id={atom.id}>
-              <div className="scenario-atom-heading"><span className="scenario-position">{atom.declarationPosition}</span>
-                <h3>{row.title}</h3><span className="scenario-role">{row.role}</span></div>
+            return <li key={`${atom.exactIdentity.scenarioSha256}:${atom.id}`} className={`scenario-atom${selectedAtom === atom.id ? " is-selected" : ""}`} data-atom-id={atom.id}>
+              <details><summary className="scenario-atom-heading"><span className="scenario-position">{atom.declarationPosition}</span>
+                <span className="scenario-atom-title"><FamilyLabel family={familyForScenarioAtom(atom.kind)}>{row.title}</FamilyLabel></span><span className="scenario-role">{row.role} · DECLARED</span><span className="scenario-row-preview">{scenarioAtomPreview(atom).references.join(" · ") || row.fields.map(f=>`${f.name}: ${f.value}`).join(" · ")}</span><span className="scenario-field-count">{row.fields.length} fields</span></summary>
               <div className="scenario-atom-body">
+                {onInspectAtom && <button className="secondary-action" onClick={()=>onInspectAtom(atom)}>Inspect exact atom</button>}
                 <p className="scenario-atom-location"><code>{atom.id}</code> · {row.position}{row.ordinal ? ` · ${row.ordinal}` : ""}
                   {row.declaredTime !== null ? <span>Declared Scenario time: {row.declaredTime}</span> : null}</p>
                 <div className="scenario-refs">{atom.references.map((ref, index) => <div key={index}>{entityLink(ref.entity, ref.role)}</div>)}</div>
                 {atom.kind === "scenario_metadata" ? <details className="scenario-metadata"><summary>Declared metadata fields</summary><DeclaredFields fields={row.fields} /></details>
                   : <DeclaredFields fields={row.fields} />}
                 <details className="scenario-atom-source"><summary>Atom identity and Core labels</summary><p>Kind: <code>{atom.kind}</code> · Role: <code>{atom.role}</code></p><code>{atom.exactIdentity.scenarioSha256} + {atom.id}</code></details>
-              </div>
+              </div></details>
             </li>;
           })}</ol>
         </section>
@@ -118,4 +134,9 @@ export function ScenarioWorkspace({ model, session, selectedEntity, disabled, pi
 function DeclaredFields({ fields }: { fields: { name: string; value: string }[] }) {
   return fields.length ? <dl className="scenario-fields">{fields.map(field => <div key={field.name}><dt>{field.name}</dt><dd>{field.value}</dd></div>)}</dl>
     : <p className="scenario-explanation">No declaration fields.</p>;
+}
+
+export function ScenarioSources({children}:{children:ReactNode}) {
+  const [expanded,setExpanded]=useState(false);
+  return <details className="scenario-sources" open={expanded} onToggle={e=>setExpanded(e.currentTarget.open)}><summary>Scenario sources · file candidates</summary>{children}</details>;
 }

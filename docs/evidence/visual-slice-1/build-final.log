@@ -1,0 +1,26 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> orbitfabric-studio@0.15.0-preview.1 build
+> tsc && vite build
+
+vite v6.4.3 building for production...
+transforming...
+✓ 559 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                              0.71 kB │ gzip:   0.34 kB
+dist/assets/app-icon-CiQhE_sx.png          236.75 kB
+dist/assets/xyflow-BnuhLJ6X.css             15.87 kB │ gzip:   2.67 kB
+dist/assets/index-CG1h4Otd.css              88.65 kB │ gzip:  15.31 kB
+dist/assets/index-Dkhiv-IB.js               12.99 kB │ gzip:   5.15 kB
+dist/assets/xyflow-MQBIExwd.js             183.68 kB │ gzip:  59.86 kB
+dist/assets/react-CeoDJVrP.js              185.60 kB │ gzip:  58.49 kB
+dist/assets/html2canvas.esm-QH1iLAAe.js    202.38 kB │ gzip:  48.04 kB
+dist/assets/index-C_8YNQ1d.js              553.42 kB │ gzip: 158.94 kB
+dist/assets/elk-CGKjHSCt.js              1,439.46 kB │ gzip: 438.44 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 11.13s

@@ -1,0 +1,165 @@
+{
+  "originalPairedA43": "NOT_RUN: no paired native baseline/candidate execution",
+  "comparisonCases": [
+    {
+      "id": "C01",
+      "title": "Subject-first orientation",
+      "status": "NOT_RUN",
+      "reason": "Original paired A4.3 gate not executed; product browser coverage recorded separately."
+    },
+    {
+      "id": "C02",
+      "title": "Declared participation bounded",
+      "status": "NOT_RUN",
+      "reason": "Original paired A4.3 gate not executed; product browser coverage recorded separately."
+    },
+    {
+      "id": "C03",
+      "title": "Rules / applicability",
+      "status": "NOT_RUN",
+      "reason": "Original paired A4.3 gate not executed; product browser coverage recorded separately."
+    },
+    {
+      "id": "C04",
+      "title": "Subject-first scenario intent",
+      "status": "NOT_RUN",
+      "reason": "Original paired A4.3 gate not executed; product browser coverage recorded separately."
+    },
+    {
+      "id": "C05",
+      "title": "Question-first projection",
+      "status": "NOT_RUN",
+      "reason": "Original paired A4.3 gate not executed; product browser coverage recorded separately."
+    },
+    {
+      "id": "C06",
+      "title": "Projection detail and lineage",
+      "status": "NOT_RUN",
+      "reason": "Original paired A4.3 gate not executed; product browser coverage recorded separately."
+    },
+    {
+      "id": "C07",
+      "title": "Evidence association without assessment",
+      "status": "NOT_RUN",
+      "reason": "Original paired A4.3 gate not executed; product browser coverage recorded separately."
+    },
+    {
+      "id": "C08",
+      "title": "Side-by-side compare",
+      "status": "NOT_RUN",
+      "reason": "Original paired A4.3 gate not executed; product browser coverage recorded separately."
+    },
+    {
+      "id": "C09",
+      "title": "Compare inspection return",
+      "status": "NOT_RUN",
+      "reason": "Original paired A4.3 gate not executed; product browser coverage recorded separately."
+    },
+    {
+      "id": "C10",
+      "title": "Scope / representation / return",
+      "status": "NOT_RUN",
+      "reason": "Original paired A4.3 gate not executed; product browser coverage recorded separately."
+    }
+  ],
+  "adaptedNegativeGates": [
+    {
+      "id": "F01",
+      "title": "Source generation mismatch / ABA",
+      "status": "PASS_BOUNDED_REGRESSION",
+      "evidence": "tests/studio-logic/investigation.test.mjs, experience.test.mjs and browser.json; not a native A4.3 rerun",
+      "limit": "Producer ABA/omission remains UNKNOWN, not a completeness proof."
+    },
+    {
+      "id": "F02",
+      "title": "Coherently omitted relation population",
+      "status": "PASS_BOUNDED_REGRESSION",
+      "evidence": "tests/studio-logic/investigation.test.mjs, experience.test.mjs and browser.json; not a native A4.3 rerun",
+      "limit": "Producer ABA/omission remains UNKNOWN, not a completeness proof."
+    },
+    {
+      "id": "F03",
+      "title": "No Scenario discovery",
+      "status": "PASS_BOUNDED_REGRESSION",
+      "evidence": "tests/studio-logic/investigation.test.mjs, experience.test.mjs and browser.json; not a native A4.3 rerun",
+      "limit": "Browser/native distinction applies"
+    },
+    {
+      "id": "F04",
+      "title": "Missing COSMOS Result",
+      "status": "PASS_BOUNDED_REGRESSION",
+      "evidence": "tests/studio-logic/investigation.test.mjs, experience.test.mjs and browser.json; not a native A4.3 rerun",
+      "limit": "Browser/native distinction applies"
+    },
+    {
+      "id": "F05",
+      "title": "Incompatible Result digest",
+      "status": "PASS_BOUNDED_REGRESSION",
+      "evidence": "tests/studio-logic/investigation.test.mjs, experience.test.mjs and browser.json; not a native A4.3 rerun",
+      "limit": "Browser/native distinction applies"
+    },
+    {
+      "id": "F06",
+      "title": "Result operation succeeds, no Scenario verdict",
+      "status": "PASS_BOUNDED_REGRESSION",
+      "evidence": "tests/studio-logic/investigation.test.mjs, experience.test.mjs and browser.json; not a native A4.3 rerun",
+      "limit": "Browser/native distinction applies"
+    },
+    {
+      "id": "F07",
+      "title": "Evidence is association only",
+      "status": "PASS_BOUNDED_REGRESSION",
+      "evidence": "tests/studio-logic/investigation.test.mjs, experience.test.mjs and browser.json; not a native A4.3 rerun",
+      "limit": "Browser/native distinction applies"
+    },
+    {
+      "id": "F08",
+      "title": "Visible subset conflated with scope",
+      "status": "PASS_BOUNDED_REGRESSION",
+      "evidence": "tests/studio-logic/investigation.test.mjs, experience.test.mjs and browser.json; not a native A4.3 rerun",
+      "limit": "Browser/native distinction applies"
+    },
+    {
+      "id": "F09",
+      "title": "Return control/state disagreement",
+      "status": "PASS_BOUNDED_REGRESSION",
+      "evidence": "tests/studio-logic/investigation.test.mjs, experience.test.mjs and browser.json; not a native A4.3 rerun",
+      "limit": "Browser/native distinction applies"
+    },
+    {
+      "id": "F10",
+      "title": "Compare operand provenance collapse",
+      "status": "PASS_BOUNDED_REGRESSION",
+      "evidence": "tests/studio-logic/investigation.test.mjs, experience.test.mjs and browser.json; not a native A4.3 rerun",
+      "limit": "Browser/native distinction applies"
+    },
+    {
+      "id": "F11",
+      "title": "Observed performance / cognition without paired instrumentation",
+      "status": "NOT_RUN",
+      "evidence": "tests/studio-logic/investigation.test.mjs, experience.test.mjs and browser.json; not a native A4.3 rerun",
+      "limit": "Browser/native distinction applies"
+    },
+    {
+      "id": "F12",
+      "title": "Ghost link / visual implied causality",
+      "status": "PASS_BOUNDED_REGRESSION",
+      "evidence": "tests/studio-logic/investigation.test.mjs, experience.test.mjs and browser.json; not a native A4.3 rerun",
+      "limit": "Browser/native distinction applies"
+    },
+    {
+      "id": "F13",
+      "title": "Identity switch during inspection",
+      "status": "PASS_BOUNDED_REGRESSION",
+      "evidence": "tests/studio-logic/investigation.test.mjs, experience.test.mjs and browser.json; not a native A4.3 rerun",
+      "limit": "Browser/native distinction applies"
+    },
+    {
+      "id": "F14",
+      "title": "Repeated same question checkpoint",
+      "status": "PASS_BOUNDED_REGRESSION",
+      "evidence": "tests/studio-logic/investigation.test.mjs, experience.test.mjs and browser.json; not a native A4.3 rerun",
+      "limit": "Browser/native distinction applies"
+    }
+  ]
+}

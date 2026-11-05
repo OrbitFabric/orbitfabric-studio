@@ -1,0 +1,35 @@
+/* Bounded S3 accents, not a final palette. Only the decorative SVG is colored.
+   Selection, focus, status text, borders and backgrounds remain product-owned. */
+.family-label {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  padding-inline-start: 22px;
+  overflow-wrap: anywhere;
+}
+.family-label > .family-marker {
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0.65em;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.family-marker.family-accent-structure { color: #b6bdce; }
+.family-marker.family-accent-command { color: #a4c6e5; }
+.family-marker.family-accent-observable { color: #c1b4d8; }
+.family-marker.family-accent-product { color: #b3c5d2; }
+.family-marker.family-accent-neutral { color: #b9c2cb; }
+@media (forced-colors: active) {
+  .family-marker { color: CanvasText; }
+}
+
+/* Extended family accents drawn from the accepted Atlas/Model palette.
+   Opt-in presentation tokens; they do not restyle existing family glyphs. */
+:root {
+  --family-scenario: #b583ff;
+  --family-mode: #54aaff;
+  --family-command: #2bd5a0;
+  --family-telemetry: #b583ff;
+  --family-event: #ff668b;
+  --family-payload: #ffbd43;
+}

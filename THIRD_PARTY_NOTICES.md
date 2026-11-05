@@ -51,3 +51,7 @@ Before any packaged/binary Studio release:
 2. include required copyright/license notices in the distribution;
 3. re-check dependencies whose license changed between versions;
 4. do not infer a package's license from the current upstream branch when Studio pins an older release.
+
+## Inter font (Visual Slice 1.1)
+
+Offline Latin font files in `src/assets/fonts/` are from the Inter distribution via @fontsource/inter. Copyright and SIL Open Font License terms are retained in `src/assets/fonts/OFL.txt`.

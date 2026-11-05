@@ -1,0 +1,193 @@
+{
+  "minimap": [
+    {
+      "html": "<div class=\"react-flow__panel react-flow__minimap bottom right\" data-testid=\"rf__minimap\" style=\"--xy-minimap-mask-background-color-props: #04101caa; --xy-minimap-node-background-color-props: #3375a4;\"><svg width=\"200\" height=\"150\" viewBox=\"-485.14481351981357 -440.62587412587425 1893.3898601398603 1442.5827505827508\" class=\"react-flow__minimap-svg\" role=\"img\" aria-labelledby=\"react-flow__minimap-desc-1\"><title id=\"react-flow__minimap-desc-1\">Mini Map</title><rect class=\"react-flow__minimap-node\" x=\"755\" y=\"30\" rx=\"5\" ry=\"5\" width=\"300\" height=\"122\" shape-rendering=\"geometricPrecision\" style=\"fill: rgb(51, 117, 164);\"></rect><rect class=\"react-flow__minimap-node\" x=\"30\" y=\"30\" rx=\"5\" ry=\"5\" ",
+      "rect": {
+        "x": 1501,
+        "y": 817.203125,
+        "width": 120,
+        "height": 74
+      }
+    },
+    {
+      "html": "<svg width=\"200\" height=\"150\" viewBox=\"-485.14481351981357 -440.62587412587425 1893.3898601398603 1442.5827505827508\" class=\"react-flow__minimap-svg\" role=\"img\" aria-labelledby=\"react-flow__minimap-desc-1\"><title id=\"react-flow__minimap-desc-1\">Mini Map</title><rect class=\"react-flow__minimap-node\" x=\"755\" y=\"30\" rx=\"5\" ry=\"5\" width=\"300\" height=\"122\" shape-rendering=\"geometricPrecision\" style=\"fill: rgb(51, 117, 164);\"></rect><rect class=\"react-flow__minimap-node\" x=\"30\" y=\"30\" rx=\"5\" ry=\"5\" width=\"300\" height=\"122\" shape-rendering=\"geometricPrecision\" style=\"fill: rgb(51, 117, 164);\"></rect><rect class=\"react-flow__minimap-node\" x=\"30\" y=\"197\" rx=\"5\" ry=\"5\" width=\"300\" height=\"145\" shape-r",
+      "rect": {
+        "x": 1502,
+        "y": 818.203125,
+        "width": 200,
+        "height": 150
+      }
+    }
+  ],
+  "header": [
+    {
+      "tag": "P",
+      "cls": "eyebrow",
+      "rect": {
+        "x": 20,
+        "y": 160.296875,
+        "width": 1277,
+        "height": 13.046875
+      },
+      "padding": "0px",
+      "margin": "0px 0px 8px",
+      "overflow": "visible",
+      "textIndent": "0px"
+    },
+    {
+      "tag": "HEADER",
+      "cls": "",
+      "rect": {
+        "x": 20,
+        "y": 160.296875,
+        "width": 1617,
+        "height": 99.03125
+      },
+      "padding": "0px 340px 10px 0px",
+      "margin": "0px",
+      "overflow": "visible",
+      "textIndent": "0px"
+    },
+    {
+      "tag": "SECTION",
+      "cls": "experience-model mission-model",
+      "rect": {
+        "x": 20,
+        "y": 160.296875,
+        "width": 1617,
+        "height": 816.84375
+      },
+      "padding": "0px",
+      "margin": "0px",
+      "overflow": "hidden",
+      "textIndent": "0px"
+    },
+    {
+      "tag": "SECTION",
+      "cls": "mission-perspective perspective-model",
+      "rect": {
+        "x": 0,
+        "y": 148.296875,
+        "width": 1657,
+        "height": 844.84375
+      },
+      "padding": "12px 20px 16px",
+      "margin": "0px",
+      "overflow": "visible",
+      "textIndent": "0px"
+    },
+    {
+      "tag": "DIV",
+      "cls": "workspace-primary",
+      "rect": {
+        "x": 0,
+        "y": 148.296875,
+        "width": 1672,
+        "height": 792.703125
+      },
+      "padding": "0px",
+      "margin": "0px",
+      "overflow": "auto",
+      "textIndent": "0px"
+    },
+    {
+      "tag": "DIV",
+      "cls": "workspace-layout",
+      "rect": {
+        "x": 0,
+        "y": 148.296875,
+        "width": 1672,
+        "height": 792.703125
+      },
+      "padding": "0px",
+      "margin": "0px",
+      "overflow": "hidden",
+      "textIndent": "0px"
+    },
+    {
+      "tag": "DIV",
+      "cls": "studio-capture-surface",
+      "rect": {
+        "x": 0,
+        "y": 105.296875,
+        "width": 1672,
+        "height": 835.703125
+      },
+      "padding": "0px",
+      "margin": "0px",
+      "overflow": "visible",
+      "textIndent": "0px"
+    },
+    {
+      "tag": "SECTION",
+      "cls": "studio-main-surface",
+      "rect": {
+        "x": 0,
+        "y": 105.296875,
+        "width": 1672,
+        "height": 835.703125
+      },
+      "padding": "0px",
+      "margin": "0px",
+      "overflow": "hidden",
+      "textIndent": "0px"
+    },
+    {
+      "tag": "MAIN",
+      "cls": "studio-shell",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 1672,
+        "height": 941
+      },
+      "padding": "0px",
+      "margin": "0px",
+      "overflow": "hidden",
+      "textIndent": "0px"
+    },
+    {
+      "tag": "DIV",
+      "cls": "",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 1672,
+        "height": 941
+      },
+      "padding": "0px",
+      "margin": "0px",
+      "overflow": "visible",
+      "textIndent": "0px"
+    },
+    {
+      "tag": "BODY",
+      "cls": "",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 1672,
+        "height": 941
+      },
+      "padding": "0px",
+      "margin": "0px",
+      "overflow": "hidden",
+      "textIndent": "0px"
+    },
+    {
+      "tag": "HTML",
+      "cls": "",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 1672,
+        "height": 941
+      },
+      "padding": "0px",
+      "margin": "0px",
+      "overflow": "hidden",
+      "textIndent": "0px"
+    }
+  ],
+  "viewport": "transform: translate(394.128px, 3.13152px) scale(0.895616);"
+}

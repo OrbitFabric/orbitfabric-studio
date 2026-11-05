@@ -1,0 +1,65 @@
+{
+  "base_head": "219fa0177eeeae46575738b6d22386c75ed64a78",
+  "base_tree": "b394903a983af85b31fdb012b7b57877d7ad3bfe",
+  "archive_sha256": "fbdea23f7b47e28a9c31f6f8409eb1f64b12fd1a12dfd8f80a02421043b3403a",
+  "original_backup_sha256": "f84f0c7f86590fadf281fa55c5b8783b761fc5c42ec8ab621f08c36ef313908b",
+  "contract_sha256": "6b580f1a8d5409c9d39a78c44dee10aab36905e563235cde9a3815ce05c69cc0",
+  "prior_tracked_evidence_unchanged": true,
+  "files": [
+    {
+      "path": "src-tauri/src/lib.rs",
+      "sha256": "bfc13d11a7368868d5079718eb825c92021669f60099d1323a07d0e49aabf3c9",
+      "matches_worktree": true
+    },
+    {
+      "path": "src-tauri/src/source_inventory.rs",
+      "sha256": "bb27a2a01af2df892109a44ffb13443894b0bfb42c58df434c60e67102c55845",
+      "matches_worktree": true
+    },
+    {
+      "path": "src/App.tsx",
+      "sha256": "e29b560c7fa35e60a71a903b3c9ea52fabcd3672a22f941d4653df52ecb40cc0",
+      "matches_worktree": true
+    },
+    {
+      "path": "src/features/experience/EngineeringGraph.tsx",
+      "sha256": "6604e7fc85c85c7d59fe3eb8c94b77d9e2aa4200d0c069d66a626389e992a336",
+      "matches_worktree": true
+    },
+    {
+      "path": "src/features/experience/MissionPerspective.tsx",
+      "sha256": "e2a19bf2aa1525148a4dc27db010e16b95b8beb433197b151c8cf3bac6f6a177",
+      "matches_worktree": true
+    },
+    {
+      "path": "src/features/experience/SourceInventory.tsx",
+      "sha256": "f5507c969ba4a1a3dde4d050568cfcd0df49cf81e7ef0fae48fa86014ebac157",
+      "matches_worktree": true
+    },
+    {
+      "path": "src/features/experience/graphFraming.ts",
+      "sha256": "dafa3d0fd2ddacbadfde6ca67637237a60e708cc02e3038e182b6332d3418965",
+      "matches_worktree": true
+    },
+    {
+      "path": "src/features/integrations/IntegrationsWorkspace.tsx",
+      "sha256": "453b77908410d5d74f37c1ca28c9321ad4749f2293be57f731ded545584b38fe",
+      "matches_worktree": true
+    },
+    {
+      "path": "src/features/scenarios/ScenarioWorkspace.tsx",
+      "sha256": "dc7839075c1265927f6b7c3837d53b06e2b8fecebdbbf01d10ed52d730225a10",
+      "matches_worktree": true
+    },
+    {
+      "path": "src/styles/experience.css",
+      "sha256": "492c1ea54f61a9b3730be95cca34a49d053b24af1bd9e17d43ad4b587c0bd1e3",
+      "matches_worktree": true
+    },
+    {
+      "path": "tools/test/scenario-browser/retained-preview.ts",
+      "sha256": "f627ebd9c3cff8b2be5ba0cbc9eaa468b502b8ad6aab3b7156c3822ce6c9b786",
+      "matches_worktree": true
+    }
+  ]
+}

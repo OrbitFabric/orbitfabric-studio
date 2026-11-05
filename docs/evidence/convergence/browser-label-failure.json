@@ -1,0 +1,22 @@
+{
+  "results": [
+    {
+      "width": 1280,
+      "status": "FAIL",
+      "error": "locator.selectOption: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByLabel('Inspect atom', { exact: true })\u001b[22m\n"
+    }
+  ],
+  "errors": [],
+  "provenance": {
+    "referenceHead": "e8f4a392e0bc3075df1ea3b00b842ba6b9e6e5ca",
+    "sources": {
+      "/workspace/scratch/aebee57acfd0/reference/scenarios/payload_stop_acquisition_verification.yaml": "b19ff6e1cf3c45cdb81e239d30aad97e8b6f037703c06f27102b762e69a1146a",
+      "/workspace/scratch/aebee57acfd0/reference/scenarios/adcs_degraded_pointing_payload_inhibit.yaml": "8dc7365eba3370c961384c98cee628aa7cfbd68b1519daec0c4891d84fed1cfe",
+      "/workspace/scratch/aebee57acfd0/reference/scenarios/eclipse_low_power_payload_suspension.yaml": "33767cf2c35650066c0616976ab3a8c0295cf6c603a85f05048e48a986c046d0"
+    },
+    "coreExecutable": "/workspace/scratch/b2116f01afd7/native-venv/bin/orbitfabric"
+  },
+  "nativeIPC": "NOT RUN",
+  "WebKitGTK": "NOT RUN",
+  "WebView2": "NOT RUN"
+}

@@ -1,0 +1,36 @@
+{
+  "source_manifest": "final-source-sha256.json",
+  "logic": {
+    "command": "npm run test:logic",
+    "exit_code": 0,
+    "passed": 220,
+    "failed": 0,
+    "skipped": 0,
+    "log": "final-logic.log"
+  },
+  "build": {
+    "command": "npm run build",
+    "exit_code": 0,
+    "log": "final-build.log"
+  },
+  "diff_check": {
+    "command": "git diff --cached --check",
+    "exit_code": 0,
+    "log": "diff-check.log"
+  },
+  "not_run": [
+    "Chromium actual-App 1280/960/640",
+    "Rust tests/check",
+    "Tauri build",
+    "WSLg/WebKitGTK",
+    "WebView2",
+    "native dialogs/save/clipboard",
+    "fresh native Core exports",
+    "live adapter/lifecycle acceptance",
+    "A4.3 paired comparison",
+    "new-head CI",
+    "fresh security audit"
+  ],
+  "historical_security": "FAIL: two pre-existing HIGH findings; dependencies unchanged",
+  "regia_ux_acceptance": "NOT ACCEPTED / WIP / UNQUALIFIED"
+}

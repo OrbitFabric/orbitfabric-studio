@@ -1,0 +1,7 @@
+locator.click: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for locator('.experience-inspector').getByRole('button', { name: 'From · commands:payload.stop_acquisition', exact: true })[22m
+
+    at /workspace/scratch/aebee57acfd0/studio/tools/test/convergence/browser-check.cjs:264:111 {
+  name: 'TimeoutError'
+}

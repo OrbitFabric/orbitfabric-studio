@@ -59,6 +59,34 @@ if (sourceCommit) {
 if (evidenceCase) addAcceptanceCaseBanner(fixture);
 
 mockIPC((command, args: any) => {
+  // Test-only file inventory transport, using retained source paths. No production catalog.
+  if(command === "scenario_source_root")return reports.scenarioPath.slice(0,reports.scenarioPath.lastIndexOf("/"));
+  if(command === "list_source_files") {
+    const paths=args.kind==="scenario"?Object.keys(reports.scenarioInvocations??{[reports.scenarioPath]:null}):args.kind==="result"?fixture.resultSelections:[fixture.evidence.path];
+    return {root:args.root,entries:paths.map(path=>({name:path.split("/").pop(),path,status:"available",reason:null}))};
+  }
+  if(command === "resolve_source_file") {
+    const paths=[reports.scenarioPath,...Object.keys(reports.scenarioInvocations??{}),...fixture.resultSelections,fixture.evidence.path];
+    const path=paths.find(path=>path.split("/").pop()===args.name);if(!path)throw Error("Unknown fixture candidate");
+    return path;
+  }
+
+  if (command === "save_surface_capture_png") {
+    if ((window as any).__convergenceFailCapture) throw new Error('Deliberate save failure for restoration verification');
+    const clone = document.querySelector('[data-studio-capture-clone]');
+    (window as any).__convergenceCaptureLayout = clone ? [...clone.querySelectorAll('.react-flow')].map(graph=>{
+      const bounds=graph.getBoundingClientRect();
+      return {nodes:[...graph.querySelectorAll('.react-flow__node,.react-flow__edge-path,.geometry-label-box')].map(e=>{const b=e.getBoundingClientRect();return {text:e.textContent,left:b.left-bounds.left,top:b.top-bounds.top,right:b.right-bounds.left,bottom:b.bottom-bounds.top};}),width:bounds.width,height:bounds.height};
+    }) : [];
+    (window as any).__convergenceCapture = args;
+    return {path: `browser-capture/${args.filename}`};
+  }
+  // Browser-only observation: use the executable that produced these reports.
+  // This is not native executable-resolution acceptance.
+  if (command === "resolve_core_executable") return {
+    configuredExecutable: args.configuredExecutable,
+    resolvedExecutable: reports.invocations.run_core_version.executable,
+  };
   if (command === "plugin:dialog|open") {
     if (args.options.directory) return reports.missionPath;
     if (evidenceCase && args.options.title === "Load exact Integration Result") {
@@ -69,13 +97,18 @@ mockIPC((command, args: any) => {
       return selected;
     }
     if (evidenceCase && args.options.title === "Load retained Evidence Set") return fixture.evidence.path;
-    return reports.scenarioPath;
+    return (window as any).__convergenceScenarioPath ?? reports.scenarioPath;
   }
   if (command === "resolve_mission_source") return { selectedPath: reports.missionPath, missionDir: reports.missionPath };
   if (command === "clear_core_request_temp") return null;
   if (command === "run_core_export_scenario_declaration" && scenarioCase === "failed") {
     if (!reports.failedScenarioInvocation) throw new Error("Regenerate reports with the failed Scenario fixture");
     return reports.failedScenarioInvocation;
+  }
+  if (command === "run_core_export_scenario_declaration" && (reports.scenarioInvocations?.[args.scenarioPath] || (window as any).__convergenceScenarioPath)) {
+    const retained = reports.scenarioInvocations?.[args.scenarioPath ?? (window as any).__convergenceScenarioPath];
+    if (!retained) throw new Error("No retained Core declaration for the explicit browser selection");
+    return retained;
   }
   if (Object.hasOwn(reports.invocations, command)) return reports.invocations[command];
   if (evidenceCase && command === "read_integration_result_bundle") {

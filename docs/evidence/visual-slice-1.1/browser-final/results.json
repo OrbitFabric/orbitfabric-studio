@@ -1,0 +1,47 @@
+{
+  "results": [
+    {
+      "width": 1672,
+      "height": 941,
+      "status": "PASS",
+      "captureFilename": "orbitfabric-studio__of-rm-1__overview__subsystems__obc__2026-10-23t09-48-48-869z.png",
+      "environment": "Chromium actual App; freshly exported pinned Core reports; mocked IPC/save; NOT native",
+      "checks": [
+        "exact participant and graph counts",
+        "icons",
+        "Atlas PNG",
+        "graph and edge bounds with Inspector",
+        "explicit Anchor",
+        "Return camera",
+        "Capture bounds and labels",
+        "Capture camera and reading restoration",
+        "focus retains Anchor",
+        "whole Mission restores counts",
+        "failed-save cleanup and camera",
+        "seven route smoke checks"
+      ]
+    },
+    {
+      "width": 1280,
+      "height": 800,
+      "status": "PASS",
+      "captureFilename": "orbitfabric-studio__of-rm-1__overview__subsystems__obc__2026-10-23t09-48-57-461z.png",
+      "environment": "Chromium actual App; freshly exported pinned Core reports; mocked IPC/save; NOT native",
+      "checks": [
+        "exact participant and graph counts",
+        "icons",
+        "Atlas PNG",
+        "graph and edge bounds with Inspector",
+        "explicit Anchor",
+        "Return camera",
+        "Capture bounds and labels",
+        "Capture camera and reading restoration",
+        "focus retains Anchor",
+        "whole Mission restores counts",
+        "failed-save cleanup and camera",
+        "seven route smoke checks"
+      ]
+    }
+  ],
+  "errors": []
+}
