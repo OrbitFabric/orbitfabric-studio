@@ -1,0 +1,19 @@
+{
+  "cargo-test": {
+    "status": "NOT RUN",
+    "reason": "cargo executable unavailable"
+  },
+  "cargo-check": {
+    "status": "NOT RUN",
+    "reason": "cargo executable unavailable"
+  },
+  "native": {
+    "status": "NOT RUN",
+    "reason": "Tauri/WebKitGTK runtime unavailable; Chromium tests use retained reports and mocked IPC/save"
+  },
+  "security": {
+    "status": "FAIL",
+    "high": 3,
+    "source": "retained Slice 1.1 audit, not refreshed; no package or lockfile changes"
+  }
+}

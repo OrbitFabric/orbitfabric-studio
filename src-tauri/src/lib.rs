@@ -1,5 +1,6 @@
 mod adapter_lifecycle;
 mod capture;
+mod source_inventory;
 mod integration_execution;
 mod integration_files;
 mod integrations;
@@ -752,6 +753,9 @@ pub fn run() {
             integrations::read_integration_package_manifest,
             integrations::read_integration_result_bundle,
             integration_files::read_integration_text_file,
+            source_inventory::scenario_source_root,
+            source_inventory::list_source_files,
+            source_inventory::resolve_source_file,
             integration_files::read_retained_reference,
             integration_execution::run_integration_adapter,
             capture::save_surface_capture_png,

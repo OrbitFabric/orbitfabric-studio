@@ -1,0 +1,77 @@
+{
+  "protected_paths": [
+    {
+      "path": "src/core",
+      "byte_identical_to_parent": true
+    },
+    {
+      "path": "src/mission",
+      "byte_identical_to_parent": true
+    },
+    {
+      "path": "src/convergence",
+      "byte_identical_to_parent": true
+    },
+    {
+      "path": "src/app",
+      "byte_identical_to_parent": true
+    },
+    {
+      "path": "src/graph",
+      "byte_identical_to_parent": true
+    },
+    {
+      "path": "src/features/atlas",
+      "byte_identical_to_parent": true
+    },
+    {
+      "path": "src/features/xray",
+      "byte_identical_to_parent": true
+    },
+    {
+      "path": "src/features/operations",
+      "byte_identical_to_parent": true
+    },
+    {
+      "path": "src/features/capture",
+      "byte_identical_to_parent": true
+    },
+    {
+      "path": "src/features/presentation",
+      "byte_identical_to_parent": true
+    },
+    {
+      "path": "src/features/investigation",
+      "byte_identical_to_parent": true
+    },
+    {
+      "path": "src/integrations",
+      "byte_identical_to_parent": true
+    },
+    {
+      "path": "src-tauri/src/integration_execution.rs",
+      "byte_identical_to_parent": true
+    },
+    {
+      "path": "src-tauri/src/capture.rs",
+      "byte_identical_to_parent": true
+    },
+    {
+      "path": "package.json",
+      "byte_identical_to_parent": true
+    },
+    {
+      "path": "package-lock.json",
+      "byte_identical_to_parent": true
+    },
+    {
+      "path": "docs/evidence/convergence",
+      "byte_identical_to_parent": true
+    },
+    {
+      "path": "docs/evidence/convergence-continuation",
+      "byte_identical_to_parent": true
+    }
+  ],
+  "all_existing_test_files_unchanged": true
+}

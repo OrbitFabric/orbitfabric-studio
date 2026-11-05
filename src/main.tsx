@@ -16,6 +16,7 @@ import "./styles/capture.css";
 import "./styles/responsive.css";
 import "./styles/scenarios.css";
 import "./styles/evidence.css";
+import "./styles/family-markers.css";
 
 // Studio owns contextual actions. Never expose the browser/WebView menu.
 document.addEventListener("contextmenu", (event) => {
@@ -27,3 +28,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <App />
   </React.StrictMode>,
 );
+
+import "./styles/experience.css";
+
+import "./styles/visual-workbench.css";

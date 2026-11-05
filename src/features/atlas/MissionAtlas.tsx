@@ -1,8 +1,14 @@
+import type { CSSProperties } from "react";
+import { EntityGlyph, entityDecoration } from "../presentation/EntityGlyph";
+import { FamilyLabel } from "../presentation/FamilyLabel";
+import { familyForDomain } from "../presentation/familyMarkers";
 import type { JsonObject, JsonValue, MissionContractObject } from "../../core/contracts";
 import type { EntityRef } from "../../mission/entityRef";
 import type { MissionSession } from "../../mission/MissionSession";
 
 interface MissionAtlasProps {
+  onOpenModel: () => void;
+  onNavigate: (view:'operations'|'explore'|'relations'|'scenarios'|'integrations'|'evidence') => void;
   session: MissionSession;
   selectedEntity: EntityRef | null;
   onSelectEntity: (ref: EntityRef) => void;
@@ -10,6 +16,8 @@ interface MissionAtlasProps {
 
 export function MissionAtlas({
   session,
+  onOpenModel,
+  onNavigate,
   selectedEntity,
   onSelectEntity,
 }: MissionAtlasProps) {
@@ -36,21 +44,26 @@ export function MissionAtlas({
             <code>{mission.id}</code>
             <span>model {mission.model_version}</span>
           </p>
+          <p className="atlas-purpose">One mission. Every declared perspective.</p>
+          <button className="primary-action" onClick={onOpenModel}>Open in Mission Model →</button>
         </div>
-        <p className="atlas-purpose">
-          One mission system, recomposed from the contract Core actually loaded.
-        </p>
+        <div className="atlas-hero-facts" aria-label="Declared mission content">
+          <span><strong>{participants.length}</strong> participants</span>
+          <span><strong>{model.commands.length}</strong> commands</span>
+          <span><strong>{model.mode_transitions.length}</strong> declared transitions</span>
+          <span><strong>{model.faults.length}</strong> faults</span>
+        </div>
       </section>
 
-      <section className="atlas-section" aria-labelledby="atlas-system-title">
+      <div className="atlas-discovery">
+      <section className="atlas-section atlas-participants" aria-labelledby="atlas-system-title">
         <header className="section-heading">
           <div>
-            <p className="section-kicker">System</p>
-            <h2 id="atlas-system-title">Mission participants</h2>
+            <p className="section-kicker">Declared system</p>
+            <h2 id="atlas-system-title"><FamilyLabel family="subsystem">Mission participants</FamilyLabel></h2>
           </div>
           <p>
-            Declared participant contexts. Studio does not infer physical containment from this
-            list.
+            {participants.length} declared subsystem contexts
           </p>
         </header>
 
@@ -70,11 +83,25 @@ export function MissionAtlas({
         </div>
       </section>
 
+      <section className="atlas-section atlas-pathways" aria-label="Ways to understand this mission">
+        <header className="section-heading"><div><p className="section-kicker">Explore</p><h2>Ways to understand this mission</h2></div></header>
+        <div className="atlas-route-grid">
+          <button onClick={onOpenModel}><FamilyLabel family="relation">Mission Model</FamilyLabel><span>Typed objects and exact declared relationships.</span><b aria-hidden="true">↗</b></button>
+          {([
+            ['operations','Operations','mode','Modes, commands and declared behavior.'],
+            ['relations','Relations','relation','Follow explicit dependencies and flows.'],
+            ['scenarios','Scenarios','scenario','Explore authored operational intent.'],
+            ['integrations','Integrations','payload','Inspect external systems and interfaces.'],
+            ['evidence','Evidence','evidence','Read retained results and source provenance.'],
+          ] as const).map(([route,title,family,description])=><button key={route} onClick={()=>onNavigate(route)}><FamilyLabel family={family}>{title}</FamilyLabel><span>{description}</span><b aria-hidden="true">↗</b></button>)}
+        </div>
+      </section>
+      </div>
       <section className="atlas-section atlas-territories" aria-labelledby="atlas-contract-title">
         <header className="section-heading">
           <div>
             <p className="section-kicker">Contract</p>
-            <h2 id="atlas-contract-title">Ways to understand this mission</h2>
+            <h2 id="atlas-contract-title">Mission content at a glance</h2>
           </div>
           <p>Complementary semantic territories, present only when the contract contains them.</p>
         </header>
@@ -84,18 +111,18 @@ export function MissionAtlas({
             title="Operations"
             question="How can the mission behave?"
             facts={[
-              `${Object.keys(model.modes).length} modes`,
+              { label: `${Object.keys(model.modes).length} modes`, domain: "modes" },
               `${model.mode_transitions.length} declared transitions`,
-              `${model.commands.length} commands`,
-              `${model.faults.length} faults`,
+              { label: `${model.commands.length} commands`, domain: "commands" },
+              { label: `${model.faults.length} faults`, domain: "faults" },
             ]}
           />
           <Territory
             title="Mission Data"
             question="What information and interactions form the contract?"
             facts={[
-              `${model.telemetry.length} telemetry items`,
-              `${model.events.length} events`,
+              { label: `${model.telemetry.length} telemetry items`, domain: "telemetry" },
+              { label: `${model.events.length} events`, domain: "events" },
               `${model.packets.length} packets`,
             ]}
           />
@@ -104,7 +131,7 @@ export function MissionAtlas({
               title="Data Lifecycle"
               question="What does the mission produce, retain and make available for downlink?"
               facts={[
-                `${model.data_products.length} data products`,
+                { label: `${model.data_products.length} data products`, domain: "data_products" },
                 `${downlinkFlowCount} downlink flows`,
                 `${contactWindowCount} contact windows`,
               ]}
@@ -114,7 +141,7 @@ export function MissionAtlas({
             <Territory
               title="Payload Contracts"
               question="Which payload capabilities are explicitly declared?"
-              facts={[`${payloadCount} payload contract${payloadCount === 1 ? "" : "s"}`]}
+              facts={[{ label: `${payloadCount} payload contract${payloadCount === 1 ? "" : "s"}`, domain: "payloads" }]}
             />
           ) : null}
         </div>
@@ -137,11 +164,12 @@ function ParticipantCard({
   return (
     <button
       className={`participant-card${selected ? " is-selected" : ""}`}
+      style={{"--entity-accent":entityDecoration(participant.type).color} as CSSProperties}
       type="button"
       onClick={onSelect}
       aria-pressed={selected}
     >
-      <span className="participant-name">{participant.name ?? participant.id}</span>
+      <EntityGlyph declaredType={participant.type}/><span className="participant-name">{participant.name ?? participant.id}</span><span className="participant-chevron" aria-hidden="true">›</span>
       <code>{participant.id}</code>
       <span className="participant-meta">
         {stringProperty(participant, "type") ?? "declared participant"}
@@ -163,7 +191,7 @@ function Territory({
 }: {
   title: string;
   question: string;
-  facts: string[];
+  facts: (string | { label: string; domain: string })[];
 }) {
   return (
     <article className="territory">
@@ -173,7 +201,8 @@ function Territory({
       </div>
       <ul>
         {facts.map((fact) => (
-          <li key={fact}>{fact}</li>
+          <li key={typeof fact === "string" ? fact : fact.domain}>{typeof fact === "string" ? fact
+            : <FamilyLabel family={familyForDomain(fact.domain)}>{fact.label}</FamilyLabel>}</li>
         ))}
       </ul>
     </article>

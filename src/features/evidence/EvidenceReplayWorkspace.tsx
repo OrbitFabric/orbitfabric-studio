@@ -1,3 +1,4 @@
+import { FamilyLabel } from "../presentation/FamilyLabel";
 import { useEffect, useState } from "react";
 import type { EvidenceUnderstandingModel, ReplayEvidenceRecord, ReplayProjection } from "../../convergence/evidenceUnderstanding";
 
@@ -56,10 +57,10 @@ export function EvidenceReplayWorkspace({
         </> : null}</section>
       </div>
     </>}
-    <section className="direct-evidence"><h2>Independent Result identities</h2><p>Adapter operation results are not Scenario execution states. EXECUTED interpretation is unavailable without a producer contract that declares it.</p>
+    <section className="direct-evidence"><h2><FamilyLabel family="result">Independent Result identities</FamilyLabel></h2><p>Adapter operation results are not Scenario execution states. EXECUTED interpretation is unavailable without a producer contract that declares it.</p>
       {model.results.map((result) => <details key={result.sha256}><summary>{result.adapterId}@{result.adapterVersion} · {result.operationId}</summary><code>{result.sha256}</code><p>Scenario accounting: {result.accounting}</p><h3>Adapter operation result</h3><pre>{JSON.stringify(result.operationResult, null, 2)}</pre><h3>Producer-owned evidence statements</h3><pre>{JSON.stringify(result.producerStatements, null, 2)}</pre>{result.evidence.map((record) => <EvidenceRecord key={record.id} record={record} />)}</details>)}
     </section>
-    <section className="direct-evidence"><h2>Retained Evidence Set records</h2><p>OBSERVED meaning and verdicts remain producer-owned. Co-membership does not establish pairwise relations.</p>{model.records.map((record) => <EvidenceRecord key={record.id} record={record} />)}</section>
+    <section className="direct-evidence"><h2><FamilyLabel family="evidence">Retained Evidence Set records</FamilyLabel></h2><p>OBSERVED meaning and verdicts remain producer-owned. Co-membership does not establish pairwise relations.</p>{model.records.map((record) => <EvidenceRecord key={record.id} record={record} />)}</section>
   </section>;
 }
 

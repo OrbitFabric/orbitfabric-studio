@@ -64,3 +64,241 @@
   .scenario-accounting { display: none; }
   .scenario-fields > div { grid-template-columns: minmax(0, 1fr); gap: 3px; }
 }
+
+/* Issue 217: Scenario composition; shared tokens, glyphs and Inspector remain owned
+   by Studio. Every selector is bounded to the Scenarios route. */
+.scenario-layout { container: scenarios / inline-size; padding: var(--space-4) var(--space-5); }
+.scenario-surface { display:grid; grid-template-columns:220px minmax(0,1fr); gap:var(--space-4); align-items:start; }
+.scenario-sources { border:1px solid var(--line-strong); border-radius:var(--radius-md); background:var(--bg-raised); min-width:0; }
+.scenario-sources > summary { padding:var(--space-4); font-size:13px; font-weight:600; cursor:pointer; }
+.scenario-layout .source-inventory { margin:0; padding:0 var(--space-3) var(--space-3); border:0; background:transparent; }
+.scenario-layout .source-inventory h2 { display:none; }
+.scenario-layout .source-inventory header { display:block; }
+.scenario-layout .source-inventory .experience-tools { padding:0; gap:6px; }
+.scenario-layout .source-inventory button { font-size:10px; }
+.scenario-layout .source-inventory p,.scenario-layout .source-inventory small { font-size:10px; line-height:1.5; color:var(--text-secondary); }
+.scenario-layout .source-inventory code { font-size:10px; }
+.scenario-layout .source-inventory ul { display:grid; grid-template-columns:minmax(0,1fr); gap:6px; margin-bottom:0; }
+.scenario-layout .source-candidate { width:100%; min-width:0; padding:10px; text-align:left; border:1px solid var(--line-subtle); border-radius:var(--radius-sm); background:var(--bg-surface); }
+.scenario-layout .source-candidate strong { font-size:11px; line-height:1.5; }
+.scenario-layout .source-candidate[aria-pressed=true] { background:var(--bg-selected); border-color:var(--accent); box-shadow:inset 3px 0 var(--accent); }
+.scenario-layout .scenario-workspace { min-width:0; max-width:none; width:100%; padding:0; }
+.scenario-layout .scenario-toolbar { padding:0 0 var(--space-3); border:0; gap:12px; flex-wrap:wrap; }
+.scenario-layout .scenario-toolbar h1 { font-size:22px; }
+.scenario-layout .scenario-toolbar .eyebrow { color:var(--accent); font-size:9px; letter-spacing:.15em; margin:0 0 7px; }
+.scenario-layout .scenario-actions { gap:8px; }
+.scenario-layout .scenario-actions button { padding:8px 10px; font-size:11px; }
+.scenario-layout .scenario-hero { border:1px solid var(--line-strong); border-radius:var(--radius-md); padding:18px; margin:0 0 12px; gap:16px; grid-template-columns:minmax(0,1fr) auto; background:linear-gradient(90deg,var(--bg-canvas),var(--workbench-overlay)),url('../assets/orbital-horizon.png') center / cover; }
+.scenario-layout .scenario-hero h2 { font-size:clamp(18px,1.5vw,24px); margin:10px 0 8px; overflow-wrap:anywhere; }
+.scenario-layout .scenario-purpose { font-size:12px; line-height:1.5; margin:0 0 8px; }
+.scenario-layout .scenario-declared { font-size:9px; padding:3px 6px; }
+.scenario-layout .scenario-binding { font-size:10px; margin:0; }
+.scenario-layout .scenario-accounting { display:flex; padding:0; margin:0; gap:0; align-self:center; background:var(--bg-canvas); }
+.scenario-layout .scenario-accounting > div { display:flex; flex-direction:column-reverse; gap:7px; width:84px; padding:13px 10px; border-right:1px solid var(--line-subtle); }
+.scenario-layout .scenario-accounting > div:last-child { border:0; }
+.scenario-layout .scenario-accounting dt { font-size:10px; line-height:1.4; color:var(--text-secondary); }
+.scenario-layout .scenario-accounting dd { font-size:23px; margin:0; overflow-wrap:anywhere; }
+.scenario-layout .scenario-source-identity { margin-top:8px; color:var(--text-secondary); font-size:10px; }
+.scenario-layout .scenario-source-identity code { display:block; overflow-wrap:anywhere; padding-top:5px; }
+.scenario-layout .scenario-representation { background:transparent; border:0; margin:0; }
+.scenario-layout .scenario-representation .experience-tools { border:1px solid var(--line-strong); background:var(--bg-raised); padding:9px; gap:8px; border-radius:var(--radius-sm); margin-bottom:8px; }
+.scenario-layout .experience-tools button,.scenario-layout .experience-tools select,.scenario-layout .experience-tools label,.scenario-layout .experience-tools > span { font-size:10px; }
+.scenario-layout .experience-tools h3 { font-size:12px; margin:0 auto 0 0; }
+.scenario-layout .experience-tools select { max-width:100%; min-width:0; }
+.scenario-layout .experience-tools label { max-width:100%; flex-wrap:wrap; }
+.scenario-layout .experience-tools [aria-pressed=true] { border-color:var(--accent); background:var(--bg-selected); color:var(--text-primary); }
+.scenario-layout .engineering-canvas { height:360px; border:1px solid var(--line-strong); border-radius:var(--radius-md); background:radial-gradient(ellipse at center,var(--bg-raised),var(--bg-canvas)); }
+.scenario-layout .engineering-node { background:linear-gradient(120deg,var(--bg-raised),var(--bg-surface)); border-color:var(--line-strong); color:var(--text-primary); }
+.scenario-layout .engineering-node.is-declaration { width:260px; height:160px; min-height:0; padding:16px; }
+.scenario-layout .engineering-node.is-declaration .react-flow__handle { display:none; }
+.scenario-layout .engineering-node.is-declaration strong { font-size:18px; line-height:1.35; margin:16px 0 10px; }
+.scenario-layout .engineering-node.is-selected { outline:2px solid var(--accent-strong); outline-offset:3px; }
+.scenario-layout .experience-boundary { font-size:10px; padding:7px 0; margin:0; }
+.scenario-layout .scenario-content { display:block; margin-top:12px; }
+.scenario-layout .scenario-content > section { border:1px solid var(--line-strong); border-radius:var(--radius-md); padding:14px; background:var(--bg-raised); }
+.scenario-layout .scenario-content h2 { margin:0 0 6px; font-size:14px; }
+.scenario-layout .scenario-explanation { font-size:10px; margin:0; }
+.scenario-layout .scenario-atoms { gap:0; margin:12px 0 0; }
+.scenario-layout .scenario-atom { border:0; border-top:1px solid var(--line-subtle); border-radius:0; background:transparent; }
+.scenario-layout .scenario-atom.is-selected { background:var(--bg-selected); box-shadow:inset 3px 0 var(--accent); }
+.scenario-layout .scenario-atom-heading { padding:10px 8px; border:0; gap:10px; }
+.scenario-layout .scenario-atom-title { flex:1; font-size:12px; font-weight:600; }
+.scenario-layout .scenario-role { font-size:9px; border:0; padding:0; color:var(--text-secondary); }
+.scenario-layout .scenario-field-count { font-size:10px; color:var(--text-muted); }
+.scenario-layout .scenario-atom-body { border-top:1px solid var(--line-subtle); }
+.scenario-layout .scenario-context { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:12px; margin-top:12px; }
+.scenario-layout .scenario-context section { margin:0; }
+.scenario-layout .scenario-context section:last-child { grid-column:1/-1; }
+.scenario-layout button:focus-visible,.scenario-layout summary:focus-visible { outline:2px solid var(--accent-strong); outline-offset:3px; }
+.scenario-layout .scenario-provenance { margin-top:12px; }
+@container scenarios (max-width:1050px) {
+  .scenario-surface { grid-template-columns:minmax(0,1fr); }
+  .scenario-layout .source-inventory ul { grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); }
+  .scenario-sources > summary { padding:10px 12px; }
+  .scenario-layout .source-inventory > p { margin:8px 0; }
+}
+@container scenarios (max-width:700px) {
+  .scenario-layout .scenario-hero { grid-template-columns:minmax(0,1fr); }
+  .scenario-layout .scenario-accounting { display:flex; justify-self:start; }
+  .scenario-layout .scenario-accounting > div { width:100px; }
+  .scenario-layout .scenario-context { grid-template-columns:minmax(0,1fr); }
+  .scenario-layout .scenario-atom-heading { flex-wrap:wrap; }
+  .scenario-layout .scenario-role { display:none; }
+  .scenario-layout .engineering-canvas { height:320px; }
+}
+
+.scenario-layout { --bg-canvas:var(--workbench-canvas); --bg-surface:var(--workbench-surface); --bg-raised:var(--workbench-raised); --line-subtle:var(--workbench-line); --line-strong:var(--workbench-line-strong); --bg-selected:var(--workbench-selected); }
+.scenario-layout .scenario-hero { grid-template-columns:minmax(0,1fr); padding:14px 18px; gap:10px; }
+.scenario-layout .scenario-hero h2 { margin:8px 0 6px; font-size:20px; }
+.scenario-layout .scenario-purpose { font-size:11px; margin-bottom:6px; }
+.scenario-layout .scenario-accounting { justify-self:start; background:transparent; border:0; }
+.scenario-layout .scenario-accounting > div { width:auto; flex-direction:row-reverse; align-items:baseline; padding:0 16px 0 0; margin-right:16px; gap:7px; }
+.scenario-layout .scenario-accounting dd { font-size:18px; }
+.scenario-layout .scenario-accounting dt { font-size:10px; }
+.scenario-layout .scenario-representation .experience-tools { padding:6px 9px; margin-bottom:5px; }
+.scenario-layout .scenario-representation .experience-tools > span { margin-left:auto; }
+.scenario-layout .engineering-node.is-declaration { border-left:3px solid var(--accent); }
+.scenario-layout .engineering-node.is-declaration .family-label { padding-left:28px; }
+.scenario-layout .engineering-node.is-declaration .family-marker { width:22px; height:22px; }
+.scenario-layout .react-flow__minimap { background:var(--bg-canvas); border:1px solid var(--line-strong); border-radius:var(--radius-sm); }
+.scenario-layout .react-flow__minimap-mask { fill:var(--workbench-overlay); }
+.scenario-layout .react-flow__minimap-node { fill:var(--accent); }
+.scenario-layout .scenario-representation > details { padding:8px 0; font-size:11px; }
+@container scenarios (max-width:700px) {
+ .scenario-layout .scenario-accounting > div { width:auto; padding-right:8px; margin-right:8px; }
+ .scenario-layout .scenario-hero h2 { font-size:18px; }
+}
+
+.scenario-layout .scenario-hero h2 { display:inline; margin-left:10px; line-height:1.5; }
+.scenario-layout .scenario-purpose { margin-top:8px; }
+.scenario-layout .scenario-hero { gap:8px; }
+.scenario-layout .scenario-representation .canvas-help { line-height:1.3; }
+.scenario-layout .scenario-representation .geometry-tools > span { font-size:9px; }
+.scenario-layout .scenario-accounting { flex-wrap:wrap; }
+
+.scenario-layout .scenario-focus-controls { padding:6px 9px; margin-bottom:4px; border:1px solid var(--line-subtle); border-radius:var(--radius-sm); font-size:10px; }
+.scenario-layout .scenario-focus-controls > .experience-tools { margin-top:8px; }
+.scenario-layout .scenario-representation > .experience-boundary { line-height:1.3; padding:4px 0; }
+
+/* Iteration 2: compact source discovery and an authored composition, not a
+   topology. All accents opt into the shared family vocabulary. */
+.scenario-layout { padding-top:12px; }
+.scenario-surface { grid-template-columns:190px minmax(0,1fr); gap:12px; }
+.scenario-surface:has(.scenario-sources:not([open])) { grid-template-columns:minmax(0,1fr); gap:8px; }
+.scenario-sources > summary { padding:10px 12px; font-size:11px; }
+.scenario-layout .source-candidate { padding:8px; }
+.scenario-layout .scenario-toolbar { padding-bottom:8px; }
+.scenario-layout .scenario-toolbar h1 { font-size:19px; }
+.scenario-layout .scenario-toolbar .eyebrow { margin-bottom:3px; }
+.scenario-layout .scenario-hero { position:relative; padding:12px 16px; margin-bottom:8px; grid-template-columns:minmax(0,1fr) auto; }
+.scenario-layout .scenario-hero h2 { font-size:19px; }
+.scenario-layout .scenario-purpose { max-width:900px; line-height:1.45; margin:6px 0; }
+.scenario-layout .scenario-source-identity { margin-top:5px; }
+.scenario-layout .scenario-accounting { align-self:center; flex-wrap:nowrap; }
+.scenario-layout .scenario-accounting > div { flex-direction:column-reverse; gap:3px; max-width:72px; padding:0 10px; margin:0; }
+.scenario-layout .scenario-accounting dd { font-size:23px; }
+.scenario-layout .scenario-accounting dt { font-size:9px; }
+.scenario-layout .scenario-representation .experience-tools { border:0; border-bottom:1px solid var(--line-subtle); background:transparent; padding:4px 0; margin-bottom:4px; }
+.scenario-layout .engineering-canvas { height:440px; }
+.scenario-layout .engineering-node.is-declaration { --atom-accent:var(--accent); width:100%; height:100%; padding:12px 16px; border-left:3px solid var(--atom-accent); border-top:1px solid color-mix(in srgb,var(--atom-accent) 50%,var(--line-strong)); background:linear-gradient(110deg,color-mix(in srgb,var(--atom-accent) 9%,var(--bg-canvas)),var(--bg-canvas)); box-shadow:0 8px 24px var(--workbench-overlay); overflow:hidden; }
+.scenario-layout .is-declaration[data-family=scenario] { --atom-accent:var(--family-scenario); }
+.scenario-layout .is-declaration[data-family=mode] { --atom-accent:var(--family-mode); }
+.scenario-layout .is-declaration[data-family=command] { --atom-accent:var(--family-command); }
+.scenario-layout .is-declaration[data-family=telemetry] { --atom-accent:var(--family-telemetry); }
+.scenario-layout .is-declaration[data-family=event] { --atom-accent:var(--family-event); }
+.scenario-layout .is-declaration[data-family=payload] { --atom-accent:var(--family-payload); }
+.scenario-layout .engineering-node.is-declaration .family-marker { color:var(--atom-accent); width:22px; height:22px; }
+.scenario-layout .engineering-node.is-declaration small { font-size:10px; color:var(--text-secondary); }
+.scenario-layout .engineering-node.is-declaration strong { font-size:17px; margin:7px 0; line-height:1.25; }
+.scenario-layout .engineering-node.is-declaration .node-exact-id { position:absolute; top:12px; right:12px; font-size:9px; color:var(--text-muted); }
+.scenario-layout .engineering-node.is-declaration .atom-preview-refs code { font-size:12px; color:var(--text-secondary); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.scenario-layout .engineering-node.is-declaration dl { margin:7px 0 0; display:flex; gap:8px; flex-wrap:wrap; }
+.scenario-layout .engineering-node.is-declaration dl > div { display:flex; gap:6px; align-items:baseline; max-width:100%; }
+.scenario-layout .engineering-node.is-declaration dt { color:var(--text-muted); font-size:10px; }
+.scenario-layout .engineering-node.is-declaration dd { margin:0; color:var(--text-primary); font:12px var(--font-mono); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:240px; }
+.scenario-layout .engineering-node.is-declaration[data-atom-role=metadata] dl { display:grid; }
+.scenario-layout .engineering-node.is-declaration[data-atom-role=action] { padding-top:24px; border-left-width:4px; }
+.scenario-layout .engineering-node.is-declaration[data-atom-role=action] strong { margin:24px 0 16px; font-size:23px; }
+.scenario-layout .engineering-node.is-declaration[data-atom-role=action] dl { margin-top:22px; }
+.scenario-layout .scenario-row-preview { flex:1.3; color:var(--text-secondary); font:10px var(--font-mono); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.scenario-layout .scenario-atom-heading { padding:7px 8px; }
+.scenario-layout .scenario-content { margin-top:8px; }
+.scenario-layout .scenario-content > section { padding:10px 12px; }
+.scenario-layout .scenario-focus-controls { margin-bottom:3px; padding:4px 0; border:0; }
+@container scenarios (max-width:1050px) {
+  .scenario-surface { grid-template-columns:minmax(0,1fr); }
+  .scenario-layout .scenario-hero { grid-template-columns:minmax(0,1fr); gap:5px; }
+  .scenario-layout .scenario-accounting > div { flex-direction:row-reverse; max-width:none; align-items:baseline; padding:0 12px 0 0; margin-right:12px; }
+  .scenario-layout .scenario-accounting dd { font-size:17px; }
+  .scenario-layout .engineering-canvas { height:340px; }
+  .scenario-layout .scenario-row-preview { display:none; }
+}
+@container scenarios (max-width:600px) {
+  .scenario-layout .scenario-toolbar h1 { font-size:16px; }
+  .scenario-layout .scenario-hero h2 { display:block; margin:6px 0; }
+  .scenario-layout .scenario-accounting { flex-wrap:wrap; }
+}
+.scenario-layout .engineering-node.is-declaration dl { border:0; padding:0; }
+.scenario-layout .engineering-node.is-declaration dl > div { border:0; padding:0; }
+.scenario-layout .engineering-node.is-declaration .node-exact-id { display:none; }
+.scenario-layout .engineering-node.is-declaration dt { font-size:11px; }
+.scenario-layout .engineering-node.is-declaration dd { font-size:13px; }
+.scenario-layout .engineering-node.is-declaration .atom-preview-refs code { font-size:13px; }
+.scenario-layout .engineering-node.is-declaration small { font-size:11px; }
+.scenario-layout .engineering-canvas { height:400px; }
+.scenario-layout .scenario-binding { display:inline; margin-right:12px; }
+.scenario-layout .scenario-source-identity { display:inline-block; }
+.scenario-layout .scenario-accounting > div { min-width:62px; }
+@container scenarios (max-width:1050px) {
+  .scenario-layout .engineering-canvas { height:310px; }
+}
+.scenario-layout .engineering-node.is-declaration { padding:8px 12px; }
+.scenario-layout .engineering-node.is-declaration small { display:block; line-height:14px; }
+.scenario-layout .engineering-node.is-declaration strong { display:block; margin:4px 0; line-height:21px; }
+.scenario-layout .engineering-node.is-declaration .atom-preview-refs code { line-height:17px; }
+.scenario-layout .engineering-node.is-declaration dl { margin-top:4px; gap:4px; }
+.scenario-layout .engineering-node.is-declaration dt,
+.scenario-layout .engineering-node.is-declaration dd { line-height:16px; }
+.scenario-layout .engineering-node.is-declaration[data-atom-role=metadata] dl { gap:8px; }
+.scenario-layout .scenario-representation:has(.scenario-engineering-canvas) { position:relative; }
+.scenario-layout .scenario-representation:has(.scenario-engineering-canvas) > .experience-tools:first-child { padding-right:450px; min-height:40px; }
+.scenario-layout .scenario-representation:has(.scenario-engineering-canvas) > .experience-tools:nth-child(2) { position:absolute; top:0; right:0; border:0; }
+.scenario-layout .scenario-representation:has(.scenario-engineering-canvas) > .experience-tools:nth-child(2) h3 { display:none; }
+.scenario-layout .scenario-representation:has(.scenario-engineering-canvas) > .experience-tools:first-child > span { display:none; }
+@media (max-width:1350px) {
+ .scenario-layout .scenario-toolbar .eyebrow { display:none; }
+ .scenario-layout .scenario-toolbar h1 { font-size:17px; }
+ .scenario-layout .scenario-sources:not([open]) > summary { padding:6px 12px; }
+ .scenario-layout .scenario-hero { padding:8px 14px; }
+ .scenario-layout .engineering-canvas { height:330px; }
+ .scenario-layout .scenario-hero h2 { font-size:18px; }
+ .scenario-layout .scenario-purpose { font-size:10px; }
+}
+@container scenarios (max-width:700px) {
+ .scenario-layout .scenario-representation:has(.scenario-engineering-canvas) > .experience-tools:first-child { padding-right:0; }
+ .scenario-layout .scenario-representation:has(.scenario-engineering-canvas) > .experience-tools:nth-child(2) { position:static; }
+}
+/* Keep source-backed context in the first viewport; optional focus and reading
+   guidance remain immediately below the representation. */
+.scenario-layout .scenario-representation:not(:has(.scenario-engineering-canvas)) { display:flex; flex-direction:column; }
+.scenario-layout .scenario-representation:not(:has(.scenario-engineering-canvas)) > .experience-boundary { order:3; }
+.scenario-layout .scenario-representation:not(:has(.scenario-engineering-canvas)) > .scenario-focus-controls { order:4; }
+@media (max-width:1350px) {
+ .scenario-layout .scenario-representation:not(:has(.scenario-engineering-canvas)) .engineering-canvas { height:300px; }
+}
+.scenario-layout .engineering-node:not(.is-declaration) { padding:10px 12px; }
+.scenario-layout .engineering-node:not(.is-declaration) strong { font-size:14px; line-height:18px; margin:4px 0; }
+.scenario-layout .engineering-node:not(.is-declaration) code { font-size:11px; line-height:15px; }
+
+/* Phase B: full-width disclosure keeps exact YAML names readable without
+   borrowing width from the accepted engineering composition. */
+.scenario-layout .scenario-surface { grid-template-columns:minmax(0,1fr); }
+.scenario-layout .source-inventory ul { grid-template-columns:minmax(0,1fr); }
+.scenario-layout .source-candidate { display:grid; gap:5px; }
+.scenario-layout .source-candidate code { display:block; font-size:12px; white-space:normal; overflow-wrap:anywhere; }
+.scenario-layout .source-candidate strong { font-size:12px; }
+.scenario-layout .source-inventory .experience-tools { display:flex; flex-wrap:wrap; }
+/* Only the detached export expands all authored values. */
+[data-scenario-capture] .scenario-row-preview { white-space:normal; overflow:visible; }
+[data-scenario-capture] .scenario-atom-heading { flex-wrap:wrap; }
+[data-scenario-capture] .scenario-fields dd { overflow:visible; white-space:pre-wrap; }

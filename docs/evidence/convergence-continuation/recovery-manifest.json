@@ -1,0 +1,320 @@
+{
+  "recoveryDate": "2026-10-20",
+  "originalWorkspace": "/workspace/scratch/aebee57acfd0/studio",
+  "startingHead": "ff140a87db362c60d95df0ab066293121d32203a",
+  "startingTree": "9034eb003e5b2a85874ca5258755f9f9c9440842",
+  "backupSHA256": "f84f0c7f86590fadf281fa55c5b8783b761fc5c42ec8ab621f08c36ef313908b",
+  "evidenceOrigin": "Retained previous-session files, inspected directly. No implementation, logic, build or browser rerun during recovery.",
+  "logic": {
+    "tests": 209,
+    "pass": 209,
+    "fail": 0,
+    "evidence": "final-tests.log"
+  },
+  "build": "PASS: final-build.log",
+  "browser": "PASS: browser.json, widths 1280/960/640; mocked IPC, not native acceptance",
+  "emptyBrowserStdout": "final-browser2.log is empty; browser.json is the retained structured result, not the empty stdout.",
+  "protectedAudit": "Rechecked each preservation.json path against the specified commits; all unchanged.",
+  "donorBlobs": {
+    "src/features/experience/geometry/geometry.mjs": "dfdbc4fde7c0dd5e5ea6138307ce6b41bb699e8d",
+    "src/features/experience/geometry/geometry-quality.mjs": "26fe96eb2fc7a29ea30aa87f91b0abfc19c75cd3"
+  },
+  "reflogNote": "Prior local A/B commits ebc067d and 3e32319 retained in reflog; these predate the published alignment, not a second continuation commit.",
+  "filesBeforeRecoveryDocumentation": [
+    {
+      "path": "docs/EXPERIENCE_CONVERGENCE_V1_CONTINUATION.md",
+      "sha256": "0e9323131a892bdfb6baf06a1362aaea7f42351b0def90d336dd58ee2ca94569",
+      "mtimeUTC": "2026-10-20T13:41:32.972440+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/association-1280.png",
+      "sha256": "6399e555170b5b133c39f92fb73f3f80e2204edaddd8218245e320e382b9f459",
+      "mtimeUTC": "2026-10-20T13:39:24.639962+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/association-640.png",
+      "sha256": "2532a4003815a5a6752c8963b78a6dd28da118bde4978e7fa9f0f0237034ee2f",
+      "mtimeUTC": "2026-10-20T13:39:38.496386+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/association-960.png",
+      "sha256": "07600ae8b47c6b768006e714dc49071b933b4bf126b61c36db9c8bed59646eb8",
+      "mtimeUTC": "2026-10-20T13:39:32.036188+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/browser.json",
+      "sha256": "8e5b83e07596e747a5e6bf2ee63e93abe8e092b7fed4ed806130a7488f76e128",
+      "mtimeUTC": "2026-10-20T13:39:43.504539+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/compare-1280.png",
+      "sha256": "08b416835233c2df3c074db29c2c5c82d65a30ce6b693f473e4c2475db6be97d",
+      "mtimeUTC": "2026-10-20T13:39:25.319983+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/compare-640.png",
+      "sha256": "3205fe67f713fb1c4bab9230dec99257ef68566c3a8e6f765cbc1e19abc3ef53",
+      "mtimeUTC": "2026-10-20T13:39:39.124404+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/compare-960.png",
+      "sha256": "45c7a0aebf3d2c3e4bd97506df32f3318c6323e443ec80d2146678fde09d5380",
+      "mtimeUTC": "2026-10-20T13:39:32.832212+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/dependency-audit.json",
+      "sha256": "365246934612a3795f36c3392fa1121e389c697c0eefb02cc13668df42052777",
+      "mtimeUTC": "2026-10-20T08:39:42.367213+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/endpoint-anchor-1280.png",
+      "sha256": "3870eb2e30b4e8493bd7d8812b5dcc724784ea33f9934a63bd0a34d68b4e94e0",
+      "mtimeUTC": "2026-10-20T13:39:27.076036+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/endpoint-anchor-640.png",
+      "sha256": "bacb78308849811cbe3d943afd263bbb5cd60dbed8496398c73b76ec11d23ec4",
+      "mtimeUTC": "2026-10-20T13:39:40.935954+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/endpoint-anchor-960.png",
+      "sha256": "0a17df972de3cf97eb980e6b364b45594309543d051df39dcd4bf3fa8716983e",
+      "mtimeUTC": "2026-10-20T13:39:34.632267+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/failure-1280.png",
+      "sha256": "2bdfed6c4f82ae9260e79ff7e6da68eab6cedf9e0d8840534c214853e97a74eb",
+      "mtimeUTC": "2026-10-20T08:40:06.395607+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/failure-640.png",
+      "sha256": "f47ac24d5e50ed40f47b06977bd43ace8c2c93f268e36931244bcc884c6d9239",
+      "mtimeUTC": "2026-10-20T08:42:40.654129+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/failure-dom-1280.json",
+      "sha256": "71f4b8511c50d8dcb36aba95f6b4c780d261ac628a53e039067710d2e8c58491",
+      "mtimeUTC": "2026-10-20T08:40:06.299605+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/failure-dom-640.json",
+      "sha256": "9228dc622308c0038cad54daaef00fe19dd9603c252a57bb4affcfca85941f27",
+      "mtimeUTC": "2026-10-20T08:42:40.582128+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/mission-1280.png",
+      "sha256": "9cadc9fd4ef22565187930d12b04c7cff65189fe746526061676b354c91728c5",
+      "mtimeUTC": "2026-10-20T13:39:22.419895+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/mission-640.png",
+      "sha256": "d888477fe0d261f649a9671bca7794950b779c9a20360f10b2a7fb1e3a8467eb",
+      "mtimeUTC": "2026-10-20T13:39:37.512356+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/mission-960.png",
+      "sha256": "80d97aa173765bedb6d69d6fe9ee52589090920f6bf3a3336f80ea7563e2abef",
+      "mtimeUTC": "2026-10-20T13:39:30.964155+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/mission-event-1280.png",
+      "sha256": "5bdf908e8dc61c9935572aaa71c899b803738e6c8ad59c2851e08e5e562c822a",
+      "mtimeUTC": "2026-10-20T13:39:27.492049+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/mission-event-640.png",
+      "sha256": "d457203df34bf2669b879120e1496d1b97ccebf30dd4da2be53ec40a44f3cfd7",
+      "mtimeUTC": "2026-10-20T13:39:41.444475+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/mission-event-960.png",
+      "sha256": "a22317944b45f1a59da9e651767186d780a13da19996309e810ed6e6274cd1b4",
+      "mtimeUTC": "2026-10-20T13:39:35.032279+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/mission-neighbors-1280.png",
+      "sha256": "3decb4199793e46046e731b198c469f2a4fff7aa423c625be2c83aea139e9337",
+      "mtimeUTC": "2026-10-20T13:39:28.348075+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/mission-neighbors-640.png",
+      "sha256": "0009988b10e987fb5b22a507f1eddf8afa7ba0fc84015446990c3db8486fcdc6",
+      "mtimeUTC": "2026-10-20T13:39:42.212499+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/mission-neighbors-960.png",
+      "sha256": "3490491c49619f4fbd02e1abcd0ea09b8c8c4ff0ccf2e69634832e711aa8fee5",
+      "mtimeUTC": "2026-10-20T13:39:35.756302+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/participation-1280.png",
+      "sha256": "5b6022aabc579b316a28e4a13a2e7f9fd717a1a6f541af4a43ec26e1dff82395",
+      "mtimeUTC": "2026-10-20T13:39:22.931910+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/participation-640.png",
+      "sha256": "8de2c471f17543329184cb6e2c1a482cec2821094aa73579174e52066cc2acd4",
+      "mtimeUTC": "2026-10-20T13:39:37.945482+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/participation-960.png",
+      "sha256": "dca12847e4c52f4fadfda582a06fb614947ff4082f64c16dc454a68be3f79233",
+      "mtimeUTC": "2026-10-20T13:39:31.446666+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/preservation.json",
+      "sha256": "be299f0c8f131a0f70de6659f3d27ab05649c75dfe30e56c5cd54403287b4d53",
+      "mtimeUTC": "2026-10-20T13:41:33.064814+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/projection-1280.png",
+      "sha256": "32bbb7bb2e2fd94843b08265401f8a62b5d9ee5d41a6184d01beef5a648155b8",
+      "mtimeUTC": "2026-10-20T13:39:24.531958+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/projection-640.png",
+      "sha256": "360ff4f30d86d0a0564b32a2043a43939ebe6bff9658d434c248723cf8dd329f",
+      "mtimeUTC": "2026-10-20T13:39:38.432941+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/projection-960.png",
+      "sha256": "f9727e4b1019bbbfa0a75750ceb8a8c33bef673dbf31faea839782d1c51f0b59",
+      "mtimeUTC": "2026-10-20T13:39:31.956186+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/scenario-capture.png",
+      "sha256": "3dbcd5885e0a085f82a44c84b4982a45dcf9564dcab216f384a2d0d0effd43df",
+      "mtimeUTC": "2026-10-20T13:39:24.168329+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/scenario-context-1280.png",
+      "sha256": "2e92067af8bfe4b30210ec66aa923b0a0915fdfb738443c95f4c4f212803b4d6",
+      "mtimeUTC": "2026-10-20T13:39:29.240103+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/scenario-context-640.png",
+      "sha256": "1ceaaaa3095a4db346dbae4e90c79cd4b7b77d78c17a9bb77e76210219de09aa",
+      "mtimeUTC": "2026-10-20T13:39:43.032524+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/scenario-context-960.png",
+      "sha256": "a379ad532ed453dcc1d3f8766fcd0855de2d93d69697ef42e38ae4e7e20648e2",
+      "mtimeUTC": "2026-10-20T13:39:36.612328+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/scenario-focused-1280.png",
+      "sha256": "2694ea18d2271cfb95236b1f9557e526634670e6d1f25eb15e76f6f9998b20a1",
+      "mtimeUTC": "2026-10-20T13:39:29.548112+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/scenario-focused-640.png",
+      "sha256": "fc42864577b5190667dddbe4cab6f4470969dd534b8bd784852ee82be3b908bd",
+      "mtimeUTC": "2026-10-20T13:39:43.340533+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/scenario-focused-960.png",
+      "sha256": "4f7f649815cc4fb4430431dc0b17f0214b9fc7a275c640e674eb749b763b4512",
+      "mtimeUTC": "2026-10-20T13:39:36.796334+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/scenario-inspector-1280.png",
+      "sha256": "326204b51a3d085b1c6cce2487333f43e457a1719e356548ae631bb55aa37615",
+      "mtimeUTC": "2026-10-20T13:39:23.111915+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/scenario-inspector-640.png",
+      "sha256": "edf763c48ecd318db65ec5f1a042892b34889d7878dfad67ed5992c50fc6dc7a",
+      "mtimeUTC": "2026-10-20T13:39:38.060168+00:00"
+    },
+    {
+      "path": "docs/evidence/convergence-continuation/scenario-inspector-960.png",
+      "sha256": "0e81a1588aa72b5c370e2fe6be918b7d33b2e298d384b05264f513e8857a79c3",
+      "mtimeUTC": "2026-10-20T13:39:31.588563+00:00"
+    },
+    {
+      "path": "src/App.tsx",
+      "sha256": "c01179bcdbedb42ba301da629f72fbb22c3ac567d9f16e9275d2e1cfb5070ba9",
+      "mtimeUTC": "2026-10-20T13:39:20.095416+00:00"
+    },
+    {
+      "path": "src/features/experience/EngineeringGraph.tsx",
+      "sha256": "c5fe9e5abbad3ebfa3f81ca4f29f94ecaa1a7fd04329d6ab264704536aa1abb4",
+      "mtimeUTC": "2026-10-20T08:39:12.226732+00:00"
+    },
+    {
+      "path": "src/features/experience/GeometryEdge.tsx",
+      "sha256": "55d72aa0071b4aded485ded255080d11c32bbbc1fbcd37b5c9b96704c794a2c9",
+      "mtimeUTC": "2026-10-20T08:28:17.821056+00:00"
+    },
+    {
+      "path": "src/features/experience/InspectorFrame.tsx",
+      "sha256": "08cbc03d5ac651162816f54b30bbbb51f9014659103b99d409b2f7ee7ca13539",
+      "mtimeUTC": "2026-10-20T13:39:20.094576+00:00"
+    },
+    {
+      "path": "src/features/experience/geometry/geometry-quality.mjs",
+      "sha256": "0c75038fa4a9f7a7ae0f7fafc40b7e73cda1edb0c2dd4e653e931b498167161f",
+      "mtimeUTC": "2026-10-20T08:32:40.975023+00:00"
+    },
+    {
+      "path": "src/features/experience/geometry/geometry.d.mts",
+      "sha256": "6e4a4676d9addb479ae9a92edccdea054dc10a6e520e339eb9f29c9441c322aa",
+      "mtimeUTC": "2026-10-20T08:28:17.819916+00:00"
+    },
+    {
+      "path": "src/features/experience/geometry/geometry.mjs",
+      "sha256": "79752b6829cc9f45518be835c31a0b9f8b8bde5136f44d70cc834c60cc158bc4",
+      "mtimeUTC": "2026-10-20T08:32:40.594760+00:00"
+    },
+    {
+      "path": "src/features/experience/graphModel.ts",
+      "sha256": "bb4cd8e86ace115f90fae8442aa734e59b96d5d31e045ce2cc2b14e8b85c0ea6",
+      "mtimeUTC": "2026-10-20T08:36:20.677477+00:00"
+    },
+    {
+      "path": "src/features/experience/inspection.ts",
+      "sha256": "0e875b65eaacc8abba45f56fad681b817322029b7e3c5b1727611aa276581633",
+      "mtimeUTC": "2026-10-20T08:27:46.588913+00:00"
+    },
+    {
+      "path": "src/features/experience/presentationMemory.tsx",
+      "sha256": "8be4f968d66636c95437ad947db91030a12fc6a32ad42bc1e08f08ad67914f11",
+      "mtimeUTC": "2026-10-20T08:30:21.600678+00:00"
+    },
+    {
+      "path": "src/features/investigation/InvestigationPanel.tsx",
+      "sha256": "40adc1a9c02119dce980044d348cf766c4f1af3f97ccbe6d32f2ada92c94a32c",
+      "mtimeUTC": "2026-10-20T08:27:46.589782+00:00"
+    },
+    {
+      "path": "src/features/scenarios/ScenarioWorkspace.tsx",
+      "sha256": "e66129b45c620a0f3fd049ce046f727c9d4b717e00ac9e132e8dc22f906b31a1",
+      "mtimeUTC": "2026-10-20T08:35:40.430652+00:00"
+    },
+    {
+      "path": "src/styles/experience.css",
+      "sha256": "5637ed045d52a6d8f8878ebee5bb5c0db372caad9401a31079d0cfcea1ae1c08",
+      "mtimeUTC": "2026-10-20T08:32:20.431966+00:00"
+    },
+    {
+      "path": "tests/studio-logic/experience-continuation.test.mjs",
+      "sha256": "734c9f28fb90d0d9cd6ed5ddf9a5fcd725cd6642f3f3470bc155afdf7d32f71b",
+      "mtimeUTC": "2026-10-20T08:36:20.677590+00:00"
+    },
+    {
+      "path": "tools/test/convergence/browser-check.cjs",
+      "sha256": "5de86aad9bc039142f3b1b5f83489e68349ad4d982cf387c049cc549e5e0d0f4",
+      "mtimeUTC": "2026-10-20T13:39:20.094975+00:00"
+    },
+    {
+      "path": "tools/test/convergence/verify-local.py",
+      "sha256": "b2d1eed927b13c3e4a5f9970a9063f72946aaa4abca2804799944b952f9b0ff7",
+      "mtimeUTC": "2026-10-20T08:39:12.228288+00:00"
+    },
+    {
+      "path": "tools/test/run-studio-logic-tests.mjs",
+      "sha256": "d332dfb8a866df9ffd348ab005cff76500cb841d3ef594e3d712d25304225f6e",
+      "mtimeUTC": "2026-10-20T08:32:20.428540+00:00"
+    }
+  ]
+}

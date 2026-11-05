@@ -1,0 +1,28 @@
+{
+  "head": "72874ec68d8925f7ecfa43eb4104700d3302aaff",
+  "tree": "1cff1874df05f0ac79668ab299f948aee6bce4bb",
+  "archive_members_verified": 610,
+  "shallow_boundary": "c6003da30c81be3ca9ba338af9ffbfcf0a76d46f",
+  "inputs": {
+    "OrbitFabric_Studio_Slice1_1.bundle": {
+      "bytes": 42424872,
+      "sha256": "3b8c7c81641b229f0e4fd990cd893b106e6bea8181b015814cf28938bbd5e92f"
+    },
+    "mappa_quando-elementi-centrati.png": {
+      "bytes": 4770,
+      "sha256": "8e6783af6aa13264cbcd9c153ee3022a0331c3a3c4a0d9f3bc42c96711d1894c"
+    },
+    "OrbitFabric_Studio_Slice1(1).bundle": {
+      "bytes": 6862732,
+      "sha256": "822039766feeab67c3db3cb98dd36c5885e42529ecc1ba9652c42b4eee147bf7"
+    },
+    "mappa_centrata.png": {
+      "bytes": 236588,
+      "sha256": "e59088fa1822fec7d90f266246d5b456fc138901c6b3b6616ce755844cbeec68"
+    },
+    "OrbitFabric_Studio_Slice1_1_Source.tar.gz": {
+      "bytes": 75977662,
+      "sha256": "9ed9a4d3d4622fa83b5fec62ad4ac31d9b0fe3474d5d3027bc6da891af165688"
+    }
+  }
+}

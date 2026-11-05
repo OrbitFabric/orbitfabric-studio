@@ -1,3 +1,4 @@
+import { CAPTURE_SURFACE_SELECTOR } from "./captureComposition";
 import { invoke } from "@tauri-apps/api/core";
 
 import type { EntityRef } from "../../mission/entityRef";
@@ -82,7 +83,7 @@ export async function captureCurrentStudioSurface(
   request: CaptureRequest,
 ): Promise<SurfaceCaptureResult> {
   const target = document.querySelector<HTMLElement>(
-    ".studio-main-surface .workspace-layout",
+    CAPTURE_SURFACE_SELECTOR,
   );
 
   if (!target) {

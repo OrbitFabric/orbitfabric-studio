@@ -1,0 +1,9 @@
+{
+  "results": [
+    {
+      "status": "FAIL_OR_NOT_RUN",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'transform: translate(254.876px, 89.5589px) scale(0.733242);'\n- 'transform: translate(250.565px, 86.995px) scale(0.742415);'\n"
+    }
+  ],
+  "errors": []
+}

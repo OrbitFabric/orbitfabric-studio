@@ -1,0 +1,8 @@
+{
+  "cargo": null,
+  "Tauri_WebKitGTK": "NOT RUN: Cargo and native desktop toolchain unavailable",
+  "native_save_and_clipboard": "NOT RUN",
+  "browser": "Chromium 153.0.8010.0; Playwright runtime; actual production App with test-only IPC transport",
+  "core": "5196e128974510b4cbd3bcd89ea971ff2b68301b",
+  "reference": "e8f4a392e0bc3075df1ea3b00b842ba6b9e6e5ca"
+}

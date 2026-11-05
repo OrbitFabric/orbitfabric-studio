@@ -63,7 +63,18 @@
     "src/integrations/plugin-registry.ts",
     "src/integrations/plugin-actions.ts",
     "src/integrations/bundled-plugin-registry.ts",
-    "src/integration-plugins/openobsw-opensvf.ts"
+    "src/integration-plugins/openobsw-opensvf.ts",
+    "src/features/presentation/FamilyLabel.tsx",
+    "src/features/atlas/MissionAtlas.tsx",
+    "src/features/scenarios/ScenarioWorkspace.tsx",
+    "src/features/experience/graphModel.ts",
+    "src/features/experience/inspection.ts",
+    "src/features/investigation/investigationModel.ts",
+    "src/features/experience/sourceRequests.ts",
+    "src/features/experience/graphFraming.ts",
+    "src/features/capture/captureComposition.ts",
+    "src/features/experience/SourceInventory.tsx",
+    "src/features/experience/MissionPerspective.tsx"
   ],
   "include": []
 }

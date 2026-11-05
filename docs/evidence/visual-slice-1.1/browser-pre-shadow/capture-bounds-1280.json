@@ -1,0 +1,78 @@
+[
+  {
+    "nodes": [
+      {
+        "text": "",
+        "left": 472.658203125,
+        "top": 95.52392578125,
+        "right": 894.341796875,
+        "bottom": 95.52392578125
+      },
+      {
+        "text": "payload_belongs_to_subsystem",
+        "left": 560.46875,
+        "top": 78.6566162109375,
+        "right": 806.53125,
+        "bottom": 112.3912353515625
+      },
+      {
+        "text": "subsystemsRadiation Event Payloadradiation_payload",
+        "left": 894.341796875,
+        "top": 35,
+        "right": 1192,
+        "bottom": 156.04779052734375
+      },
+      {
+        "text": "payloadsradiation_event_payloadradiation_event_payload",
+        "left": 175,
+        "top": 35,
+        "right": 472.658203125,
+        "bottom": 156.04779052734375
+      },
+      {
+        "text": "subsystemsAttitude Determination and Control Systemadcs",
+        "left": 175,
+        "top": 200.69659423828125,
+        "right": 472.658203125,
+        "bottom": 344.56494140625
+      },
+      {
+        "text": "subsystemsData Storagedata_storage",
+        "left": 512.345703125,
+        "top": 200.69659423828125,
+        "right": 810.00390625,
+        "bottom": 321.744384765625
+      },
+      {
+        "text": "subsystemsElectrical Power Systemeps",
+        "left": 849.693359375,
+        "top": 200.69659423828125,
+        "right": 1147.3515625,
+        "bottom": 321.744384765625
+      },
+      {
+        "text": "subsystemsOn-Board Computerobc",
+        "left": 175,
+        "top": 389.213623046875,
+        "right": 472.658203125,
+        "bottom": 510.261474609375
+      },
+      {
+        "text": "subsystemsS-band Radiosband_radio",
+        "left": 512.345703125,
+        "top": 389.213623046875,
+        "right": 810.00390625,
+        "bottom": 510.261474609375
+      },
+      {
+        "text": "subsystemsUHF Radiouhf_radio",
+        "left": 849.693359375,
+        "top": 389.213623046875,
+        "right": 1147.3515625,
+        "bottom": 510.261474609375
+      }
+    ],
+    "width": 1222,
+    "height": 573.25
+  }
+]

@@ -1,0 +1,386 @@
+{
+  "results": [
+    {
+      "width": 1280,
+      "continuation": "PASS: endpoint proposal, exact Anchor, retained Scope, edge-only inspection, subject Return, outside representation, camera/Reset, modal focus, Core Scenario context, generation invalidation",
+      "cardBounds": [
+        {
+          "text": "modes\nDEGRADED_POWER\nDEGRADED_POWER",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "modes\nNOMINAL\nNOMINAL",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "modes\nPAYLOAD_ACTIVE\nPAYLOAD_ACTIVE",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nAngular rate\nadcs.angular_rate",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nADCS pointing status\nadcs.pointing_status",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nStorage used\ndata_storage.used_percent",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nBattery state of charge\neps.battery.state_of_charge",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nBattery voltage\neps.battery.voltage",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nSolar input power\neps.solar.input_power",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nOBC CPU load\nobc.cpu_load",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nWatchdog reset counter\nobc.watchdog_reset_counter",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nPayload acquisition active\nradiation_payload.acquisition_active",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nRadiation event rate\nradiation_payload.event_rate",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nPending histogram bytes\nradiation_payload.histogram_pending_bytes",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nPayload histogram ready\nradiation_payload.histogram_ready",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nS-band link state\nsband_radio.link_state",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nUHF beacon state\nuhf_radio.beacon_state",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "commands\npayload.start_acquisition\npayload.start_acquisition",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "commands\npayload.stop_acquisition\npayload.stop_acquisition",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "events\neps.low_power_warning_raised\neps.low_power_warning_raised",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "events\npayload.acquisition_completed\npayload.acquisition_completed",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "events\npayload.acquisition_started\npayload.acquisition_started",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "payloads\nradiation_event_payload\nradiation_event_payload",
+          "overflow": false,
+          "horizontal": false
+        }
+      ],
+      "status": "PASS",
+      "scope": "Actual App; retained Core reports via mocked IPC; mission/scenario/participation/projection/association/compare/Return and native route navigation"
+    },
+    {
+      "width": 960,
+      "continuation": "PASS: endpoint proposal, exact Anchor, retained Scope, edge-only inspection, subject Return, outside representation, camera/Reset, modal focus, Core Scenario context, generation invalidation",
+      "cardBounds": [
+        {
+          "text": "modes\nDEGRADED_POWER\nDEGRADED_POWER",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "modes\nNOMINAL\nNOMINAL",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "modes\nPAYLOAD_ACTIVE\nPAYLOAD_ACTIVE",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nAngular rate\nadcs.angular_rate",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nADCS pointing status\nadcs.pointing_status",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nStorage used\ndata_storage.used_percent",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nBattery state of charge\neps.battery.state_of_charge",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nBattery voltage\neps.battery.voltage",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nSolar input power\neps.solar.input_power",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nOBC CPU load\nobc.cpu_load",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nWatchdog reset counter\nobc.watchdog_reset_counter",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nPayload acquisition active\nradiation_payload.acquisition_active",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nRadiation event rate\nradiation_payload.event_rate",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nPending histogram bytes\nradiation_payload.histogram_pending_bytes",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nPayload histogram ready\nradiation_payload.histogram_ready",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nS-band link state\nsband_radio.link_state",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nUHF beacon state\nuhf_radio.beacon_state",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "commands\npayload.start_acquisition\npayload.start_acquisition",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "commands\npayload.stop_acquisition\npayload.stop_acquisition",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "events\neps.low_power_warning_raised\neps.low_power_warning_raised",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "events\npayload.acquisition_completed\npayload.acquisition_completed",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "events\npayload.acquisition_started\npayload.acquisition_started",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "payloads\nradiation_event_payload\nradiation_event_payload",
+          "overflow": false,
+          "horizontal": false
+        }
+      ],
+      "status": "PASS",
+      "scope": "Actual App; retained Core reports via mocked IPC; mission/scenario/participation/projection/association/compare/Return and native route navigation"
+    },
+    {
+      "width": 640,
+      "continuation": "PASS: endpoint proposal, exact Anchor, retained Scope, edge-only inspection, subject Return, outside representation, camera/Reset, modal focus, Core Scenario context, generation invalidation",
+      "cardBounds": [
+        {
+          "text": "modes\nDEGRADED_POWER\nDEGRADED_POWER",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "modes\nNOMINAL\nNOMINAL",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "modes\nPAYLOAD_ACTIVE\nPAYLOAD_ACTIVE",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nAngular rate\nadcs.angular_rate",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nADCS pointing status\nadcs.pointing_status",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nStorage used\ndata_storage.used_percent",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nBattery state of charge\neps.battery.state_of_charge",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nBattery voltage\neps.battery.voltage",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nSolar input power\neps.solar.input_power",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nOBC CPU load\nobc.cpu_load",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nWatchdog reset counter\nobc.watchdog_reset_counter",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nPayload acquisition active\nradiation_payload.acquisition_active",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nRadiation event rate\nradiation_payload.event_rate",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nPending histogram bytes\nradiation_payload.histogram_pending_bytes",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nPayload histogram ready\nradiation_payload.histogram_ready",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nS-band link state\nsband_radio.link_state",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "telemetry\nUHF beacon state\nuhf_radio.beacon_state",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "commands\npayload.start_acquisition\npayload.start_acquisition",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "commands\npayload.stop_acquisition\npayload.stop_acquisition",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "events\neps.low_power_warning_raised\neps.low_power_warning_raised",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "events\npayload.acquisition_completed\npayload.acquisition_completed",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "events\npayload.acquisition_started\npayload.acquisition_started",
+          "overflow": false,
+          "horizontal": false
+        },
+        {
+          "text": "payloads\nradiation_event_payload\nradiation_event_payload",
+          "overflow": false,
+          "horizontal": false
+        }
+      ],
+      "status": "PASS",
+      "scope": "Actual App; retained Core reports via mocked IPC; mission/scenario/participation/projection/association/compare/Return and native route navigation"
+    }
+  ],
+  "errors": [],
+  "provenance": {
+    "referenceHead": "e8f4a392e0bc3075df1ea3b00b842ba6b9e6e5ca",
+    "sources": {
+      "/workspace/scratch/aebee57acfd0/reference/scenarios/payload_stop_acquisition_verification.yaml": "b19ff6e1cf3c45cdb81e239d30aad97e8b6f037703c06f27102b762e69a1146a",
+      "/workspace/scratch/aebee57acfd0/reference/scenarios/adcs_degraded_pointing_payload_inhibit.yaml": "8dc7365eba3370c961384c98cee628aa7cfbd68b1519daec0c4891d84fed1cfe",
+      "/workspace/scratch/aebee57acfd0/reference/scenarios/eclipse_low_power_payload_suspension.yaml": "33767cf2c35650066c0616976ab3a8c0295cf6c603a85f05048e48a986c046d0"
+    },
+    "coreExecutable": "/workspace/scratch/aebee57acfd0/core-venv/bin/orbitfabric"
+  },
+  "nativeIPC": "NOT RUN",
+  "WebKitGTK": "NOT RUN",
+  "WebView2": "NOT RUN"
+}

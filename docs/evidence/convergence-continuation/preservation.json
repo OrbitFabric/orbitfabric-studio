@@ -1,0 +1,89 @@
+{
+  "startingHead": "ff140a87db362c60d95df0ab066293121d32203a",
+  "originalBase": "852210795aa15020f5f117298c42900bd3e95501",
+  "protected": [
+    {
+      "path": "src-tauri",
+      "identicalToStarting": true,
+      "identicalToOriginalBase": true
+    },
+    {
+      "path": "src/core",
+      "identicalToStarting": true,
+      "identicalToOriginalBase": true
+    },
+    {
+      "path": "src/mission",
+      "identicalToStarting": true,
+      "identicalToOriginalBase": true
+    },
+    {
+      "path": "src/convergence",
+      "identicalToStarting": true,
+      "identicalToOriginalBase": true
+    },
+    {
+      "path": "src/app",
+      "identicalToStarting": true,
+      "identicalToOriginalBase": true
+    },
+    {
+      "path": "src/graph",
+      "identicalToStarting": true,
+      "identicalToOriginalBase": true
+    },
+    {
+      "path": "src/features/operations",
+      "identicalToStarting": true,
+      "identicalToOriginalBase": true
+    },
+    {
+      "path": "src/features/relationships",
+      "identicalToStarting": true,
+      "identicalToOriginalBase": true
+    },
+    {
+      "path": "src/features/explorer",
+      "identicalToStarting": true,
+      "identicalToOriginalBase": true
+    },
+    {
+      "path": "src/features/xray",
+      "identicalToStarting": true,
+      "identicalToOriginalBase": true
+    },
+    {
+      "path": "src/features/capture",
+      "identicalToStarting": true,
+      "identicalToOriginalBase": true
+    },
+    {
+      "path": "src/integrations",
+      "identicalToStarting": true,
+      "identicalToOriginalBase": true
+    },
+    {
+      "path": "package.json",
+      "identicalToStarting": true,
+      "identicalToOriginalBase": true
+    },
+    {
+      "path": "package-lock.json",
+      "identicalToStarting": true,
+      "identicalToOriginalBase": true
+    },
+    {
+      "path": "docs/evidence/convergence",
+      "identicalToStarting": true
+    },
+    {
+      "path": "docs/EXPERIENCE_CONVERGENCE_V1_HANDOFF.md",
+      "identicalToStarting": true
+    },
+    {
+      "path": "src/features/investigation/investigationModel.ts",
+      "identicalToStarting": true
+    }
+  ],
+  "originalTestsChanged": []
+}
