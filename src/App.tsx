@@ -669,6 +669,7 @@ function App() {
               />
             ) : state.view === "explore" ? (
               <EntityExplorer
+                key={membershipKey}
                 session={session}
                 selectedEntity={selectedEntity}
                 onSelectEntity={(subject) =>

@@ -40,8 +40,14 @@ export interface CommandabilityRuleFact {
 
 export interface AutonomousActionFact {
   ref: EntityRef;
-  triggerMode: string;
+  description: string | null;
+  // A fault trigger is not a mode trigger. Preserve the exact Core declaration.
+  triggerMode: string | null;
+  triggerFault: string | null;
+  trigger: JsonValue | undefined;
   dispatchCommandIds: readonly string[];
+  dispatchSourceIds: readonly string[];
+  dispatches: JsonValue | undefined;
   expectedEvents: readonly string[];
   expectedEffects: JsonValue | undefined;
 }
@@ -201,17 +207,26 @@ function commandabilityRuleFact(value: MissionContractObject): CommandabilityRul
 
 function autonomousActionFact(value: MissionContractObject): AutonomousActionFact[] {
   const trigger = objectValue(value.trigger);
-  const triggerMode = stringValue(trigger.mode);
-  if (triggerMode === null) {
-    return [];
-  }
+  // Core Reference Mission declares one dispatch as an object. Retain support for
+  // historical array-shaped consumers without claiming either shape is runtime execution.
+  const dispatches = Array.isArray(value.dispatches)
+    ? jsonObjectArray(value.dispatches)
+    : [objectValue(value.dispatches)];
   return [{
     ref: { domain: "autonomous_actions", id: value.id },
-    triggerMode,
-    dispatchCommandIds: jsonObjectArray(value.dispatches).flatMap((dispatch) => {
+    description: stringValue(value.description),
+    triggerMode: stringValue(trigger.mode),
+    triggerFault: stringValue(trigger.fault),
+    trigger: value.trigger,
+    dispatchCommandIds: dispatches.flatMap((dispatch) => {
       const commandId = stringValue(dispatch.command);
       return commandId === null ? [] : [commandId];
     }),
+    dispatchSourceIds: dispatches.flatMap((dispatch) => {
+      const sourceId = stringValue(dispatch.source);
+      return sourceId === null ? [] : [sourceId];
+    }),
+    dispatches: value.dispatches,
     expectedEvents: stringArray(value.expected_events),
     expectedEffects: value.expected_effects,
   }];

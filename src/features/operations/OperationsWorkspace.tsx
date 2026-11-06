@@ -7,6 +7,7 @@ import { OperationalStateMap } from "./OperationalStateMap";
 import {
   buildModeFocus,
   buildOperationsModel,
+  type AutonomousActionFact,
   type ModeTransitionFact,
   type OperationalModeFact,
 } from "./operationsModel";
@@ -58,6 +59,10 @@ export function OperationsWorkspace({
   };
   const isInspectable = (ref: EntityRef) =>
     session.readModel.entityRecordsByKey.has(entityKey(ref));
+  const representedModeIds = new Set(model.modes.map((mode) => mode.ref.id));
+  const nonModeActions = model.autonomousActions.filter(
+    (action) => action.triggerMode === null || !representedModeIds.has(action.triggerMode),
+  );
 
   return (
     <div className="operations-workspace">
@@ -76,12 +81,49 @@ export function OperationsWorkspace({
         </div>
       </header>
 
+      <div className="operations-mode-picker">
+        <label htmlFor="operations-mode-select">Focus declared mode</label>
+        <select
+          id="operations-mode-select"
+          value={selectedMode}
+          onChange={(event) => onSelectMode({ domain: "modes", id: event.target.value })}
+        >
+          {model.modes.map((mode) => (
+            <option key={mode.ref.id} value={mode.ref.id}>{mode.ref.id}</option>
+          ))}
+        </select>
+        <span>All Core-declared modes are available here, including modes without transitions.</span>
+      </div>
+
       <OperationalStateMap
         missionKey={`${session.source.missionDir}:${session.snapshot.mission?.id ?? "unknown"}`}
         model={model}
         selectedModeId={selectedMode}
         onSelectMode={(mode) => onSelectMode(mode.ref)}
       />
+
+      <section className="mode-focus" aria-label="Autonomous actions outside represented mode triggers">
+        <header className="mode-focus-header">
+          <div>
+            <p className="eyebrow">Declared autonomous behavior</p>
+            <h2>Actions not triggered by a represented mode</h2>
+            <p>Fault-triggered and other actions are Core declarations, not observed dispatches or runtime outcomes.</p>
+          </div>
+        </header>
+        <FocusSection
+          title="Autonomous actions with fault, other or unresolved mode triggers"
+          count={nonModeActions.length}
+          empty="No autonomous action is declared outside represented mode triggers."
+        >
+          {nonModeActions.map((action) => (
+            <AutonomousActionCard
+              key={action.ref.id}
+              action={action}
+              onInspect={isInspectable(action.ref) ? () => inspect(action.ref) : undefined}
+            />
+          ))}
+        </FocusSection>
+      </section>
 
       <section className="mode-focus" aria-label={`Mode Focus ${focus.mode.ref.id}`}>
         <header className="mode-focus-header">
@@ -200,20 +242,41 @@ export function OperationsWorkspace({
           empty="No autonomous action explicitly declares this mode as its trigger."
         >
           {focus.autonomousActions.map((action) => (
-            <EntityFactCard
+            <AutonomousActionCard
               key={action.ref.id}
-              label="Autonomous action"
-              title={action.ref.id}
+              action={action}
               onInspect={isInspectable(action.ref) ? () => inspect(action.ref) : undefined}
-            >
-              <FactLine label="Dispatch commands" values={action.dispatchCommandIds} />
-              <FactLine label="Expected events" values={action.expectedEvents} />
-              <DeclaredJson label="Expected effects" value={action.expectedEffects} />
-            </EntityFactCard>
+            />
           ))}
         </FocusSection>
       </section>
     </div>
+  );
+}
+
+function AutonomousActionCard({
+  action,
+  onInspect,
+}: {
+  action: AutonomousActionFact;
+  onInspect?: () => void;
+}) {
+  return (
+    <EntityFactCard
+      label="Autonomous action · DECLARED"
+      title={action.ref.id}
+      description={action.description}
+      onInspect={onInspect}
+    >
+      <FactLine label="Trigger mode" values={action.triggerMode ? [action.triggerMode] : []} />
+      <FactLine label="Trigger fault" values={action.triggerFault ? [action.triggerFault] : []} />
+      <FactLine label="Dispatch commands" values={action.dispatchCommandIds} />
+      <FactLine label="Dispatch sources" values={action.dispatchSourceIds} />
+      <FactLine label="Expected events" values={action.expectedEvents} />
+      <DeclaredJson label="Exact declared trigger" value={action.trigger} />
+      <DeclaredJson label="Exact declared dispatch" value={action.dispatches} />
+      <DeclaredJson label="Expected effects" value={action.expectedEffects} />
+    </EntityFactCard>
   );
 }
 

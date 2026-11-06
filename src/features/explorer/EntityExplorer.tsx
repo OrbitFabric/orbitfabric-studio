@@ -1,4 +1,6 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
+
+import { usePresentationMemory } from "../experience/presentationMemory";
 
 import type { EntityIndexRecordDto } from "../../core/contracts";
 import { entityKey, type EntityRef } from "../../mission/entityRef";
@@ -15,8 +17,10 @@ export function EntityExplorer({
   selectedEntity,
   onSelectEntity,
 }: EntityExplorerProps) {
-  const [query, setQuery] = useState("");
-  const [domain, setDomain] = useState("all");
+  // Presentation-only state survives route unmount; the App provider is per
+  // mission generation and resets on accepted mission replacement.
+  const [query, setQuery] = usePresentationMemory<string>("explore:query", "");
+  const [domain, setDomain] = usePresentationMemory<string>("explore:domain", "all");
   const entities = session.entityIndex?.entities ?? [];
   const domains = useMemo(
     () => [...new Set(entities.map((entity) => entity.domain))].sort(),

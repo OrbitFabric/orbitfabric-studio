@@ -126,3 +126,63 @@ test("Mode Focus joins only explicit mode declarations and preserves Core facts"
   assert.deepEqual(safe.faultRecoveries.map((item) => item.ref.id), ["eps.low"]);
   assert.deepEqual(safe.recoveryIntents.map((item) => item.ref.id), ["recover.safe"]);
 });
+
+
+test("B1 reference fault-triggered autonomous action retains exact trigger, object dispatch and source", () => {
+  // This exact contract shape is from the Reference Mission commandability.yaml.
+  // A declared autonomous action is not evidence of runtime dispatch.
+  const model = buildOperationsModel(snapshot({
+    modes: { PAYLOAD_ACTIVE: {}, DEGRADED_POWER: {} },
+    commandability: {
+      autonomous_actions: [{
+        id: "auto_stop_payload_on_low_power",
+        trigger: { fault: "eps.low_battery_warning" },
+        dispatches: { command: "payload.stop_acquisition", source: "onboard_autonomy" },
+        expected_events: ["payload.acquisition_completed", "obc.mode_changed"],
+        expected_effects: { mode: "DEGRADED_POWER" },
+      }],
+    },
+  }));
+  assert.equal(model.autonomousActions.length, 1);
+  const action = model.autonomousActions[0];
+  assert.equal(action.ref.id, "auto_stop_payload_on_low_power");
+  assert.equal(action.triggerMode, null);
+  assert.equal(action.triggerFault, "eps.low_battery_warning");
+  assert.deepEqual(action.dispatchCommandIds, ["payload.stop_acquisition"]);
+  assert.deepEqual(action.dispatchSourceIds, ["onboard_autonomy"]);
+  assert.deepEqual(action.trigger, { fault: "eps.low_battery_warning" });
+  assert.deepEqual(action.dispatches, {
+    command: "payload.stop_acquisition",
+    source: "onboard_autonomy",
+  });
+  assert.equal(buildModeFocus(model, "PAYLOAD_ACTIVE").autonomousActions.length, 0);
+});
+
+test("B1 historical mode-triggered array-shape continues to retain source identity", () => {
+  const model = buildOperationsModel(snapshot({
+    modes: { NOMINAL: {} },
+    commandability: {
+      autonomous_actions: [{
+        id: "mode.watch",
+        trigger: { mode: "NOMINAL" },
+        dispatches: [{ command: "payload.start", source: "onboard_autonomy" }],
+      }],
+    },
+  }));
+  assert.deepEqual(buildModeFocus(model, "NOMINAL").autonomousActions.map((a) => a.ref.id), ["mode.watch"]);
+  assert.deepEqual(model.autonomousActions[0].dispatchSourceIds, ["onboard_autonomy"]);
+  assert.equal(model.autonomousActions[0].triggerFault, null);
+});
+
+test("B1 unknown trigger/dispatch shape remains an attributable declared action without inventing commands", () => {
+  const model = buildOperationsModel(snapshot({
+    modes: { NOMINAL: {} },
+    commandability: {
+      autonomous_actions: [{ id: "future.trigger", trigger: { event: "event.x" }, dispatches: "unsupported" }],
+    },
+  }));
+  assert.equal(model.autonomousActions.length, 1);
+  assert.deepEqual(model.autonomousActions[0].dispatchCommandIds, []);
+  assert.equal(model.autonomousActions[0].triggerMode, null);
+  assert.deepEqual(model.autonomousActions[0].trigger, { event: "event.x" });
+});

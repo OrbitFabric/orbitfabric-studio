@@ -61,6 +61,33 @@
   font-size: 11px;
 }
 
+.operations-mode-picker {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+.operations-mode-picker label {
+  font-weight: 700;
+}
+.operations-mode-picker select {
+  max-width: min(100%, 320px);
+  padding: 9px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  background: var(--bg-surface);
+}
+.operations-mode-picker select:focus-visible {
+  outline: 2px solid var(--line-strong);
+  outline-offset: 2px;
+}
+.operations-mode-picker span {
+  color: var(--text-muted);
+  font-size: 11px;
+}
 .operational-state-map,
 .mode-focus {
   min-width: 0;
